@@ -2,15 +2,9 @@ import { GraphQLClient } from 'graphql-request';
 import * as Dom from 'graphql-request/dist/types.dom';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -76,44 +70,54 @@ export type Mutation = {
   updateUser: User;
 };
 
+
 export type MutationCreateDenimArgs = {
   input: DenimInput;
 };
+
 
 export type MutationCreateDenimReportArgs = {
   input: DenimReportInput;
 };
 
+
 export type MutationCreateProfileArgs = {
   input: ProfileInput;
 };
+
 
 export type MutationCreateUserArgs = {
   input: UserInput;
 };
 
+
 export type MutationDeleteDenimArgs = {
   id: Scalars['String'];
 };
 
+
 export type MutationDeleteDenimReportArgs = {
   id: Scalars['String'];
 };
+
 
 export type MutationUpdateDenimArgs = {
   id: Scalars['String'];
   input: DenimInput;
 };
 
+
 export type MutationUpdateDenimReportArgs = {
   id: Scalars['String'];
   input: DenimReportInput;
 };
 
+
 export type MutationUpdateProfileArgs = {
   id: Scalars['String'];
   input: ProfileInput;
 };
+
 
 export type MutationUpdateUserArgs = {
   id: Scalars['String'];
@@ -151,13 +155,16 @@ export type Query = {
   getUser: User;
 };
 
+
 export type QueryGetDenimArgs = {
   id: Scalars['String'];
 };
 
+
 export type QueryGetDenimReportArgs = {
   id: Scalars['String'];
 };
+
 
 export type QueryGetProfileArgs = {
   accountId: Scalars['String'];
@@ -177,55 +184,33 @@ export type UserInput = {
   accountId: Scalars['String'];
 };
 
-export type GetUserQueryVariables = Exact<{ [key: string]: never }>;
+export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GetUserQuery = {
-  __typename?: 'Query';
-  getUser: {
-    __typename?: 'User';
-    id: string;
-    accountId: string;
-    createdAt?: any | null | undefined;
-    updatedAt?: any | null | undefined;
-  };
-};
+
+export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
 
 export const GetUserDocument = gql`
-  query GetUser {
-    getUser {
-      id
-      accountId
-      createdAt
-      updatedAt
-    }
+    query GetUser {
+  getUser {
+    id
+    accountId
+    createdAt
+    updatedAt
   }
-`;
+}
+    `;
 
-export type SdkFunctionWrapper = <T>(
-  action: (requestHeaders?: Record<string, string>) => Promise<T>,
-  operationName: string
-) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
+
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
-export function getSdk(
-  client: GraphQLClient,
-  withWrapper: SdkFunctionWrapper = defaultWrapper
-) {
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    GetUser(
-      variables?: GetUserQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers']
-    ): Promise<GetUserQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<GetUserQuery>(GetUserDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'GetUser'
-      );
-    },
+    GetUser(variables?: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUser');
+    }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;
