@@ -1,4 +1,5 @@
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
+import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -43,9 +44,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
-          <AppInit />
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
+          <ChakraProvider>
+            <AppInit />
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </ChakraProvider>
         </RecoilRoot>
       </QueryClientProvider>
     </Auth0Provider>
