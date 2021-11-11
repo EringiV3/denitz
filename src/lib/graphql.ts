@@ -61,6 +61,7 @@ export type Mutation = {
   createDenim: Denim;
   createDenimReport: DenimReport;
   createProfile: Profile;
+  createS3SignedUrl: Scalars['String'];
   createUser: User;
   deleteDenim: Denim;
   deleteDenimReport: DenimReport;
@@ -152,7 +153,7 @@ export type Query = {
   getDenim: Denim;
   getDenimReport: DenimReport;
   getProfile: Profile;
-  getUser: User;
+  getUser?: Maybe<User>;
 };
 
 
@@ -184,12 +185,85 @@ export type UserInput = {
   accountId: Scalars['String'];
 };
 
+export type CreateProfileMutationVariables = Exact<{
+  input: ProfileInput;
+}>;
+
+
+export type CreateProfileMutation = { __typename?: 'Mutation', createProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, description?: string | null | undefined, twitterUrl?: string | null | undefined, websiteUrl?: string | null | undefined, instagramUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
+export type CreateUserMutationVariables = Exact<{
+  input: UserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
+export type GetProfileQueryVariables = Exact<{
+  accountId: Scalars['String'];
+}>;
+
+
+export type GetProfileQuery = { __typename?: 'Query', getProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUrl?: string | null | undefined, description?: string | null | undefined, instagramUrl?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined };
 
 
+export const CreateProfileDocument = gql`
+    mutation CreateProfile($input: ProfileInput!) {
+  createProfile(input: $input) {
+    id
+    name
+    iconImageUrl
+    description
+    twitterUrl
+    websiteUrl
+    instagramUrl
+    createdAt
+    updatedAt
+    user {
+      id
+      accountId
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export const CreateUserDocument = gql`
+    mutation CreateUser($input: UserInput!) {
+  createUser(input: $input) {
+    id
+    accountId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const GetProfileDocument = gql`
+    query GetProfile($accountId: String!) {
+  getProfile(accountId: $accountId) {
+    id
+    name
+    iconImageUrl
+    twitterUrl
+    description
+    instagramUrl
+    websiteUrl
+    user {
+      id
+      accountId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
 export const GetUserDocument = gql`
     query GetUser {
   getUser {
@@ -208,6 +282,15 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    CreateProfile(variables: CreateProfileMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateProfileMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateProfileMutation>(CreateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateProfile');
+    },
+    CreateUser(variables: CreateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser');
+    },
+    GetProfile(variables: GetProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfileQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProfileQuery>(GetProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetProfile');
+    },
     GetUser(variables?: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUser');
     }

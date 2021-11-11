@@ -1,0 +1,19 @@
+query GetProfile($accountId: String!) {
+  getProfile(accountId: $accountId) {
+    id
+    name
+    iconImageUrl
+    twitterUrl
+    description
+    instagramUrl
+    websiteUrl
+    user {
+      id
+      accountId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}

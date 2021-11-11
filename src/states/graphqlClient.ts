@@ -1,7 +1,12 @@
 import { atom } from 'recoil';
-import { Client, createGraphQLClient } from '../lib/graphqlClient';
+import { createGraphqlClient } from '../lib/graphqlClient';
 
-export const graphqlClientState = atom<Client>({
+export const graphqlClientState = atom({
   key: 'GRAPHQL_CLIENT',
-  default: createGraphQLClient(null),
+  default: createGraphqlClient(),
+});
+
+export const hasTokenState = atom({
+  key: 'GRAPHQL_CLIENT/HAS_TOKEN',
+  default: false,
 });
