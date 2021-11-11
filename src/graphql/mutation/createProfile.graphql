@@ -1,0 +1,19 @@
+mutation CreateProfile($input: ProfileInput!) {
+  createProfile(input: $input) {
+    id
+    name
+    iconImageUrl
+    description
+    twitterUrl
+    websiteUrl
+    instagramUrl
+    createdAt
+    updatedAt
+    user {
+      id
+      accountId
+      createdAt
+      updatedAt
+    }
+  }
+}
