@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         currentUserInfo={{
           accountId: data?.getCurrentUser?.accountId ?? '',
           iconImageUrl: data?.getCurrentUser?.profile?.iconImageUrl ?? '',
-          name: data?.getCurrentUser?.profile?.name ?? 'hoge',
+          name: data?.getCurrentUser?.profile?.name ?? '',
         }}
       />
     </>
