@@ -30,7 +30,7 @@ const DrawerMenu: React.FC<Props> = ({ isOpen, onClose, currentUserInfo }) => {
         <DrawerHeader>
           <NextLink href={`/${currentUserInfo.accountId}`}>
             <Box display="flex">
-              <Avatar src={currentUserInfo.name} size="sm" />
+              <Avatar src={currentUserInfo.iconImageUrl} size="sm" />
               <Box marginLeft="20px">{currentUserInfo.name}</Box>
             </Box>
           </NextLink>
