@@ -1,0 +1,11 @@
+mutation UpdateProfile($updateProfileId: String!, $input: ProfileInput!) {
+  updateProfile(id: $updateProfileId, input: $input) {
+    id
+    name
+    iconImageUrl
+    description
+    twitterUrl
+    instagramUrl
+    websiteUrl
+  }
+}

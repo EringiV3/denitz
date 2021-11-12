@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 import { createGraphqlClient } from '../lib/graphqlClient';
 
 export const graphqlClientState = atom({
-  key: 'GRAPHQL_CLIENT',
+  key: 'GRAPHQL_CLIEN/CLIENT',
   default: createGraphqlClient(),
 });
 
