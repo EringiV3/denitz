@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { Spinner, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
@@ -7,15 +6,14 @@ import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 import { ProfileInput, UserInput } from '../../lib/graphql';
 
 const Callback: React.FC = () => {
-  const { user, isAuthenticated } = useAuth0();
   const { client, hasToken } = useGraphqlClient();
   const reactQueryClient = useQueryClient();
   const router = useRouter();
   const toast = useToast();
 
-  const { isLoading, data, refetch, error } = useQuery(
+  const { data, refetch } = useQuery(
     ['currentUser'],
-    () => client.GetUser(),
+    () => client.GetCurrentUser(),
     { enabled: false }
   );
 
@@ -65,11 +63,11 @@ const Callback: React.FC = () => {
 
   useEffect(() => {
     // ユーザーデータが存在しない場合は作成する
-    if (data && data.getUser === null) {
+    if (data && data.getCurrentUser === null) {
       createUserMutation.mutate({ accountId: 'eringiv3' });
       createProfileMutation.mutate({});
-    } else if (data && data.getUser) {
-      router.push(`/${data.getUser.accountId}`);
+    } else if (data && data.getCurrentUser) {
+      router.push(`/${data.getCurrentUser.accountId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

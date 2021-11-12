@@ -150,10 +150,10 @@ export type ProfileInput = {
 
 export type Query = {
   __typename?: 'Query';
+  getCurrentUser?: Maybe<User>;
   getDenim: Denim;
   getDenimReport: DenimReport;
   getProfile: Profile;
-  getUser?: Maybe<User>;
 };
 
 
@@ -199,17 +199,17 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined } | null | undefined } | null | undefined };
+
 export type GetProfileQueryVariables = Exact<{
   accountId: Scalars['String'];
 }>;
 
 
 export type GetProfileQuery = { __typename?: 'Query', getProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUrl?: string | null | undefined, description?: string | null | undefined, instagramUrl?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
-
-export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined };
 
 
 export const CreateProfileDocument = gql`
@@ -243,6 +243,21 @@ export const CreateUserDocument = gql`
   }
 }
     `;
+export const GetCurrentUserDocument = gql`
+    query GetCurrentUser {
+  getCurrentUser {
+    id
+    accountId
+    createdAt
+    updatedAt
+    profile {
+      id
+      name
+      iconImageUrl
+    }
+  }
+}
+    `;
 export const GetProfileDocument = gql`
     query GetProfile($accountId: String!) {
   getProfile(accountId: $accountId) {
@@ -264,16 +279,6 @@ export const GetProfileDocument = gql`
   }
 }
     `;
-export const GetUserDocument = gql`
-    query GetUser {
-  getUser {
-    id
-    accountId
-    createdAt
-    updatedAt
-  }
-}
-    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -288,11 +293,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     CreateUser(variables: CreateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser');
     },
+    GetCurrentUser(variables?: GetCurrentUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCurrentUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCurrentUserQuery>(GetCurrentUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetCurrentUser');
+    },
     GetProfile(variables: GetProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfileQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProfileQuery>(GetProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetProfile');
-    },
-    GetUser(variables?: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUser');
     }
   };
 }

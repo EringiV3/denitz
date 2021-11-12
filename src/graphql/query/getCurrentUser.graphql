@@ -1,0 +1,13 @@
+query GetCurrentUser {
+  getCurrentUser {
+    id
+    accountId
+    createdAt
+    updatedAt
+    profile {
+      id
+      name
+      iconImageUrl
+    }
+  }
+}

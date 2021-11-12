@@ -1,8 +1,0 @@
-query GetUser {
-  getUser {
-    id
-    accountId
-    createdAt
-    updatedAt
-  }
-}

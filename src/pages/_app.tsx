@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilSnapshot } from 'recoil';
 import {
   AUTH0_AUDIENCE,
   AUTH0_CLIENT_ID,
@@ -33,6 +33,21 @@ const AppInit = () => {
   return null;
 };
 
+const RecoilDebugObserver = () => {
+  const snapshot = useRecoilSnapshot();
+  useEffect(() => {
+    const nodes = snapshot.getNodes_UNSTABLE({ isModified: true });
+    for (const node of nodes) {
+      console.log(
+        `[Recoil] ${node.key}`,
+        snapshot.getLoadable(node).getValue()
+      );
+    }
+  }, [snapshot]);
+
+  return null;
+};
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Auth0Provider
@@ -46,6 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ChakraProvider>
             <AppInit />
             <Component {...pageProps} />
+            <RecoilDebugObserver />
             <ReactQueryDevtools initialIsOpen={false} />
           </ChakraProvider>
         </RecoilRoot>
