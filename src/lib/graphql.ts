@@ -61,7 +61,7 @@ export type Mutation = {
   createDenim: Denim;
   createDenimReport: DenimReport;
   createProfile: Profile;
-  createS3SignedUrl: Scalars['String'];
+  createS3SignedUrl: S3SignedUrlResponse;
   createUser: User;
   deleteDenim: Denim;
   deleteDenimReport: DenimReport;
@@ -84,6 +84,11 @@ export type MutationCreateDenimReportArgs = {
 
 export type MutationCreateProfileArgs = {
   input: ProfileInput;
+};
+
+
+export type MutationCreateS3SignedUrlArgs = {
+  input: S3SignedUrlInput;
 };
 
 
@@ -171,6 +176,16 @@ export type QueryGetProfileArgs = {
   accountId: Scalars['String'];
 };
 
+export type S3SignedUrlInput = {
+  contentType: Scalars['String'];
+};
+
+export type S3SignedUrlResponse = {
+  __typename?: 'S3SignedUrlResponse';
+  fileName: Scalars['String'];
+  signedUrl: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   accountId: Scalars['String'];
@@ -191,6 +206,13 @@ export type CreateProfileMutationVariables = Exact<{
 
 
 export type CreateProfileMutation = { __typename?: 'Mutation', createProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, description?: string | null | undefined, twitterUrl?: string | null | undefined, websiteUrl?: string | null | undefined, instagramUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
+export type CreateS3SignedUrlMutationVariables = Exact<{
+  input: S3SignedUrlInput;
+}>;
+
+
+export type CreateS3SignedUrlMutation = { __typename?: 'Mutation', createS3SignedUrl: { __typename?: 'S3SignedUrlResponse', fileName: string, signedUrl: string } };
 
 export type CreateUserMutationVariables = Exact<{
   input: UserInput;
@@ -238,6 +260,14 @@ export const CreateProfileDocument = gql`
       createdAt
       updatedAt
     }
+  }
+}
+    `;
+export const CreateS3SignedUrlDocument = gql`
+    mutation CreateS3SignedUrl($input: S3SignedUrlInput!) {
+  createS3SignedUrl(input: $input) {
+    fileName
+    signedUrl
   }
 }
     `;
@@ -310,6 +340,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     CreateProfile(variables: CreateProfileMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateProfileMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateProfileMutation>(CreateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateProfile');
+    },
+    CreateS3SignedUrl(variables: CreateS3SignedUrlMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateS3SignedUrlMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateS3SignedUrlMutation>(CreateS3SignedUrlDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateS3SignedUrl');
     },
     CreateUser(variables: CreateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser');

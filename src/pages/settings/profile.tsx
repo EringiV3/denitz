@@ -18,6 +18,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import ImageCropModal from '../../components/ImageCropModal';
 import Layout from '../../components/Layout';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
+import { useUploadImage } from '../../hooks/useUploadImage';
 import { ProfileInput } from '../../lib/graphql';
 import { readFile } from '../../utils/image';
 
@@ -30,12 +31,8 @@ type Form = {
 };
 
 const ProfileSetting: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Form>();
+  const { upload } = useUploadImage();
+  const { register, handleSubmit, watch, setValue } = useForm<Form>();
   const { client, hasToken } = useGraphqlClient();
   const reactQueryClient = useQueryClient();
   const toast = useToast();
@@ -64,6 +61,7 @@ const ProfileSetting: React.FC = () => {
           status: 'success',
           duration: 3000,
           isClosable: true,
+          position: 'top',
         });
         reactQueryClient.invalidateQueries([
           'profile',
@@ -73,17 +71,35 @@ const ProfileSetting: React.FC = () => {
     }
   );
 
-  const onSubmit: SubmitHandler<Form> = (data) => {
+  const onSubmit: SubmitHandler<Form> = async (data) => {
     if (profileData?.getProfile.id === undefined) {
       return;
     }
+
+    console.log({ data });
+
+    let iconImageUrl: string | undefined;
     if (croppedImageBlob !== null) {
-      // TODO 画像　S3へのアップロード処理
-      console.log({ croppedImageBlob });
+      try {
+        iconImageUrl = await upload(croppedImageBlob);
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: '画像のアップロードに失敗しました',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        });
+        return;
+      }
     }
     updateProfileMutation.mutate({
       updateProfileId: profileData.getProfile.id,
       input: {
+        iconImageUrl: iconImageUrl
+          ? iconImageUrl
+          : profileData.getProfile.iconImageUrl,
         name: data.name,
         description: data.description,
         twitterUrl: data.twitterUrl,
@@ -122,6 +138,24 @@ const ProfileSetting: React.FC = () => {
     readFile(croppedImageBlob).then((url) => setCroppedImagePreviewUrl(url));
   }, [croppedImageBlob]);
 
+  useEffect(() => {
+    if (profileData) {
+      setValue('name', profileData.getProfile.name ?? '');
+      setValue('description', profileData.getProfile.description ?? '');
+      setValue('instagramUrl', profileData.getProfile.instagramUrl ?? '');
+      setValue('twitterUrl', profileData.getProfile.twitterUrl ?? '');
+      setValue('websiteUrl', profileData.getProfile.websiteUrl ?? '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileData]);
+
+  React.useEffect(() => {
+    const subscription = watch((value, { name, type }) =>
+      console.log(value, name, type)
+    );
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
     <>
       <Layout>
@@ -155,42 +189,27 @@ const ProfileSetting: React.FC = () => {
             </Box>
             <FormControl id="name" isRequired>
               <FormLabel>表示名</FormLabel>
-              <Input
-                defaultValue={profileData?.getProfile.name ?? ''}
-                {...register('name')}
-              />
+              <Input {...register('name')} />
               <FormHelperText>error message</FormHelperText>
             </FormControl>
             <FormControl id="description" marginTop="20px">
               <FormLabel>自己紹介</FormLabel>
-              <Textarea
-                defaultValue={profileData?.getProfile.description ?? ''}
-                {...register('description')}
-              />
+              <Textarea {...register('description')} />
               <FormHelperText>error message</FormHelperText>
             </FormControl>
             <FormControl id="twitter-url" marginTop="20px">
               <FormLabel>Twitterユーザー名</FormLabel>
-              <Input
-                defaultValue={profileData?.getProfile.twitterUrl ?? ''}
-                {...register('twitterUrl')}
-              />
+              <Input {...register('twitterUrl')} />
               <FormHelperText>error message</FormHelperText>
             </FormControl>
             <FormControl id="instagram-url" marginTop="20px">
               <FormLabel>Instagramユーザー名</FormLabel>
-              <Input
-                defaultValue={profileData?.getProfile.instagramUrl ?? ''}
-                {...register('instagramUrl')}
-              />
+              <Input {...register('instagramUrl')} />
               <FormHelperText>error message</FormHelperText>
             </FormControl>
             <FormControl id="website-url" marginTop="20px">
               <FormLabel>WebサイトURL</FormLabel>
-              <Input
-                defaultValue={profileData?.getProfile.websiteUrl ?? ''}
-                {...register('websiteUrl')}
-              />
+              <Input {...register('websiteUrl')} />
               <FormHelperText>error message</FormHelperText>
             </FormControl>
             <Box display="flex" justifyContent="center" marginTop="40px">

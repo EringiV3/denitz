@@ -29,6 +29,7 @@ const Callback: React.FC = () => {
           status: 'error',
           duration: 5000,
           isClosable: true,
+          position: 'top',
         });
       },
     }
@@ -49,6 +50,7 @@ const Callback: React.FC = () => {
           status: 'error',
           duration: 5000,
           isClosable: true,
+          position: 'top',
         });
       },
     }

@@ -1,0 +1,6 @@
+mutation CreateS3SignedUrl($input: S3SignedUrlInput!) {
+  createS3SignedUrl(input: $input) {
+    fileName
+    signedUrl
+  }
+}
