@@ -25,8 +25,8 @@ import { readFile } from '../../utils/image';
 type Form = {
   name: string;
   description: string;
-  twitterUrl: string;
-  instagramUrl: string;
+  twitterUserName: string;
+  instagramUserName: string;
   websiteUrl: string;
 };
 
@@ -108,8 +108,8 @@ const ProfileSetting: React.FC = () => {
           : profileData.getProfile.iconImageUrl,
         name: data.name,
         description: data.description,
-        twitterUrl: data.twitterUrl,
-        instagramUrl: data.instagramUrl,
+        twitterUserName: data.twitterUserName,
+        instagramUserName: data.instagramUserName,
         websiteUrl: data.websiteUrl,
       },
     });
@@ -148,8 +148,11 @@ const ProfileSetting: React.FC = () => {
     if (profileData) {
       setValue('name', profileData.getProfile.name ?? '');
       setValue('description', profileData.getProfile.description ?? '');
-      setValue('instagramUrl', profileData.getProfile.instagramUrl ?? '');
-      setValue('twitterUrl', profileData.getProfile.twitterUrl ?? '');
+      setValue(
+        'instagramUserName',
+        profileData.getProfile.instagramUserName ?? ''
+      );
+      setValue('twitterUserName', profileData.getProfile.twitterUserName ?? '');
       setValue('websiteUrl', profileData.getProfile.websiteUrl ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -218,7 +221,7 @@ const ProfileSetting: React.FC = () => {
             <FormControl id="twitter-url" marginTop="20px">
               <FormLabel>Twitterユーザー名</FormLabel>
               <Input
-                {...register('twitterUrl', {
+                {...register('twitterUserName', {
                   maxLength: {
                     value: 15,
                     message: '15文字以内で入力してください',
@@ -226,13 +229,13 @@ const ProfileSetting: React.FC = () => {
                 })}
               />
               <FormHelperText color="red">
-                {errors.twitterUrl?.message}
+                {errors.twitterUserName?.message}
               </FormHelperText>
             </FormControl>
             <FormControl id="instagram-url" marginTop="20px">
               <FormLabel>Instagramユーザー名</FormLabel>
               <Input
-                {...register('instagramUrl', {
+                {...register('instagramUserName', {
                   maxLength: {
                     value: 30,
                     message: '30文字以内で入力してください',
@@ -240,7 +243,7 @@ const ProfileSetting: React.FC = () => {
                 })}
               />
               <FormHelperText color="red">
-                {errors.instagramUrl?.message}
+                {errors.instagramUserName?.message}
               </FormHelperText>
             </FormControl>
             <FormControl id="website-url" marginTop="20px">

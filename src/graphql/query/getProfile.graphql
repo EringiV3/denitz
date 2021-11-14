@@ -3,9 +3,9 @@ query GetProfile($accountId: String!) {
     id
     name
     iconImageUrl
-    twitterUrl
+    twitterUserName
     description
-    instagramUrl
+    instagramUserName
     websiteUrl
     user {
       id

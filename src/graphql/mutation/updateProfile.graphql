@@ -4,8 +4,8 @@ mutation UpdateProfile($updateProfileId: String!, $input: ProfileInput!) {
     name
     iconImageUrl
     description
-    twitterUrl
-    instagramUrl
+    twitterUserName
+    instagramUserName
     websiteUrl
   }
 }
