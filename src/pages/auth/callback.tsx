@@ -3,7 +3,6 @@ import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
-import { ProfileInput, UserInput } from '../../lib/graphql';
 
 const Callback: React.FC = () => {
   const { client, hasToken } = useGraphqlClient();
@@ -17,32 +16,12 @@ const Callback: React.FC = () => {
     { enabled: false }
   );
 
-  const createUserMutation = useMutation(
-    (input: UserInput) => client.CreateUser({ input }),
+  const createUserAccountMutation = useMutation(
+    () => client.CreateUserAccount(),
     {
       onSuccess: (data) => {
-        reactQueryClient.setQueryData(['currentUser'], data.createUser);
-      },
-      onError: () => {
-        toast({
-          title: 'エラーが発生しました',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
-        });
-      },
-    }
-  );
-
-  const createProfileMutation = useMutation(
-    (input: ProfileInput) => client.CreateProfile({ input }),
-    {
-      onSuccess: (data) => {
-        reactQueryClient.setQueryData(
-          ['profile', data.createProfile.user?.accountId],
-          data.createProfile
-        );
+        reactQueryClient.setQueryData(['currentUser'], data.createUserAccount);
+        router.push(`/${data.createUserAccount.accountId}`);
       },
       onError: () => {
         toast({
@@ -66,28 +45,12 @@ const Callback: React.FC = () => {
   useEffect(() => {
     // ユーザーデータが存在しない場合は作成する
     if (data && data.getCurrentUser === null) {
-      createUserMutation.mutate({ accountId: 'eringiv3' });
-      createProfileMutation.mutate({});
+      createUserAccountMutation.mutate();
     } else if (data && data.getCurrentUser) {
       router.push(`/${data.getCurrentUser.accountId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-
-  useEffect(() => {
-    if (
-      createUserMutation.isSuccess &&
-      createProfileMutation.isSuccess &&
-      createUserMutation.data
-    ) {
-      router.push(`/${createUserMutation.data.createUser.accountId}`);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    createUserMutation.isSuccess,
-    createProfileMutation.isSuccess,
-    createUserMutation.data,
-  ]);
 
   return <Spinner />;
 };

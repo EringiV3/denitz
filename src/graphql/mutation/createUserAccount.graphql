@@ -1,0 +1,8 @@
+mutation CreateUserAccount {
+  createUserAccount {
+    id
+    accountId
+    createdAt
+    updatedAt
+  }
+}
