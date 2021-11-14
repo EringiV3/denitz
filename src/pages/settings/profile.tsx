@@ -32,7 +32,13 @@ type Form = {
 
 const ProfileSetting: React.FC = () => {
   const { upload } = useUploadImage();
-  const { register, handleSubmit, watch, setValue } = useForm<Form>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<Form>({ mode: 'onBlur', reValidateMode: 'onChange' });
   const { client, hasToken } = useGraphqlClient();
   const reactQueryClient = useQueryClient();
   const toast = useToast();
@@ -149,13 +155,6 @@ const ProfileSetting: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileData]);
 
-  React.useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   return (
     <>
       <Layout>
@@ -189,31 +188,79 @@ const ProfileSetting: React.FC = () => {
             </Box>
             <FormControl id="name" isRequired>
               <FormLabel>表示名</FormLabel>
-              <Input {...register('name')} />
-              <FormHelperText>error message</FormHelperText>
+              <Input
+                {...register('name', {
+                  required: 'この項目は必須です',
+                  maxLength: {
+                    value: 20,
+                    message: '20文字以内で入力してください',
+                  },
+                })}
+              />
+              <FormHelperText color="red">
+                {errors.name?.message}
+              </FormHelperText>
             </FormControl>
             <FormControl id="description" marginTop="20px">
               <FormLabel>自己紹介</FormLabel>
-              <Textarea {...register('description')} />
-              <FormHelperText>error message</FormHelperText>
+              <Textarea
+                {...register('description', {
+                  maxLength: {
+                    value: 250,
+                    message: '250文字以内で入力してください',
+                  },
+                })}
+              />
+              <FormHelperText color="red">
+                {errors.description?.message}
+              </FormHelperText>
             </FormControl>
             <FormControl id="twitter-url" marginTop="20px">
               <FormLabel>Twitterユーザー名</FormLabel>
-              <Input {...register('twitterUrl')} />
-              <FormHelperText>error message</FormHelperText>
+              <Input
+                {...register('twitterUrl', {
+                  maxLength: {
+                    value: 15,
+                    message: '15文字以内で入力してください',
+                  },
+                })}
+              />
+              <FormHelperText color="red">
+                {errors.twitterUrl?.message}
+              </FormHelperText>
             </FormControl>
             <FormControl id="instagram-url" marginTop="20px">
               <FormLabel>Instagramユーザー名</FormLabel>
-              <Input {...register('instagramUrl')} />
-              <FormHelperText>error message</FormHelperText>
+              <Input
+                {...register('instagramUrl', {
+                  maxLength: {
+                    value: 30,
+                    message: '30文字以内で入力してください',
+                  },
+                })}
+              />
+              <FormHelperText color="red">
+                {errors.instagramUrl?.message}
+              </FormHelperText>
             </FormControl>
             <FormControl id="website-url" marginTop="20px">
               <FormLabel>WebサイトURL</FormLabel>
-              <Input {...register('websiteUrl')} />
-              <FormHelperText>error message</FormHelperText>
+              <Input
+                {...register('websiteUrl', {
+                  maxLength: {
+                    value: 100,
+                    message: '100文字以内で入力してください',
+                  },
+                })}
+              />
+              <FormHelperText color="red">
+                {errors.websiteUrl?.message}
+              </FormHelperText>
             </FormControl>
             <Box display="flex" justifyContent="center" marginTop="40px">
-              <Button type="submit">保存する</Button>
+              <Button type="submit" disabled={!isValid}>
+                保存する
+              </Button>
             </Box>
           </form>
         </Box>
