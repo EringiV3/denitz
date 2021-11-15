@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Divider, Heading, Link } from '@chakra-ui/react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { FaInstagram, FaLink, FaTwitter } from 'react-icons/fa';
 import Layout from '../../components/Layout';
@@ -12,8 +12,6 @@ const ProfilePage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ data }) => {
   const router = useRouter();
-
-  console.log({ data });
 
   const handleClickEdit = () => {
     router.push('/settings/profile');
@@ -33,7 +31,7 @@ const ProfilePage: React.FC<
       <Box
         display="flex"
         width="30%"
-        justifyContent="space-between"
+        justifyContent="space-around"
         marginTop="20px"
       >
         {data.getProfile.twitterUserName &&
