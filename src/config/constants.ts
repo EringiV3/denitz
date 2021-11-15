@@ -5,3 +5,6 @@ export const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE ?? '';
 export const GRAPHQL_END_POINT = process.env.GRAPHQL_END_POINT ?? '';
 export const MEDIA_HOST =
   'https://denitz-media-dev.s3.ap-northeast-1.amazonaws.com';
+
+export const TWITTER_URL = 'https://twitter.com';
+export const INSTAGRAM_URL = 'https://www.instagram.com';
