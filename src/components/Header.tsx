@@ -1,8 +1,26 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Avatar, Box, Heading, useDisclosure } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import {
+  FaCog,
+  FaPlus,
+  FaRegFileImage,
+  FaSignOutAlt,
+  FaUserCircle,
+  FaUserEdit,
+} from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
-import DrawerMenu from './Drawer';
 import LoginButton from './LoginButton';
 
 const Header: React.FC = () => {
@@ -10,8 +28,8 @@ const Header: React.FC = () => {
   const { data } = useQuery(['currentUser'], () => client.GetCurrentUser(), {
     enabled: hasToken,
   });
-  const { isAuthenticated } = useAuth0();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isAuthenticated, logout, isLoading } = useAuth0();
+  const router = useRouter();
 
   return (
     <>
@@ -26,29 +44,72 @@ const Header: React.FC = () => {
             Denitz
           </Heading>
           <Box>
-            {isAuthenticated ? (
-              <Avatar
-                src={data?.getCurrentUser?.profile?.iconImageUrl ?? undefined}
-                size="sm"
-                margin="10px"
-                cursor="pointer"
-                onClick={onOpen}
-              />
+            {isLoading ? (
+              <Avatar size="sm" margin="10px" />
+            ) : isAuthenticated ? (
+              <Menu>
+                <MenuButton>
+                  <Avatar
+                    src={
+                      data?.getCurrentUser?.profile?.iconImageUrl ?? undefined
+                    }
+                    size="sm"
+                    margin="10px"
+                  />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    icon={<FaUserCircle size="15px" />}
+                    onClick={() =>
+                      router.push(`/${data?.getCurrentUser?.accountId}`)
+                    }
+                  >
+                    <Box>{data?.getCurrentUser?.profile?.name}</Box>
+                  </MenuItem>
+                  <MenuGroup title="AddNew">
+                    <MenuItem
+                      icon={<FaPlus size="15px" />}
+                      onClick={() => router.push('/addNew/denim')}
+                    >
+                      デニム追加
+                    </MenuItem>
+                    <MenuItem
+                      icon={<FaRegFileImage size="15px" />}
+                      onClick={() => router.push('/addNew/denimReport')}
+                    >
+                      色落ち記録作成
+                    </MenuItem>
+                  </MenuGroup>
+                  <MenuDivider />
+                  <MenuGroup title="設定">
+                    <MenuItem
+                      icon={<FaUserEdit size="15px" />}
+                      onClick={() => router.push('/settings/profile')}
+                    >
+                      プロフィール設定
+                    </MenuItem>
+                    <MenuItem
+                      icon={<FaCog size="15px" />}
+                      onClick={() => router.push('/settings/account')}
+                    >
+                      アカウント設定
+                    </MenuItem>
+                  </MenuGroup>
+                  <MenuDivider />
+                  <MenuItem
+                    icon={<FaSignOutAlt size="15px" />}
+                    onClick={() => logout({ returnTo: window.location.origin })}
+                  >
+                    ログアウト
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             ) : (
               <LoginButton />
             )}
           </Box>
         </Box>
       </header>
-      <DrawerMenu
-        isOpen={isOpen}
-        onClose={onClose}
-        currentUserInfo={{
-          accountId: data?.getCurrentUser?.accountId ?? '',
-          iconImageUrl: data?.getCurrentUser?.profile?.iconImageUrl ?? '',
-          name: data?.getCurrentUser?.profile?.name ?? '',
-        }}
-      />
     </>
   );
 };

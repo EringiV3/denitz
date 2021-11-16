@@ -1,5 +1,5 @@
 import { Spinner, useToast } from '@chakra-ui/react';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
@@ -52,7 +52,7 @@ const Callback: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  return <Spinner />;
+  return <Spinner position="fixed" inset="0" margin="auto" />;
 };
 
 export default Callback;
