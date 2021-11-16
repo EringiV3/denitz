@@ -263,7 +263,9 @@ const ProfileForm: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <Box display="flex" justifyContent="center" marginTop="40px">
-          <Button type="submit">保存する</Button>
+          <Button type="submit" isLoading={updateProfileMutation.isLoading}>
+            保存する
+          </Button>
         </Box>
       </form>
       {imageUrl && (

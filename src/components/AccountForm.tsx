@@ -95,12 +95,29 @@ const AccountForm: React.FC = () => {
               value: 40,
               message: '40文字以内で入力してください',
             },
+            pattern: {
+              value: /^[A-Za-z0-9_-]+$/,
+              message: '使用不可能な文字が含まれています',
+            },
+            validate: {
+              isAvailableId: async (value) => {
+                const res = await fetch('/unavailableAccountIds.json');
+                const unavailableAccountIds: string[] = await res.json();
+                const isValid = !unavailableAccountIds.includes(value);
+                return isValid || 'このIDは使用できません';
+              },
+            },
           })}
         />
+        <FormHelperText>
+          IDには半角英数字、ハイフン、アンダースコアのみ使用可能です。
+        </FormHelperText>
         <FormHelperText color="red">{errors.accountId?.message}</FormHelperText>
       </FormControl>
       <Box display="flex" justifyContent="center" marginTop="40px">
-        <Button type="submit">保存する</Button>
+        <Button type="submit" isLoading={updateUserMutation.isLoading}>
+          保存する
+        </Button>
       </Box>
     </form>
   );
