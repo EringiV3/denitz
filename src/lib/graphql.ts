@@ -148,6 +148,7 @@ export type Query = {
   getDenim: Denim;
   getDenimReport: DenimReport;
   getProfile: Profile;
+  isAvailableAccountId?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -163,6 +164,11 @@ export type QueryGetDenimReportArgs = {
 
 export type QueryGetProfileArgs = {
   accountId: Scalars['String'];
+};
+
+
+export type QueryIsAvailableAccountIdArgs = {
+  value: Scalars['String'];
 };
 
 export type S3SignedUrlInput = {
@@ -228,6 +234,13 @@ export type GetProfileQueryVariables = Exact<{
 
 
 export type GetProfileQuery = { __typename?: 'Query', getProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUserName?: string | null | undefined, description?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
+export type IsAvailableAccountIdQueryVariables = Exact<{
+  value: Scalars['String'];
+}>;
+
+
+export type IsAvailableAccountIdQuery = { __typename?: 'Query', isAvailableAccountId?: boolean | null | undefined };
 
 
 export const CreateS3SignedUrlDocument = gql`
@@ -304,6 +317,11 @@ export const GetProfileDocument = gql`
   }
 }
     `;
+export const IsAvailableAccountIdDocument = gql`
+    query IsAvailableAccountId($value: String!) {
+  isAvailableAccountId(value: $value)
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -329,6 +347,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetProfile(variables: GetProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfileQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProfileQuery>(GetProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetProfile');
+    },
+    IsAvailableAccountId(variables: IsAvailableAccountIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<IsAvailableAccountIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<IsAvailableAccountIdQuery>(IsAvailableAccountIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'IsAvailableAccountId');
     }
   };
 }

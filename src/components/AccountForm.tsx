@@ -21,6 +21,7 @@ const AccountForm: React.FC = () => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<Form>({ mode: 'onBlur', reValidateMode: 'onChange' });
 
@@ -36,6 +37,12 @@ const AccountForm: React.FC = () => {
     {
       enabled: hasToken,
     }
+  );
+
+  const { refetch } = useQuery(
+    ['isAvailableAccountId'],
+    () => client.IsAvailableAccountId({ value: getValues('accountId') }),
+    { enabled: false }
   );
 
   const updateUserMutation = useMutation(
@@ -101,9 +108,15 @@ const AccountForm: React.FC = () => {
             },
             validate: {
               isAvailableId: async (value) => {
+                if (value === currentUserData?.getCurrentUser?.accountId) {
+                  return true;
+                }
                 const res = await fetch('/unavailableAccountIds.json');
                 const unavailableAccountIds: string[] = await res.json();
-                const isValid = !unavailableAccountIds.includes(value);
+                const { data } = await refetch();
+                const isValid =
+                  !unavailableAccountIds.includes(value) &&
+                  data?.isAvailableAccountId;
                 return isValid || 'このIDは使用できません';
               },
             },
