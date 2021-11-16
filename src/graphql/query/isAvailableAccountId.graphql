@@ -1,0 +1,3 @@
+query IsAvailableAccountId($value: String!) {
+  isAvailableAccountId(value: $value)
+}

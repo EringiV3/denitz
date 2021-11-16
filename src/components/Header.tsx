@@ -64,7 +64,7 @@ const Header: React.FC = () => {
                       router.push(`/${data?.getCurrentUser?.accountId}`)
                     }
                   >
-                    <Box>{data?.getCurrentUser?.profile?.name}</Box>
+                    プロフィール
                   </MenuItem>
                   <MenuGroup title="AddNew">
                     <MenuItem

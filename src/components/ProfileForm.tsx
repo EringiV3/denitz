@@ -34,7 +34,7 @@ const ProfileForm: React.FC = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<Form>({ mode: 'onBlur', reValidateMode: 'onChange' });
 
   const { client, hasToken } = useGraphqlClient();
@@ -75,6 +75,15 @@ const ProfileForm: React.FC = () => {
           'profile',
           data?.getCurrentUser?.accountId,
         ]);
+      },
+      onError: () => {
+        toast({
+          title: 'エラーが発生しました',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        });
       },
     }
   );
@@ -254,7 +263,7 @@ const ProfileForm: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <Box display="flex" justifyContent="center" marginTop="40px">
-          <Button type="submit" disabled={!isValid}>
+          <Button type="submit" isLoading={updateProfileMutation.isLoading}>
             保存する
           </Button>
         </Box>
@@ -264,7 +273,7 @@ const ProfileForm: React.FC = () => {
           isOpen={isOpenImageCropModal}
           onClose={closeImageCropModal}
           imageUrl={imageUrl}
-          outputImageMaxWidth={500}
+          outputImageMaxWidth={150}
           setCroppedImageBlob={setCroppedImageBlob}
         />
       )}
