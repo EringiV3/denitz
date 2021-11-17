@@ -1,0 +1,10 @@
+mutation CreateDenim($input: DenimInput!) {
+  createDenim(input: $input) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}

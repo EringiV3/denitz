@@ -1,0 +1,27 @@
+query GetUser($accountId: String!) {
+  getUser(accountId: $accountId) {
+    id
+    accountId
+    profile {
+      id
+      name
+      iconImageUrl
+      description
+      twitterUserName
+      instagramUserName
+      websiteUrl
+      updatedAt
+      createdAt
+    }
+    createdAt
+    updatedAt
+    denims {
+      id
+      name
+      description
+      imageUrl
+      createdAt
+      updatedAt
+    }
+  }
+}

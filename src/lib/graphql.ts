@@ -148,6 +148,7 @@ export type Query = {
   getDenim: Denim;
   getDenimReport: DenimReport;
   getProfile: Profile;
+  getUser?: Maybe<User>;
   isAvailableAccountId?: Maybe<Scalars['Boolean']>;
 };
 
@@ -163,6 +164,11 @@ export type QueryGetDenimReportArgs = {
 
 
 export type QueryGetProfileArgs = {
+  accountId: Scalars['String'];
+};
+
+
+export type QueryGetUserArgs = {
   accountId: Scalars['String'];
 };
 
@@ -185,7 +191,7 @@ export type User = {
   __typename?: 'User';
   accountId: Scalars['String'];
   createdAt?: Maybe<Scalars['Date']>;
-  denim?: Maybe<Array<Maybe<Denim>>>;
+  denims?: Maybe<Array<Maybe<Denim>>>;
   id: Scalars['String'];
   profile?: Maybe<Profile>;
   updatedAt?: Maybe<Scalars['Date']>;
@@ -194,6 +200,13 @@ export type User = {
 export type UserInput = {
   accountId: Scalars['String'];
 };
+
+export type CreateDenimMutationVariables = Exact<{
+  input: DenimInput;
+}>;
+
+
+export type CreateDenimMutation = { __typename?: 'Mutation', createDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
 export type CreateS3SignedUrlMutationVariables = Exact<{
   input: S3SignedUrlInput;
@@ -235,6 +248,13 @@ export type GetProfileQueryVariables = Exact<{
 
 export type GetProfileQuery = { __typename?: 'Query', getProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUserName?: string | null | undefined, description?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
 
+export type GetUserQueryVariables = Exact<{
+  accountId: Scalars['String'];
+}>;
+
+
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, description?: string | null | undefined, twitterUserName?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, updatedAt?: any | null | undefined, createdAt?: any | null | undefined } | null | undefined, denims?: Array<{ __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined> | null | undefined } | null | undefined };
+
 export type IsAvailableAccountIdQueryVariables = Exact<{
   value: Scalars['String'];
 }>;
@@ -243,6 +263,18 @@ export type IsAvailableAccountIdQueryVariables = Exact<{
 export type IsAvailableAccountIdQuery = { __typename?: 'Query', isAvailableAccountId?: boolean | null | undefined };
 
 
+export const CreateDenimDocument = gql`
+    mutation CreateDenim($input: DenimInput!) {
+  createDenim(input: $input) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
+    `;
 export const CreateS3SignedUrlDocument = gql`
     mutation CreateS3SignedUrl($input: S3SignedUrlInput!) {
   createS3SignedUrl(input: $input) {
@@ -317,6 +349,35 @@ export const GetProfileDocument = gql`
   }
 }
     `;
+export const GetUserDocument = gql`
+    query GetUser($accountId: String!) {
+  getUser(accountId: $accountId) {
+    id
+    accountId
+    profile {
+      id
+      name
+      iconImageUrl
+      description
+      twitterUserName
+      instagramUserName
+      websiteUrl
+      updatedAt
+      createdAt
+    }
+    createdAt
+    updatedAt
+    denims {
+      id
+      name
+      description
+      imageUrl
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
 export const IsAvailableAccountIdDocument = gql`
     query IsAvailableAccountId($value: String!) {
   isAvailableAccountId(value: $value)
@@ -330,6 +391,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    CreateDenim(variables: CreateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDenimMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateDenimMutation>(CreateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateDenim');
+    },
     CreateS3SignedUrl(variables: CreateS3SignedUrlMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateS3SignedUrlMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateS3SignedUrlMutation>(CreateS3SignedUrlDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateS3SignedUrl');
     },
@@ -347,6 +411,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetProfile(variables: GetProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfileQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProfileQuery>(GetProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetProfile');
+    },
+    GetUser(variables: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUser');
     },
     IsAvailableAccountId(variables: IsAvailableAccountIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<IsAvailableAccountIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<IsAvailableAccountIdQuery>(IsAvailableAccountIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'IsAvailableAccountId');
