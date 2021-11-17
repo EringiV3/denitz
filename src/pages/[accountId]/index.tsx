@@ -3,6 +3,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaInstagram, FaLink, FaTwitter } from 'react-icons/fa';
+import DenimCard from '../../components/DenimCard';
 import Layout from '../../components/Layout';
 import { INSTAGRAM_URL, TWITTER_URL } from '../../config/constants';
 import { GetUserQuery } from '../../lib/graphql';
@@ -16,8 +17,6 @@ const ProfilePage: React.FC<
   const handleClickEdit = () => {
     router.push('/settings/profile');
   };
-
-  console.log({ data });
 
   return (
     <Layout>
@@ -65,6 +64,21 @@ const ProfilePage: React.FC<
           )}
       </Box>
       <Divider marginTop="20px" />
+      <Box marginTop="20px">
+        <Heading size="md">デニム一覧</Heading>
+        {data.getUser?.denims?.map(
+          (denim) =>
+            denim && (
+              <Box marginTop="20px">
+                <DenimCard
+                  key={denim?.id}
+                  denim={denim}
+                  accountId={data.getUser?.accountId ?? ''}
+                />
+              </Box>
+            )
+        )}
+      </Box>
     </Layout>
   );
 };

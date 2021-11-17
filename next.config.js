@@ -8,4 +8,7 @@ module.exports = {
     AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
     GRAPHQL_END_POINT: process.env.GRAPHQL_END_POINT,
   },
+  images: {
+    domains: ['denitz-media-dev.s3.ap-northeast-1.amazonaws.com'],
+  },
 };
