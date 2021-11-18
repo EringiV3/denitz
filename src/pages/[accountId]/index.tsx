@@ -21,9 +21,8 @@ const ProfilePage: React.FC<
         {data.getUser?.denims?.map(
           (denim) =>
             denim && (
-              <Box marginTop="20px">
+              <Box marginTop="20px" key={denim?.id}>
                 <DenimCard
-                  key={denim?.id}
                   denim={denim}
                   accountId={data.getUser?.accountId ?? ''}
                 />
