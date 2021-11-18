@@ -7,5 +7,9 @@ module.exports = {
     AUTH0_REDIRECT_URI: process.env.AUTH0_REDIRECT_URI,
     AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
     GRAPHQL_END_POINT: process.env.GRAPHQL_END_POINT,
+    MEDIA_HOST: process.env.MEDIA_HOST,
+  },
+  images: {
+    domains: process.env.NEXT_IMAGE_DOMAINS.split(','),
   },
 };

@@ -19,7 +19,7 @@ export type Scalars = {
 export type Denim = {
   __typename?: 'Denim';
   createdAt?: Maybe<Scalars['Date']>;
-  denimReports?: Maybe<Array<Maybe<DenimReport>>>;
+  denimReports?: Maybe<Array<DenimReport>>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
@@ -40,7 +40,7 @@ export type DenimReport = {
   createdAt?: Maybe<Scalars['Date']>;
   denim?: Maybe<Denim>;
   description?: Maybe<Scalars['String']>;
-  detailImageUrl?: Maybe<Array<Maybe<Scalars['String']>>>;
+  detailImageUrl?: Maybe<Array<Scalars['String']>>;
   frontImageUrl?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   title?: Maybe<Scalars['String']>;
@@ -145,9 +145,10 @@ export type ProfileInput = {
 export type Query = {
   __typename?: 'Query';
   getCurrentUser?: Maybe<User>;
-  getDenim: Denim;
+  getDenim?: Maybe<Denim>;
   getDenimReport: DenimReport;
   getProfile: Profile;
+  getUser?: Maybe<User>;
   isAvailableAccountId?: Maybe<Scalars['Boolean']>;
 };
 
@@ -163,6 +164,11 @@ export type QueryGetDenimReportArgs = {
 
 
 export type QueryGetProfileArgs = {
+  accountId: Scalars['String'];
+};
+
+
+export type QueryGetUserArgs = {
   accountId: Scalars['String'];
 };
 
@@ -185,7 +191,7 @@ export type User = {
   __typename?: 'User';
   accountId: Scalars['String'];
   createdAt?: Maybe<Scalars['Date']>;
-  denim?: Maybe<Array<Maybe<Denim>>>;
+  denims?: Maybe<Array<Denim>>;
   id: Scalars['String'];
   profile?: Maybe<Profile>;
   updatedAt?: Maybe<Scalars['Date']>;
@@ -194,6 +200,13 @@ export type User = {
 export type UserInput = {
   accountId: Scalars['String'];
 };
+
+export type CreateDenimMutationVariables = Exact<{
+  input: DenimInput;
+}>;
+
+
+export type CreateDenimMutation = { __typename?: 'Mutation', createDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
 export type CreateS3SignedUrlMutationVariables = Exact<{
   input: S3SignedUrlInput;
@@ -206,6 +219,21 @@ export type CreateUserAccountMutationVariables = Exact<{ [key: string]: never; }
 
 
 export type CreateUserAccountMutation = { __typename?: 'Mutation', createUserAccount: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
+export type DeleteDenimMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteDenimMutation = { __typename?: 'Mutation', deleteDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
+export type UpdateDenimMutationVariables = Exact<{
+  id: Scalars['String'];
+  input: DenimInput;
+}>;
+
+
+export type UpdateDenimMutation = { __typename?: 'Mutation', updateDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
 export type UpdateProfileMutationVariables = Exact<{
   updateProfileId: Scalars['String'];
@@ -228,12 +256,26 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined } | null | undefined } | null | undefined };
 
+export type GetDenimQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrl?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, iconImageUrl?: string | null | undefined, name?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+
 export type GetProfileQueryVariables = Exact<{
   accountId: Scalars['String'];
 }>;
 
 
 export type GetProfileQuery = { __typename?: 'Query', getProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUserName?: string | null | undefined, description?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
+export type GetUserQueryVariables = Exact<{
+  accountId: Scalars['String'];
+}>;
+
+
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, description?: string | null | undefined, twitterUserName?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, updatedAt?: any | null | undefined, createdAt?: any | null | undefined } | null | undefined, denims?: Array<{ __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined };
 
 export type IsAvailableAccountIdQueryVariables = Exact<{
   value: Scalars['String'];
@@ -243,6 +285,18 @@ export type IsAvailableAccountIdQueryVariables = Exact<{
 export type IsAvailableAccountIdQuery = { __typename?: 'Query', isAvailableAccountId?: boolean | null | undefined };
 
 
+export const CreateDenimDocument = gql`
+    mutation CreateDenim($input: DenimInput!) {
+  createDenim(input: $input) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
+    `;
 export const CreateS3SignedUrlDocument = gql`
     mutation CreateS3SignedUrl($input: S3SignedUrlInput!) {
   createS3SignedUrl(input: $input) {
@@ -256,6 +310,30 @@ export const CreateUserAccountDocument = gql`
   createUserAccount {
     id
     accountId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteDenimDocument = gql`
+    mutation DeleteDenim($id: String!) {
+  deleteDenim(id: $id) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateDenimDocument = gql`
+    mutation UpdateDenim($id: String!, $input: DenimInput!) {
+  updateDenim(id: $id, input: $input) {
+    id
+    name
+    description
+    imageUrl
     createdAt
     updatedAt
   }
@@ -296,6 +374,37 @@ export const GetCurrentUserDocument = gql`
   }
 }
     `;
+export const GetDenimDocument = gql`
+    query GetDenim($id: String!) {
+  getDenim(id: $id) {
+    id
+    name
+    description
+    imageUrl
+    denimReports {
+      id
+      title
+      description
+      frontImageUrl
+      backImageUrl
+      detailImageUrl
+      createdAt
+      updatedAt
+    }
+    user {
+      id
+      accountId
+      profile {
+        id
+        iconImageUrl
+        name
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
 export const GetProfileDocument = gql`
     query GetProfile($accountId: String!) {
   getProfile(accountId: $accountId) {
@@ -317,6 +426,35 @@ export const GetProfileDocument = gql`
   }
 }
     `;
+export const GetUserDocument = gql`
+    query GetUser($accountId: String!) {
+  getUser(accountId: $accountId) {
+    id
+    accountId
+    profile {
+      id
+      name
+      iconImageUrl
+      description
+      twitterUserName
+      instagramUserName
+      websiteUrl
+      updatedAt
+      createdAt
+    }
+    createdAt
+    updatedAt
+    denims {
+      id
+      name
+      description
+      imageUrl
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
 export const IsAvailableAccountIdDocument = gql`
     query IsAvailableAccountId($value: String!) {
   isAvailableAccountId(value: $value)
@@ -330,11 +468,20 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    CreateDenim(variables: CreateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDenimMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateDenimMutation>(CreateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateDenim');
+    },
     CreateS3SignedUrl(variables: CreateS3SignedUrlMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateS3SignedUrlMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateS3SignedUrlMutation>(CreateS3SignedUrlDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateS3SignedUrl');
     },
     CreateUserAccount(variables?: CreateUserAccountMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserAccountMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateUserAccountMutation>(CreateUserAccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUserAccount');
+    },
+    DeleteDenim(variables: DeleteDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDenimMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteDenimMutation>(DeleteDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteDenim');
+    },
+    UpdateDenim(variables: UpdateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimMutation>(UpdateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenim');
     },
     UpdateProfile(variables: UpdateProfileMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProfileMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileMutation>(UpdateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProfile');
@@ -345,8 +492,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetCurrentUser(variables?: GetCurrentUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCurrentUserQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCurrentUserQuery>(GetCurrentUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetCurrentUser');
     },
+    GetDenim(variables: GetDenimQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDenimQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDenimQuery>(GetDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetDenim');
+    },
     GetProfile(variables: GetProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfileQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProfileQuery>(GetProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetProfile');
+    },
+    GetUser(variables: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUser');
     },
     IsAvailableAccountId(variables: IsAvailableAccountIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<IsAvailableAccountIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<IsAvailableAccountIdQuery>(IsAvailableAccountIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'IsAvailableAccountId');

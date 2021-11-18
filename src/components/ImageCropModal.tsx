@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -23,6 +24,11 @@ type Props = {
   imageUrl: string;
   outputImageMaxWidth: number;
   setCroppedImageBlob: React.Dispatch<React.SetStateAction<Blob | null>>;
+  cropShape?: 'rect' | 'round';
+  aspects: {
+    name: string;
+    value: number;
+  }[];
 };
 const ImageCropModal: React.FC<Props> = ({
   isOpen,
@@ -30,8 +36,10 @@ const ImageCropModal: React.FC<Props> = ({
   imageUrl,
   outputImageMaxWidth,
   setCroppedImageBlob,
+  cropShape = 'round',
+  aspects,
 }) => {
-  const aspect = 1;
+  const [aspect, setAspect] = useState(aspects[0].value);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [blob, setBlob] = useState<Blob | null>(null);
@@ -80,7 +88,7 @@ const ImageCropModal: React.FC<Props> = ({
       });
       setBlob(blob);
     },
-    [imageUrl, outputImageMaxWidth]
+    [aspect, imageUrl, outputImageMaxWidth]
   );
 
   const handleClickCrop = () => {
@@ -95,7 +103,7 @@ const ImageCropModal: React.FC<Props> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Modal Title</ModalHeader>
+        <ModalHeader>画像リサイズ</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box height="300px" position="relative">
@@ -105,13 +113,29 @@ const ImageCropModal: React.FC<Props> = ({
               zoom={zoom}
               aspect={aspect}
               showGrid={false}
-              cropShape="round"
+              cropShape={cropShape}
               onCropChange={setCrop}
               onCropComplete={onCropComplete}
               onZoomChange={setZoom}
             />
           </Box>
-          <Box marginTop="40px">
+          <Box marginTop="20px">
+            <Box fontWeight="bold">アスペクト比</Box>
+            {aspects.length >= 2 && (
+              <ButtonGroup variant="outline" spacing="6" marginTop="10px">
+                {aspects.map((_aspect) => (
+                  <Button
+                    key={_aspect.value}
+                    onClick={() => setAspect(_aspect.value)}
+                    colorScheme={_aspect.value === aspect ? 'blue' : undefined}
+                  >
+                    {_aspect.name}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            )}
+          </Box>
+          <Box marginTop="20px">
             <Slider
               aria-label="image-crop-slider"
               defaultValue={0}

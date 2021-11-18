@@ -28,7 +28,7 @@ type Form = {
   websiteUrl: string;
 };
 const ProfileForm: React.FC = () => {
-  const { upload } = useUploadImage();
+  const { upload, isUploading } = useUploadImage();
 
   const {
     register,
@@ -263,7 +263,10 @@ const ProfileForm: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <Box display="flex" justifyContent="center" marginTop="40px">
-          <Button type="submit" isLoading={updateProfileMutation.isLoading}>
+          <Button
+            type="submit"
+            isLoading={updateProfileMutation.isLoading || isUploading}
+          >
             保存する
           </Button>
         </Box>
@@ -275,6 +278,7 @@ const ProfileForm: React.FC = () => {
           imageUrl={imageUrl}
           outputImageMaxWidth={150}
           setCroppedImageBlob={setCroppedImageBlob}
+          aspects={[{ name: '正方形', value: 1 }]}
         />
       )}
     </>
