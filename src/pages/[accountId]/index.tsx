@@ -1,68 +1,20 @@
-import { Avatar, Box, Button, Divider, Heading, Link } from '@chakra-ui/react';
+import { Box, Divider, Heading } from '@chakra-ui/react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { useRouter } from 'next/router';
 import React from 'react';
-import { FaInstagram, FaLink, FaTwitter } from 'react-icons/fa';
 import DenimCard from '../../components/DenimCard';
 import Layout from '../../components/Layout';
-import { INSTAGRAM_URL, TWITTER_URL } from '../../config/constants';
+import Profile from '../../components/Profile';
 import { GetUserQuery } from '../../lib/graphql';
 import { createGraphqlClient } from '../../lib/graphqlClient';
 
 const ProfilePage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ data }) => {
-  const router = useRouter();
-
-  const handleClickEdit = () => {
-    router.push('/settings/profile');
-  };
-
   return (
     <Layout>
-      <Box marginTop="40px" display="flex" justifyContent="space-between">
-        <Avatar
-          src={data.getUser?.profile?.iconImageUrl ?? undefined}
-          size="xl"
-        />
-        <Button onClick={handleClickEdit}>編集する</Button>
-      </Box>
-      <Box marginTop="10px">
-        <Heading size="lg">{data.getUser?.profile?.name}</Heading>
-        <Box color="gray.600">@{data.getUser?.accountId}</Box>
-      </Box>
-      <Box marginTop="10px">{data.getUser?.profile?.description}</Box>
-      <Box
-        display="flex"
-        width="30%"
-        justifyContent="space-around"
-        marginTop="20px"
-      >
-        {data.getUser?.profile?.twitterUserName &&
-          data.getUser?.profile.twitterUserName !== '' && (
-            <Link
-              isExternal
-              href={`${TWITTER_URL}/${data.getUser?.profile.twitterUserName}`}
-            >
-              <FaTwitter size="25px" />
-            </Link>
-          )}
-        {data.getUser?.profile?.instagramUserName &&
-          data.getUser?.profile.instagramUserName !== '' && (
-            <Link
-              isExternal
-              href={`${INSTAGRAM_URL}/${data.getUser?.profile.instagramUserName}`}
-            >
-              <FaInstagram size="25px" />
-            </Link>
-          )}
-        {data.getUser?.profile?.websiteUrl &&
-          data.getUser?.profile.websiteUrl !== '' && (
-            <Link isExternal href={data.getUser?.profile.websiteUrl}>
-              <FaLink size="25px" />
-            </Link>
-          )}
-      </Box>
+      {data.getUser && data.getUser.profile && (
+        <Profile user={data.getUser} profile={data.getUser.profile} />
+      )}
       <Divider marginTop="20px" />
       <Box marginTop="20px">
         <Heading size="md">デニム一覧</Heading>
