@@ -8,7 +8,6 @@ type Props = {
   denim: Denim;
 };
 const DenimCard: React.FC<Props> = ({ denim, accountId }) => {
-  console.log({ denim });
   return (
     <LinkBox
       display="flex"

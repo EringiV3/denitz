@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import React from 'react';
 import DenimDetail from '../../../../components/DenimDetail';
@@ -9,7 +10,13 @@ const DenimDetailPage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ data }) => {
   return (
-    <Layout>{data.getDenim && <DenimDetail denim={data.getDenim} />}</Layout>
+    <Layout>
+      {data.getDenim && (
+        <Box marginTop="40px">
+          <DenimDetail denim={data.getDenim} />
+        </Box>
+      )}
+    </Layout>
   );
 };
 

@@ -1,7 +1,9 @@
 import {
+  Avatar,
   Box,
   Button,
   Heading,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -9,6 +11,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import NextImage from 'next/image';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaAngleDown, FaEdit, FaTrashAlt } from 'react-icons/fa';
@@ -78,28 +81,43 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
     );
   };
 
+  const isEditable =
+    denim.user?.accountId === currentUserData?.getCurrentUser?.accountId;
+
   return (
-    <>
-      <Box marginTop="40px" display="flex" justifyContent="flex-end">
-        <Menu>
-          <MenuButton as={Button} rightIcon={<FaAngleDown />}>
-            Actions
-          </MenuButton>
-          <MenuList>
-            <MenuItem icon={<FaEdit size="15px" />} onClick={handleClickEdit}>
-              編集
-            </MenuItem>
-            <MenuItem
-              icon={<FaTrashAlt size="15px" />}
-              onClick={handleClickDelete}
-            >
-              <Box color="red">削除</Box>
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </Box>
+    <Box>
+      {isEditable && (
+        <Box display="flex" justifyContent="flex-end">
+          <Menu>
+            <MenuButton as={Button} rightIcon={<FaAngleDown />}>
+              Actions
+            </MenuButton>
+            <MenuList>
+              <MenuItem icon={<FaEdit size="15px" />} onClick={handleClickEdit}>
+                編集
+              </MenuItem>
+              <MenuItem
+                icon={<FaTrashAlt size="15px" />}
+                onClick={handleClickDelete}
+              >
+                <Box color="red">削除</Box>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+      )}
       <Box>
-        <Heading size="lg">{denim.name}</Heading>
+        <Heading size="2xl">{denim.name}</Heading>
+        <Box display="flex" marginTop="10px" alignItems="center">
+          <NextLink href={`/${denim.user?.accountId}`} passHref>
+            <Link>
+              <Avatar src={denim.user?.profile?.iconImageUrl ?? ''} size="sm" />
+            </Link>
+          </NextLink>
+          <NextLink href={`/${denim.user?.accountId}`} passHref>
+            <Link marginLeft="10px">{denim.user?.profile?.name ?? ''} </Link>
+          </NextLink>
+        </Box>
         <Box display="flex" justifyContent="center" marginTop="40px">
           <NextImage
             src={denim.imageUrl ?? ''}
@@ -113,7 +131,7 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
           色落ち記録
         </Heading>
       </Box>
-    </>
+    </Box>
   );
 };
 

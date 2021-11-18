@@ -261,7 +261,7 @@ export type GetDenimQueryVariables = Exact<{
 }>;
 
 
-export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrl?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined };
+export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrl?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, iconImageUrl?: string | null | undefined, name?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type GetProfileQueryVariables = Exact<{
   accountId: Scalars['String'];
@@ -390,6 +390,15 @@ export const GetDenimDocument = gql`
       detailImageUrl
       createdAt
       updatedAt
+    }
+    user {
+      id
+      accountId
+      profile {
+        id
+        iconImageUrl
+        name
+      }
     }
     createdAt
     updatedAt
