@@ -11,71 +11,50 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import NextImage from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import ImageCropModal from '../components/ImageCropModal';
-import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { useUploadImage } from '../hooks/useUploadImage';
-import { DenimInput } from '../lib/graphql';
 import { readFile } from '../utils/image';
 
 type Form = {
   name: string;
   description: string;
-  imageUrl: string;
 };
-const DenimForm: React.FC = () => {
-  const { upload, isUploading } = useUploadImage();
 
-  const router = useRouter();
+type Props = {
+  initialValues?: { name: string; description: string; imageUrl: string };
+  executeMutation: (data: Form & { imageUrl: string }) => void;
+  isLoadingMutationResult: boolean;
+};
+
+const DenimForm: React.FC<Props> = ({
+  initialValues,
+  executeMutation,
+  isLoadingMutationResult,
+}) => {
+  const { upload, isUploading } = useUploadImage();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Form>({ mode: 'onBlur', reValidateMode: 'onChange' });
-
-  const { client, hasToken } = useGraphqlClient();
-
-  const reactQueryClient = useQueryClient();
+  } = useForm<Form>({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      name: initialValues?.name ?? '',
+      description: initialValues?.description ?? '',
+    },
+  });
 
   const toast = useToast();
 
-  const { data } = useQuery(['currentUser'], () => client.GetCurrentUser(), {
-    enabled: hasToken,
-  });
-
-  const createDenimMutation = useMutation(
-    (input: DenimInput) => client.CreateDenim({ input }),
-    {
-      onSuccess: () => {
-        toast({
-          title: 'デニムを追加しました',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        });
-        reactQueryClient.invalidateQueries(['denims']);
-        router.push(`/${data?.getCurrentUser?.accountId}`);
-      },
-      onError: () => {
-        toast({
-          title: 'エラーが発生しました',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        });
-      },
-    }
-  );
-
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    let imageUrl: string | undefined;
-    if (croppedImageBlob === null) {
+    let imageUrl: string | null;
+
+    // 新規作成時
+    if (initialValues?.imageUrl === undefined && croppedImageBlob === null) {
       toast({
         title: '画像を設定してください',
         status: 'error',
@@ -85,8 +64,16 @@ const DenimForm: React.FC = () => {
       });
       return;
     }
+
     try {
-      imageUrl = await upload(croppedImageBlob);
+      imageUrl = croppedImageBlob
+        ? await upload(croppedImageBlob)
+        : initialValues
+        ? initialValues.imageUrl
+        : null;
+      if (imageUrl === null) {
+        throw new Error('Invalid imageUrl.');
+      }
     } catch (error) {
       console.error(error);
       toast({
@@ -98,11 +85,7 @@ const DenimForm: React.FC = () => {
       });
       return;
     }
-    createDenimMutation.mutate({
-      name: data.name,
-      description: data.description,
-      imageUrl,
-    });
+    executeMutation({ ...data, imageUrl });
   };
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -138,7 +121,7 @@ const DenimForm: React.FC = () => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
-          {croppedImagePreviewUrl && (
+          {(croppedImagePreviewUrl !== null || initialValues !== undefined) && (
             <Box
               display="flex"
               justifyContent="center"
@@ -146,13 +129,14 @@ const DenimForm: React.FC = () => {
               width="100%"
               height="200px"
             >
-              {/* <Image
-                src={croppedImagePreviewUrl}
-                alt="denim"
-                objectFit="cover"
-              /> */}
               <NextImage
-                src={croppedImagePreviewUrl}
+                src={
+                  croppedImagePreviewUrl
+                    ? croppedImagePreviewUrl
+                    : initialValues
+                    ? initialValues.imageUrl
+                    : ''
+                }
                 layout="fill"
                 objectFit="contain"
               />
@@ -193,7 +177,7 @@ const DenimForm: React.FC = () => {
         <Box display="flex" justifyContent="center" marginTop="40px">
           <Button
             type="submit"
-            isLoading={createDenimMutation.isLoading || isUploading}
+            isLoading={isLoadingMutationResult || isUploading}
           >
             送信する
           </Button>

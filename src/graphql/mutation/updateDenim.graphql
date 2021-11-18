@@ -1,0 +1,10 @@
+mutation UpdateDenim($id: String!, $input: DenimInput!) {
+  updateDenim(id: $id, input: $input) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
