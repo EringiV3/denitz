@@ -10,7 +10,12 @@ type Props = {
 const DenimCard: React.FC<Props> = ({ denim, accountId }) => {
   console.log({ denim });
   return (
-    <LinkBox display="flex" backgroundColor="gray.200">
+    <LinkBox
+      display="flex"
+      backgroundColor="gray.200"
+      borderRadius="15px"
+      overflow="hidden"
+    >
       <Box width="30%" display="flex">
         <NextImage
           src={denim.imageUrl ?? ''}
@@ -19,7 +24,7 @@ const DenimCard: React.FC<Props> = ({ denim, accountId }) => {
           objectFit="contain"
         />
       </Box>
-      <Box padding="20px">
+      <Box padding="20px" flex="1">
         <NextLink href={`/${accountId}/denims/${denim.id}`} passHref>
           <LinkOverlay>
             <Heading size="md">{denim.name}</Heading>
