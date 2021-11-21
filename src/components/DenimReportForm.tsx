@@ -1,11 +1,12 @@
-import { Box, Button, Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import Stepper from '../components/Stepper';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
+import SelectDenimStep from './SelectDenimStep';
 
 const steps = [
   {
     title: 'デニム選択',
-    component: <div>デニム選択</div>,
+    component: <SelectDenimStep />,
   },
   {
     title: 'フロント画像選択',
@@ -38,10 +39,6 @@ const DenimReportForm: React.FC = () => {
         {steps[currentStep - 1].title}
       </Heading>
       <Box>{steps[currentStep - 1].component}</Box>
-      <Box>
-        <Button onClick={goToNextStep}>次へ</Button>
-        <Button onClick={backToPreviousStep}>戻る</Button>
-      </Box>
     </>
   );
 };

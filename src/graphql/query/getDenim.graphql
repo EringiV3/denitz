@@ -10,7 +10,7 @@ query GetDenim($id: String!) {
       description
       frontImageUrl
       backImageUrl
-      detailImageUrl
+      detailImageUrls
       createdAt
       updatedAt
     }

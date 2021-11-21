@@ -4,16 +4,18 @@ import NextLink from 'next/link';
 import type { Denim } from '../lib/graphql';
 
 type Props = {
-  accountId: string;
   denim: Denim;
+  link?: string;
+  showBorder?: boolean;
 };
-const DenimCard: React.FC<Props> = ({ denim, accountId }) => {
+const DenimCard: React.FC<Props> = ({ denim, link, showBorder }) => {
   return (
     <LinkBox
       display="flex"
       backgroundColor="gray.200"
       borderRadius="15px"
       overflow="hidden"
+      border={showBorder ? '3px solid blue' : undefined}
     >
       <Box width="30%" display="flex">
         <NextImage
@@ -24,11 +26,15 @@ const DenimCard: React.FC<Props> = ({ denim, accountId }) => {
         />
       </Box>
       <Box padding="20px" flex="1">
-        <NextLink href={`/${accountId}/denims/${denim.id}`} passHref>
-          <LinkOverlay>
-            <Heading size="md">{denim.name}</Heading>
-          </LinkOverlay>
-        </NextLink>
+        {link ? (
+          <NextLink href={link} passHref>
+            <LinkOverlay>
+              <Heading size="md">{denim.name}</Heading>
+            </LinkOverlay>
+          </NextLink>
+        ) : (
+          <Heading size="md">{denim.name}</Heading>
+        )}
         <Box marginTop="10px">{denim.description}</Box>
       </Box>
     </LinkBox>
