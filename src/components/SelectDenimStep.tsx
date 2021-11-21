@@ -1,17 +1,15 @@
 import { Box, Button, ButtonGroup, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import DenimCard from '../components/DenimCard';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { submitDataState } from '../states/denimReportCreator';
 
 const SelectDenimStep: React.FC = () => {
+  const [submitData, setSubmitData] = useRecoilState(submitDataState);
   const { client, hasToken } = useGraphqlClient();
-  const [selectedDenimId, setSelectedDenimId] = useState<string | null>(null);
   const { goToNextStep } = useDenimReportCreator();
-  const setSubmitData = useSetRecoilState(submitDataState);
   const toast = useToast();
 
   const { data: currentUserData } = useQuery(
@@ -23,11 +21,14 @@ const SelectDenimStep: React.FC = () => {
   );
 
   const handleClickCard = (denimId: string) => {
-    setSelectedDenimId(denimId);
+    setSubmitData((submitData) => ({
+      ...submitData,
+      denimId,
+    }));
   };
 
   const handleClickNext = () => {
-    if (selectedDenimId === null) {
+    if (submitData.denimId === null) {
       toast({
         title: 'デニムを選択してください',
         status: 'error',
@@ -37,10 +38,6 @@ const SelectDenimStep: React.FC = () => {
       });
       return;
     }
-    setSubmitData((submitData) => ({
-      ...submitData,
-      denimId: selectedDenimId,
-    }));
     goToNextStep();
   };
 
@@ -55,7 +52,7 @@ const SelectDenimStep: React.FC = () => {
           >
             <DenimCard
               denim={denim}
-              showBorder={selectedDenimId === denim.id}
+              showBorder={submitData.denimId === denim.id}
             />
           </Box>
         ))}
