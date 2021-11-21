@@ -1,6 +1,8 @@
 import { Box, Heading } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import Stepper from '../components/Stepper';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
+import SelectBackImageStep from './SelectBackImageStep';
 import SelectDenimStep from './SelectDenimStep';
 import SelectFrontImageStep from './SelectFrontImageStep';
 
@@ -15,7 +17,7 @@ const steps = [
   },
   {
     title: 'バック画像選択',
-    component: <div>バック画像選択</div>,
+    component: <SelectBackImageStep />,
   },
   {
     title: 'ディティール画像選択',
@@ -28,7 +30,14 @@ const steps = [
 ];
 
 const DenimReportForm: React.FC = () => {
-  const { currentStep } = useDenimReportCreator();
+  const { currentStep, reset } = useDenimReportCreator();
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

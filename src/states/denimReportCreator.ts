@@ -46,7 +46,7 @@ export const croppedBackImageState = atom<{
   },
 });
 
-export const croppedDetailImagState = atom<
+export const croppedDetailImageState = atom<
   {
     blob: Blob | null;
     previewUrl: string | null;
