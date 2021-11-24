@@ -11,14 +11,14 @@ import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
-import { detailImageState } from '../states/denimReportCreator';
+import { detailImagesState } from '../states/denimReportCreator';
 import { removeItemAtIndex } from '../utils/arrayHelpers';
 import { readFile } from '../utils/image';
 
 const SelectDetailImagesStep: React.FC = () => {
   const toast = useToast();
   const { goToNextStep, backToPreviousStep } = useDenimReportCreator();
-  const [detailImages, setDetailImages] = useRecoilState(detailImageState);
+  const [detailImages, setDetailImages] = useRecoilState(detailImagesState);
 
   const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) {
@@ -61,6 +61,7 @@ const SelectDetailImagesStep: React.FC = () => {
   };
 
   const handleClickSkip = () => {
+    setDetailImages([]);
     goToNextStep();
   };
 

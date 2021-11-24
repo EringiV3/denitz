@@ -24,34 +24,28 @@ export const submitDataState = atom<{
   },
 });
 
-export const croppedFrontImageState = atom<{
-  blob: Blob | null;
-  previewUrl: string | null;
-}>({
-  key: 'DENIM_REPORT_CREATOR/CROPPED_FRONT_IMAGE_BLOB',
-  default: {
-    blob: null,
-    previewUrl: null,
-  },
+export const frontImageState = atom<{
+  blob: Blob;
+  previewUrl: string;
+} | null>({
+  key: 'DENIM_REPORT_CREATOR/FRONT_IMAGE',
+  default: null,
 });
 
-export const croppedBackImageState = atom<{
-  blob: Blob | null;
-  previewUrl: string | null;
-}>({
-  key: 'DENIM_REPORT_CREATOR/CROPPED_BACK_IMAGE_BLOB',
-  default: {
-    blob: null,
-    previewUrl: null,
-  },
+export const backImageState = atom<{
+  blob: Blob;
+  previewUrl: string;
+} | null>({
+  key: 'DENIM_REPORT_CREATOR/BACK_IMAGE',
+  default: null,
 });
 
-export const detailImageState = atom<
+export const detailImagesState = atom<
   {
     blob: Blob;
     previewUrl: string;
   }[]
 >({
-  key: 'DENIM_REPORT_CREATOR/CROPPED_DETAIL_IMAGE_BLOB',
+  key: 'DENIM_REPORT_CREATOR/DETAIL_IMAGES',
   default: [],
 });

@@ -1,33 +1,15 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Link,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Link, useToast } from '@chakra-ui/react';
 import NextImage from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import ImageCropModal from '../components/ImageCropModal';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
-import { croppedFrontImageState } from '../states/denimReportCreator';
+import { frontImageState } from '../states/denimReportCreator';
 import { readFile } from '../utils/image';
 
 const SelectFrontImageStep: React.FC = () => {
   const { goToNextStep, backToPreviousStep } = useDenimReportCreator();
-  const [croppedFrontImage, setCroppedFrontImage] = useRecoilState(
-    croppedFrontImageState
-  );
+  const [frontImage, setFrontImage] = useRecoilState(frontImageState);
   const toast = useToast();
-
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [croppedImageBlob, setCroppedImageBlob] = useState<Blob | null>(null);
-  const {
-    isOpen: isOpenImageCropModal,
-    onClose: closeImageCropModal,
-    onOpen: openImageCropModal,
-  } = useDisclosure();
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -35,26 +17,15 @@ const SelectFrontImageStep: React.FC = () => {
       return;
     }
     readFile(file).then((url) => {
-      setImageUrl(url);
-      openImageCropModal();
+      setFrontImage({
+        previewUrl: url,
+        blob: file,
+      });
     });
   };
 
-  useEffect(() => {
-    if (croppedImageBlob === null) {
-      return;
-    }
-    readFile(croppedImageBlob).then((url) => {
-      setCroppedFrontImage({
-        blob: croppedImageBlob,
-        previewUrl: url,
-      });
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [croppedImageBlob]);
-
   const handleClickNext = () => {
-    if (croppedFrontImage.blob === null) {
+    if (frontImage === null) {
       toast({
         title: '画像を選択してください',
         status: 'error',
@@ -74,22 +45,23 @@ const SelectFrontImageStep: React.FC = () => {
   return (
     <>
       <Box>
-        {croppedFrontImage.previewUrl !== null && (
+        {frontImage && (
           <Box
             display="flex"
             justifyContent="center"
             position="relative"
             width="100%"
             height="200px"
+            marginTop="20px"
           >
             <NextImage
-              src={croppedFrontImage.previewUrl}
+              src={frontImage.previewUrl}
               layout="fill"
               objectFit="contain"
             />
           </Box>
         )}
-        <Box display="flex" justifyContent="center" marginTop="10px">
+        <Box display="flex" justifyContent="center" marginTop="40px">
           <label>
             <Link color="blue.400">画像を選択する</Link>
             <input
@@ -107,21 +79,6 @@ const SelectFrontImageStep: React.FC = () => {
           <Button onClick={handleClickNext}>次へ</Button>
         </ButtonGroup>
       </Box>
-      {imageUrl && (
-        <ImageCropModal
-          isOpen={isOpenImageCropModal}
-          onClose={closeImageCropModal}
-          imageUrl={imageUrl}
-          outputImageMaxWidth={800}
-          setCroppedImageBlob={setCroppedImageBlob}
-          cropShape="rect"
-          aspects={[
-            { name: '正方形', value: 1 },
-            { name: '縦長', value: 9 / 16 },
-            { name: '横長', value: 16 / 9 },
-          ]}
-        />
-      )}
     </>
   );
 };

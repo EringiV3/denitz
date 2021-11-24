@@ -45,7 +45,7 @@ const DenimReportForm: React.FC = () => {
       <Box width="100%" marginTop="20px">
         <Stepper stepCount={steps.length} activeStep={currentStep} />
       </Box>
-      <Heading size="md" marginTop="20px">
+      <Heading size="md" marginTop="40px">
         {steps[currentStep - 1].title}
       </Heading>
       <Box>{steps[currentStep - 1].component}</Box>
