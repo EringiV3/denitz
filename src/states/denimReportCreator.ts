@@ -46,10 +46,10 @@ export const croppedBackImageState = atom<{
   },
 });
 
-export const croppedDetailImageState = atom<
+export const detailImageState = atom<
   {
-    blob: Blob | null;
-    previewUrl: string | null;
+    blob: Blob;
+    previewUrl: string;
   }[]
 >({
   key: 'DENIM_REPORT_CREATOR/CROPPED_DETAIL_IMAGE_BLOB',

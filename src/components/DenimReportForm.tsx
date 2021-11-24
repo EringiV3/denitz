@@ -4,6 +4,7 @@ import Stepper from '../components/Stepper';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import SelectBackImageStep from './SelectBackImageStep';
 import SelectDenimStep from './SelectDenimStep';
+import SelectDetailImagesStep from './SelectDetailImagesStep';
 import SelectFrontImageStep from './SelectFrontImageStep';
 
 const steps = [
@@ -21,7 +22,7 @@ const steps = [
   },
   {
     title: 'ディティール画像選択',
-    component: <div>ディティール画像選択</div>,
+    component: <SelectDetailImagesStep />,
   },
   {
     title: 'タイトル・説明文',
