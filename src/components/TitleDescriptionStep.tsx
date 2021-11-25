@@ -18,9 +18,9 @@ import { useUploadImage } from '../hooks/useUploadImage';
 import { DenimReportInput } from '../lib/graphql';
 import {
   backImageState,
+  denimIdState,
   detailImagesState,
   frontImageState,
-  submitDataState,
 } from '../states/denimReportCreator';
 
 type Form = {
@@ -49,7 +49,7 @@ const TitleDescriptionStep: React.FC = () => {
   const frontImage = useRecoilValue(frontImageState);
   const backImage = useRecoilValue(backImageState);
   const detailImage = useRecoilValue(detailImagesState);
-  const submitData = useRecoilValue(submitDataState);
+  const denimId = useRecoilValue(denimIdState);
 
   const { data: currentUserData } = useQuery(
     ['currentUser'],
@@ -88,7 +88,6 @@ const TitleDescriptionStep: React.FC = () => {
   );
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    const denimId = submitData.denimId;
     if (denimId === null) {
       return;
     }

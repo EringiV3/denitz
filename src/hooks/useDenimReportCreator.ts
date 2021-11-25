@@ -2,15 +2,15 @@ import { useRecoilState, useResetRecoilState } from 'recoil';
 import {
   backImageState,
   currentStepState,
+  denimIdState,
   detailImagesState,
   frontImageState,
-  submitDataState,
 } from '../states/denimReportCreator';
 
 export const useDenimReportCreator = () => {
   const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
   const resetCurrentStep = useResetRecoilState(currentStepState);
-  const resetSubmitData = useResetRecoilState(submitDataState);
+  const resetDenimId = useResetRecoilState(denimIdState);
   const resetFrontImage = useResetRecoilState(frontImageState);
   const resetBackImage = useResetRecoilState(backImageState);
   const resetDetailImage = useResetRecoilState(detailImagesState);
@@ -25,7 +25,7 @@ export const useDenimReportCreator = () => {
 
   const reset = () => {
     resetCurrentStep();
-    resetSubmitData();
+    resetDenimId();
     resetFrontImage();
     resetBackImage();
     resetDetailImage();

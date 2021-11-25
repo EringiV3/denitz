@@ -5,23 +5,9 @@ export const currentStepState = atom({
   default: 1,
 });
 
-export const submitDataState = atom<{
-  denimId: string | null;
-  title: string | null;
-  description: string | null;
-  frontImageUrl: string | null;
-  backImageUrl: string | null;
-  detailImageUrls: string[];
-}>({
-  key: 'DENIM_REPORT_CREATOR/SUBMIT_DATA',
-  default: {
-    denimId: null,
-    title: null,
-    description: null,
-    frontImageUrl: null,
-    backImageUrl: null,
-    detailImageUrls: [],
-  },
+export const denimIdState = atom<string | null>({
+  key: 'DENIM_REPORT_CREATOR/DENIM_ID',
+  default: null,
 });
 
 export const frontImageState = atom<{

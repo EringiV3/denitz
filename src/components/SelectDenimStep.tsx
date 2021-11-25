@@ -4,10 +4,10 @@ import { useRecoilState } from 'recoil';
 import DenimCard from '../components/DenimCard';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
-import { submitDataState } from '../states/denimReportCreator';
+import { denimIdState } from '../states/denimReportCreator';
 
 const SelectDenimStep: React.FC = () => {
-  const [submitData, setSubmitData] = useRecoilState(submitDataState);
+  const [denimId, setDenimId] = useRecoilState(denimIdState);
   const { client, hasToken } = useGraphqlClient();
   const { goToNextStep } = useDenimReportCreator();
   const toast = useToast();
@@ -21,14 +21,11 @@ const SelectDenimStep: React.FC = () => {
   );
 
   const handleClickCard = (denimId: string) => {
-    setSubmitData((submitData) => ({
-      ...submitData,
-      denimId,
-    }));
+    setDenimId(denimId);
   };
 
   const handleClickNext = () => {
-    if (submitData.denimId === null) {
+    if (denimId === null) {
       toast({
         title: 'デニムを選択してください',
         status: 'error',
@@ -50,10 +47,7 @@ const SelectDenimStep: React.FC = () => {
             marginTop="20px"
             onClick={() => handleClickCard(denim.id)}
           >
-            <DenimCard
-              denim={denim}
-              showBorder={submitData.denimId === denim.id}
-            />
+            <DenimCard denim={denim} showBorder={denimId === denim.id} />
           </Box>
         ))}
       </Box>
