@@ -208,6 +208,13 @@ export type CreateDenimMutationVariables = Exact<{
 
 export type CreateDenimMutation = { __typename?: 'Mutation', createDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
+export type CreateDenimReportMutationVariables = Exact<{
+  input: DenimReportInput;
+}>;
+
+
+export type CreateDenimReportMutation = { __typename?: 'Mutation', createDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrls?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
 export type CreateS3SignedUrlMutationVariables = Exact<{
   input: S3SignedUrlInput;
 }>;
@@ -294,6 +301,28 @@ export const CreateDenimDocument = gql`
     imageUrl
     createdAt
     updatedAt
+  }
+}
+    `;
+export const CreateDenimReportDocument = gql`
+    mutation CreateDenimReport($input: DenimReportInput!) {
+  createDenimReport(input: $input) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    detailImageUrls
+    createdAt
+    updatedAt
+    denim {
+      id
+      name
+      description
+      imageUrl
+      createdAt
+      updatedAt
+    }
   }
 }
     `;
@@ -477,6 +506,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     CreateDenim(variables: CreateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDenimMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateDenimMutation>(CreateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateDenim');
+    },
+    CreateDenimReport(variables: CreateDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDenimReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateDenimReportMutation>(CreateDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateDenimReport');
     },
     CreateS3SignedUrl(variables: CreateS3SignedUrlMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateS3SignedUrlMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateS3SignedUrlMutation>(CreateS3SignedUrlDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateS3SignedUrl');

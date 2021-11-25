@@ -1,0 +1,20 @@
+mutation CreateDenimReport($input: DenimReportInput!) {
+  createDenimReport(input: $input) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    detailImageUrls
+    createdAt
+    updatedAt
+    denim {
+      id
+      name
+      description
+      imageUrl
+      createdAt
+      updatedAt
+    }
+  }
+}

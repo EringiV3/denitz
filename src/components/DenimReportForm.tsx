@@ -6,6 +6,7 @@ import SelectBackImageStep from './SelectBackImageStep';
 import SelectDenimStep from './SelectDenimStep';
 import SelectDetailImagesStep from './SelectDetailImagesStep';
 import SelectFrontImageStep from './SelectFrontImageStep';
+import TitleDescriptionStep from './TitleDescriptionStep';
 
 const steps = [
   {
@@ -26,7 +27,7 @@ const steps = [
   },
   {
     title: 'タイトル・説明文',
-    component: <div>タイトル・説明文</div>,
+    component: <TitleDescriptionStep />,
   },
 ];
 
