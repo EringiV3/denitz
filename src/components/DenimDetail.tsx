@@ -4,12 +4,10 @@ import {
   Button,
   Heading,
   Link,
-  ListItem,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  UnorderedList,
   useToast,
 } from '@chakra-ui/react';
 import NextImage from 'next/image';
@@ -20,6 +18,7 @@ import { FaAngleDown, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
+import DenimReportCard from './DenimReportCard';
 
 type Props = {
   denim: Denim;
@@ -132,18 +131,14 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
         <Heading size="lg" marginTop="40px">
           色落ち記録
         </Heading>
-        <UnorderedList marginTop="20px">
-          {denim.denimReports?.map((report) => (
-            <ListItem key={report.id}>
-              <NextLink
-                href={`/${denim.user?.accountId}/denims/${denim.id}/reports/${report.id}`}
-                passHref
-              >
-                <Link color="blue.600">{report.title}</Link>
-              </NextLink>
-            </ListItem>
-          ))}
-        </UnorderedList>
+        {denim.denimReports?.map((report) => (
+          <Box key={report.id} marginTop="20px">
+            <DenimReportCard
+              denimReport={report}
+              link={`/${denim.user?.accountId}/denims/${denim.id}/reports/${report.id}`}
+            />
+          </Box>
+        ))}
       </Box>
     </Box>
   );
