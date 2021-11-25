@@ -40,11 +40,18 @@ export type DenimReport = {
   createdAt?: Maybe<Scalars['Date']>;
   denim?: Maybe<Denim>;
   description?: Maybe<Scalars['String']>;
-  detailImageUrls?: Maybe<Array<Scalars['String']>>;
+  detailImageUrls?: Maybe<Array<DenimReportDetailImageUrl>>;
   frontImageUrl?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Date']>;
+};
+
+export type DenimReportDetailImageUrl = {
+  __typename?: 'DenimReportDetailImageUrl';
+  id: Scalars['String'];
+  sortKey: Scalars['Int'];
+  url: Scalars['String'];
 };
 
 export type DenimReportInput = {
@@ -213,7 +220,7 @@ export type CreateDenimReportMutationVariables = Exact<{
 }>;
 
 
-export type CreateDenimReportMutation = { __typename?: 'Mutation', createDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrls?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+export type CreateDenimReportMutation = { __typename?: 'Mutation', createDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
 
 export type CreateS3SignedUrlMutationVariables = Exact<{
   input: S3SignedUrlInput;
@@ -268,7 +275,7 @@ export type GetDenimQueryVariables = Exact<{
 }>;
 
 
-export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrls?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, iconImageUrl?: string | null | undefined, name?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined }> | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, iconImageUrl?: string | null | undefined, name?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type GetProfileQueryVariables = Exact<{
   accountId: Scalars['String'];
@@ -312,7 +319,11 @@ export const CreateDenimReportDocument = gql`
     description
     frontImageUrl
     backImageUrl
-    detailImageUrls
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
     createdAt
     updatedAt
     denim {
@@ -423,7 +434,11 @@ export const GetDenimDocument = gql`
       description
       frontImageUrl
       backImageUrl
-      detailImageUrls
+      detailImageUrls {
+        id
+        sortKey
+        url
+      }
       createdAt
       updatedAt
     }

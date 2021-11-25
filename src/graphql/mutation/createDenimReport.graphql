@@ -5,7 +5,11 @@ mutation CreateDenimReport($input: DenimReportInput!) {
     description
     frontImageUrl
     backImageUrl
-    detailImageUrls
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
     createdAt
     updatedAt
     denim {

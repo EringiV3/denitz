@@ -4,10 +4,12 @@ import {
   Button,
   Heading,
   Link,
+  ListItem,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  UnorderedList,
   useToast,
 } from '@chakra-ui/react';
 import NextImage from 'next/image';
@@ -127,9 +129,21 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
           />
         </Box>
         <Box marginTop="40px">{denim.description}</Box>
-        <Heading size="md" marginTop="40px">
+        <Heading size="lg" marginTop="40px">
           色落ち記録
         </Heading>
+        <UnorderedList marginTop="20px">
+          {denim.denimReports?.map((report) => (
+            <ListItem key={report.id}>
+              <NextLink
+                href={`/${denim.user?.accountId}/denims/${denim.id}/reports/${report.id}`}
+                passHref
+              >
+                <Link color="blue.600">{report.title}</Link>
+              </NextLink>
+            </ListItem>
+          ))}
+        </UnorderedList>
       </Box>
     </Box>
   );
