@@ -1,7 +1,10 @@
 import { Box, Heading } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import Stepper from '../components/Stepper';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
+import { denimIdState } from '../states/denimReportCreator';
 import SelectBackImageStep from './SelectBackImageStep';
 import SelectDenimStep from './SelectDenimStep';
 import SelectDetailImagesStep from './SelectDetailImagesStep';
@@ -32,7 +35,12 @@ const steps = [
 ];
 
 const DenimReportForm: React.FC = () => {
-  const { currentStep, reset } = useDenimReportCreator();
+  const router = useRouter();
+  const { denimId } = router.query;
+
+  const setDenimId = useSetRecoilState(denimIdState);
+
+  const { currentStep, reset, goToNextStep } = useDenimReportCreator();
 
   useEffect(() => {
     return () => {
@@ -40,6 +48,14 @@ const DenimReportForm: React.FC = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (typeof denimId === 'string') {
+      setDenimId(denimId);
+      goToNextStep();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [denimId]);
 
   return (
     <>

@@ -18,7 +18,7 @@ import NextImage from 'next/image';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { FaAngleDown, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaAngleDown, FaCopy, FaTrashAlt } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { DenimReport, DenimReportInput } from '../lib/graphql';
@@ -176,7 +176,7 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
               Actions
             </MenuButton>
             <MenuList>
-              <MenuItem icon={<FaEdit size="15px" />} onClick={handleClickCopy}>
+              <MenuItem icon={<FaCopy size="15px" />} onClick={handleClickCopy}>
                 リンクをコピー
               </MenuItem>
               <MenuItem

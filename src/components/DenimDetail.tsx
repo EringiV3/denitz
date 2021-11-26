@@ -8,13 +8,20 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useClipboard,
   useToast,
 } from '@chakra-ui/react';
 import NextImage from 'next/image';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { FaAngleDown, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import {
+  FaAngleDown,
+  FaCopy,
+  FaEdit,
+  FaPlus,
+  FaTrashAlt,
+} from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
@@ -31,6 +38,10 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
   const toast = useToast();
 
   const reactQueryClient = useQueryClient();
+
+  const [link, setLink] = useState('');
+
+  const { onCopy } = useClipboard(link);
 
   const { data: currentUserData } = useQuery(
     ['currentUser'],
@@ -66,6 +77,17 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
     }
   );
 
+  const handleClickCopy = () => {
+    onCopy();
+    toast({
+      title: 'リンクをコピーしました',
+      status: 'info',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+    });
+  };
+
   const handleClickDelete = () => {
     if (!window.confirm('本当に削除しますか？')) {
       return;
@@ -82,8 +104,16 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
     );
   };
 
+  const handleClickAdd = () => {
+    router.push(`/addNew/denimReport?denimId=${denim.id}`);
+  };
+
   const isEditable =
     denim.user?.accountId === currentUserData?.getCurrentUser?.accountId;
+
+  useEffect(() => {
+    setLink(window.location.href);
+  }, [denim]);
 
   return (
     <Box>
@@ -94,6 +124,12 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
               Actions
             </MenuButton>
             <MenuList>
+              <MenuItem icon={<FaCopy size="15px" />} onClick={handleClickCopy}>
+                リンクをコピー
+              </MenuItem>
+              <MenuItem icon={<FaPlus size="15px" />} onClick={handleClickAdd}>
+                色落ち記録を追加
+              </MenuItem>
               <MenuItem icon={<FaEdit size="15px" />} onClick={handleClickEdit}>
                 編集
               </MenuItem>
