@@ -1,6 +1,7 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Link } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import NextImage from 'next/image';
+import NextLink from 'next/link';
 import { DenimReport } from '../lib/graphql';
 
 type Props = {
@@ -11,6 +12,14 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
     <Box>
       <Box>
         <Heading size="lg">{denimReport.title}</Heading>
+        <Box>
+          デニム:{' '}
+          <NextLink
+            href={`/${denimReport.denim?.user?.accountId}/denims/${denimReport.denim?.id}`}
+          >
+            <Link color="blue.600">{denimReport.denim?.name}</Link>
+          </NextLink>
+        </Box>
         <Box>作成日: {dayjs(denimReport.createdAt).format('YYYY/MM/DD')}</Box>
         <Box>更新日: {dayjs(denimReport.updatedAt).format('YYYY/MM/DD')}</Box>
       </Box>
