@@ -241,6 +241,13 @@ export type DeleteDenimMutationVariables = Exact<{
 
 export type DeleteDenimMutation = { __typename?: 'Mutation', deleteDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
+export type DeleteDenimReportMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteDenimReportMutation = { __typename?: 'Mutation', deleteDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
 export type UpdateDenimMutationVariables = Exact<{
   id: Scalars['String'];
   input: DenimInput;
@@ -248,6 +255,14 @@ export type UpdateDenimMutationVariables = Exact<{
 
 
 export type UpdateDenimMutation = { __typename?: 'Mutation', updateDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
+export type UpdateDenimReportMutationVariables = Exact<{
+  id: Scalars['String'];
+  input: DenimReportInput;
+}>;
+
+
+export type UpdateDenimReportMutation = { __typename?: 'Mutation', updateDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined } };
 
 export type UpdateProfileMutationVariables = Exact<{
   updateProfileId: Scalars['String'];
@@ -374,6 +389,19 @@ export const DeleteDenimDocument = gql`
   }
 }
     `;
+export const DeleteDenimReportDocument = gql`
+    mutation DeleteDenimReport($id: String!) {
+  deleteDenimReport(id: $id) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    createdAt
+    updatedAt
+  }
+}
+    `;
 export const UpdateDenimDocument = gql`
     mutation UpdateDenim($id: String!, $input: DenimInput!) {
   updateDenim(id: $id, input: $input) {
@@ -383,6 +411,24 @@ export const UpdateDenimDocument = gql`
     imageUrl
     createdAt
     updatedAt
+  }
+}
+    `;
+export const UpdateDenimReportDocument = gql`
+    mutation UpdateDenimReport($id: String!, $input: DenimReportInput!) {
+  updateDenimReport(id: $id, input: $input) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    createdAt
+    updatedAt
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
   }
 }
     `;
@@ -571,8 +617,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     DeleteDenim(variables: DeleteDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDenimMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteDenimMutation>(DeleteDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteDenim');
     },
+    DeleteDenimReport(variables: DeleteDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDenimReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteDenimReportMutation>(DeleteDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteDenimReport');
+    },
     UpdateDenim(variables: UpdateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimMutation>(UpdateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenim');
+    },
+    UpdateDenimReport(variables: UpdateDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimReportMutation>(UpdateDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenimReport');
     },
     UpdateProfile(variables: UpdateProfileMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProfileMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileMutation>(UpdateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProfile');

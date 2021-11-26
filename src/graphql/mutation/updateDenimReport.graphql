@@ -1,0 +1,16 @@
+mutation UpdateDenimReport($id: String!, $input: DenimReportInput!) {
+  updateDenimReport(id: $id, input: $input) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    createdAt
+    updatedAt
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
+  }
+}

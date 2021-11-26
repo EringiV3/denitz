@@ -67,7 +67,6 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
   );
 
   const handleClickDelete = () => {
-    // TODO: デニムレポートも一緒に削除する
     if (!window.confirm('本当に削除しますか？')) {
       return;
     }
@@ -101,8 +100,9 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
               <MenuItem
                 icon={<FaTrashAlt size="15px" />}
                 onClick={handleClickDelete}
+                color="red"
               >
-                <Box color="red">削除</Box>
+                削除
               </MenuItem>
             </MenuList>
           </Menu>
