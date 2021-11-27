@@ -1,0 +1,24 @@
+mutation UpdateDenimReportSortOrder($input: updateDenimReportSortOrderInput!) {
+  updateDenimReportSortOrder(input: $input) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+    denimReports {
+      id
+      title
+      description
+      frontImageUrl
+      backImageUrl
+      createdAt
+      updatedAt
+      detailImageUrls {
+        id
+        sortKey
+        url
+      }
+    }
+  }
+}

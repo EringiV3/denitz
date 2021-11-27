@@ -74,6 +74,7 @@ export type Mutation = {
   deleteUserAccount?: Maybe<Scalars['Boolean']>;
   updateDenim: Denim;
   updateDenimReport: DenimReport;
+  updateDenimReportSortOrder: Denim;
   updateProfile: Profile;
   updateUser: User;
 };
@@ -113,6 +114,11 @@ export type MutationUpdateDenimArgs = {
 export type MutationUpdateDenimReportArgs = {
   id: Scalars['String'];
   input: DenimReportInput;
+};
+
+
+export type MutationUpdateDenimReportSortOrderArgs = {
+  input: UpdateDenimReportSortOrderInput;
 };
 
 
@@ -209,6 +215,11 @@ export type UserInput = {
   accountId: Scalars['String'];
 };
 
+export type UpdateDenimReportSortOrderInput = {
+  denimId: Scalars['String'];
+  sortOrder: Array<Scalars['String']>;
+};
+
 export type CreateDenimMutationVariables = Exact<{
   input: DenimInput;
 }>;
@@ -269,6 +280,13 @@ export type UpdateDenimReportMutationVariables = Exact<{
 
 
 export type UpdateDenimReportMutation = { __typename?: 'Mutation', updateDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined } };
+
+export type UpdateDenimReportSortOrderMutationVariables = Exact<{
+  input: UpdateDenimReportSortOrderInput;
+}>;
+
+
+export type UpdateDenimReportSortOrderMutation = { __typename?: 'Mutation', updateDenimReportSortOrder: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined }> | null | undefined } };
 
 export type UpdateProfileMutationVariables = Exact<{
   updateProfileId: Scalars['String'];
@@ -439,6 +457,32 @@ export const UpdateDenimReportDocument = gql`
       id
       sortKey
       url
+    }
+  }
+}
+    `;
+export const UpdateDenimReportSortOrderDocument = gql`
+    mutation UpdateDenimReportSortOrder($input: updateDenimReportSortOrderInput!) {
+  updateDenimReportSortOrder(input: $input) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+    denimReports {
+      id
+      title
+      description
+      frontImageUrl
+      backImageUrl
+      createdAt
+      updatedAt
+      detailImageUrls {
+        id
+        sortKey
+        url
+      }
     }
   }
 }
@@ -639,6 +683,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     UpdateDenimReport(variables: UpdateDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimReportMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimReportMutation>(UpdateDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenimReport');
+    },
+    UpdateDenimReportSortOrder(variables: UpdateDenimReportSortOrderMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimReportSortOrderMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimReportSortOrderMutation>(UpdateDenimReportSortOrderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenimReportSortOrder');
     },
     UpdateProfile(variables: UpdateProfileMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProfileMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileMutation>(UpdateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProfile');

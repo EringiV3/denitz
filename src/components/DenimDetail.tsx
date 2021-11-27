@@ -25,7 +25,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
-import DenimReportCard from './DenimReportCard';
+import DenimReportList from './DenimReportList';
 
 type Props = {
   denim: Denim;
@@ -108,6 +108,10 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
     router.push(`/addNew/denimReport?denimId=${denim.id}`);
   };
 
+  const handleClickCreateDenimReport = () => {
+    router.push(`/addNew/denimReport?denimId=${denim.id}`);
+  };
+
   const isEditable =
     denim.user?.accountId === currentUserData?.getCurrentUser?.accountId;
 
@@ -168,14 +172,22 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
         <Heading size="lg" marginTop="40px">
           色落ち記録
         </Heading>
-        {denim.denimReports?.map((report) => (
-          <Box key={report.id} marginTop="20px">
-            <DenimReportCard
-              denimReport={report}
-              link={`/${denim.user?.accountId}/denims/${denim.id}/reports/${report.id}`}
-            />
+        {denim.denimReports?.length === 0 ? (
+          <Box display="flex" justifyContent="center" marginTop="40px">
+            <Button onClick={handleClickCreateDenimReport}>
+              色落ち記録を作成する
+            </Button>
           </Box>
-        ))}
+        ) : (
+          denim.denimReports &&
+          denim.user?.accountId && (
+            <DenimReportList
+              denimReportList={denim.denimReports}
+              denimId={denim.id}
+              accountId={denim.user.accountId}
+            />
+          )
+        )}
       </Box>
     </Box>
   );

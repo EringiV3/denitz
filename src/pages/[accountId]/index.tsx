@@ -1,5 +1,6 @@
-import { Box, Divider, Heading } from '@chakra-ui/react';
+import { Box, Button, Divider, Heading } from '@chakra-ui/react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { useRouter } from 'next/router';
 import React from 'react';
 import DenimCard from '../../components/DenimCard';
 import Layout from '../../components/Layout';
@@ -10,6 +11,12 @@ import { createGraphqlClient } from '../../lib/graphqlClient';
 const ProfilePage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ data }) => {
+  const router = useRouter();
+
+  const handleClickAddDenim = () => {
+    router.push('/addNew/denim');
+  };
+
   return (
     <Layout>
       {data.getUser && data.getUser.profile && (
@@ -18,16 +25,22 @@ const ProfilePage: React.FC<
       <Divider marginTop="20px" />
       <Box marginTop="20px">
         <Heading size="md">デニム一覧</Heading>
-        {data.getUser?.denims?.map(
-          (denim) =>
-            denim && (
-              <Box marginTop="20px" key={denim?.id}>
-                <DenimCard
-                  denim={denim}
-                  link={`/${data.getUser?.accountId}/denims/${denim.id}`}
-                />
-              </Box>
-            )
+        {data.getUser?.denims?.length === 0 ? (
+          <Box display="flex" justifyContent="center" marginTop="40px">
+            <Button onClick={handleClickAddDenim}>デニムを追加する</Button>
+          </Box>
+        ) : (
+          data.getUser?.denims?.map(
+            (denim) =>
+              denim && (
+                <Box marginTop="20px" key={denim?.id}>
+                  <DenimCard
+                    denim={denim}
+                    link={`/${data.getUser?.accountId}/denims/${denim.id}`}
+                  />
+                </Box>
+              )
+          )
         )}
       </Box>
     </Layout>
