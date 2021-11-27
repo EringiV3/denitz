@@ -40,18 +40,25 @@ export type DenimReport = {
   createdAt?: Maybe<Scalars['Date']>;
   denim?: Maybe<Denim>;
   description?: Maybe<Scalars['String']>;
-  detailImageUrl?: Maybe<Array<Scalars['String']>>;
+  detailImageUrls?: Maybe<Array<DenimReportDetailImageUrl>>;
   frontImageUrl?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
+export type DenimReportDetailImageUrl = {
+  __typename?: 'DenimReportDetailImageUrl';
+  id: Scalars['String'];
+  sortKey: Scalars['Int'];
+  url: Scalars['String'];
+};
+
 export type DenimReportInput = {
   backImageUrl?: Maybe<Scalars['String']>;
   denimId: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  detailImageUrl: Array<Scalars['String']>;
+  detailImageUrls: Array<Scalars['String']>;
   frontImageUrl?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
 };
@@ -208,6 +215,13 @@ export type CreateDenimMutationVariables = Exact<{
 
 export type CreateDenimMutation = { __typename?: 'Mutation', createDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
+export type CreateDenimReportMutationVariables = Exact<{
+  input: DenimReportInput;
+}>;
+
+
+export type CreateDenimReportMutation = { __typename?: 'Mutation', createDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+
 export type CreateS3SignedUrlMutationVariables = Exact<{
   input: S3SignedUrlInput;
 }>;
@@ -227,6 +241,13 @@ export type DeleteDenimMutationVariables = Exact<{
 
 export type DeleteDenimMutation = { __typename?: 'Mutation', deleteDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
 
+export type DeleteDenimReportMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteDenimReportMutation = { __typename?: 'Mutation', deleteDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
 export type UpdateDenimMutationVariables = Exact<{
   id: Scalars['String'];
   input: DenimInput;
@@ -234,6 +255,14 @@ export type UpdateDenimMutationVariables = Exact<{
 
 
 export type UpdateDenimMutation = { __typename?: 'Mutation', updateDenim: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } };
+
+export type UpdateDenimReportMutationVariables = Exact<{
+  id: Scalars['String'];
+  input: DenimReportInput;
+}>;
+
+
+export type UpdateDenimReportMutation = { __typename?: 'Mutation', updateDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined } };
 
 export type UpdateProfileMutationVariables = Exact<{
   updateProfileId: Scalars['String'];
@@ -254,14 +283,21 @@ export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __type
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined } | null | undefined } | null | undefined };
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined } | null | undefined, denims?: Array<{ __typename?: 'Denim', id: string, name?: string | null | undefined, createdAt?: any | null | undefined, imageUrl?: string | null | undefined, description?: string | null | undefined }> | null | undefined } | null | undefined };
 
 export type GetDenimQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, detailImageUrl?: Array<string> | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, iconImageUrl?: string | null | undefined, name?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type GetDenimQuery = { __typename?: 'Query', getDenim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined }> | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, iconImageUrl?: string | null | undefined, name?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+
+export type GetDenimReportQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetDenimReportQuery = { __typename?: 'Query', getDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, user?: { __typename?: 'User', id: string, accountId: string } | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined }> | null | undefined } | null | undefined } };
 
 export type GetProfileQueryVariables = Exact<{
   accountId: Scalars['String'];
@@ -297,6 +333,32 @@ export const CreateDenimDocument = gql`
   }
 }
     `;
+export const CreateDenimReportDocument = gql`
+    mutation CreateDenimReport($input: DenimReportInput!) {
+  createDenimReport(input: $input) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
+    createdAt
+    updatedAt
+    denim {
+      id
+      name
+      description
+      imageUrl
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
 export const CreateS3SignedUrlDocument = gql`
     mutation CreateS3SignedUrl($input: S3SignedUrlInput!) {
   createS3SignedUrl(input: $input) {
@@ -327,6 +389,19 @@ export const DeleteDenimDocument = gql`
   }
 }
     `;
+export const DeleteDenimReportDocument = gql`
+    mutation DeleteDenimReport($id: String!) {
+  deleteDenimReport(id: $id) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    createdAt
+    updatedAt
+  }
+}
+    `;
 export const UpdateDenimDocument = gql`
     mutation UpdateDenim($id: String!, $input: DenimInput!) {
   updateDenim(id: $id, input: $input) {
@@ -336,6 +411,24 @@ export const UpdateDenimDocument = gql`
     imageUrl
     createdAt
     updatedAt
+  }
+}
+    `;
+export const UpdateDenimReportDocument = gql`
+    mutation UpdateDenimReport($id: String!, $input: DenimReportInput!) {
+  updateDenimReport(id: $id, input: $input) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    createdAt
+    updatedAt
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
   }
 }
     `;
@@ -371,6 +464,13 @@ export const GetCurrentUserDocument = gql`
       name
       iconImageUrl
     }
+    denims {
+      id
+      name
+      createdAt
+      imageUrl
+      description
+    }
   }
 }
     `;
@@ -387,7 +487,11 @@ export const GetDenimDocument = gql`
       description
       frontImageUrl
       backImageUrl
-      detailImageUrl
+      detailImageUrls {
+        id
+        sortKey
+        url
+      }
       createdAt
       updatedAt
     }
@@ -402,6 +506,36 @@ export const GetDenimDocument = gql`
     }
     createdAt
     updatedAt
+  }
+}
+    `;
+export const GetDenimReportDocument = gql`
+    query GetDenimReport($id: String!) {
+  getDenimReport(id: $id) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
+    createdAt
+    updatedAt
+    denim {
+      id
+      name
+      user {
+        id
+        accountId
+      }
+      denimReports {
+        id
+        title
+      }
+    }
   }
 }
     `;
@@ -471,6 +605,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     CreateDenim(variables: CreateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDenimMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateDenimMutation>(CreateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateDenim');
     },
+    CreateDenimReport(variables: CreateDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDenimReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateDenimReportMutation>(CreateDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateDenimReport');
+    },
     CreateS3SignedUrl(variables: CreateS3SignedUrlMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateS3SignedUrlMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateS3SignedUrlMutation>(CreateS3SignedUrlDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateS3SignedUrl');
     },
@@ -480,8 +617,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     DeleteDenim(variables: DeleteDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDenimMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteDenimMutation>(DeleteDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteDenim');
     },
+    DeleteDenimReport(variables: DeleteDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDenimReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteDenimReportMutation>(DeleteDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteDenimReport');
+    },
     UpdateDenim(variables: UpdateDenimMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimMutation>(UpdateDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenim');
+    },
+    UpdateDenimReport(variables: UpdateDenimReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateDenimReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateDenimReportMutation>(UpdateDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateDenimReport');
     },
     UpdateProfile(variables: UpdateProfileMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProfileMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileMutation>(UpdateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProfile');
@@ -494,6 +637,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetDenim(variables: GetDenimQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDenimQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDenimQuery>(GetDenimDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetDenim');
+    },
+    GetDenimReport(variables: GetDenimReportQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDenimReportQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDenimReportQuery>(GetDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetDenimReport');
     },
     GetProfile(variables: GetProfileQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfileQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProfileQuery>(GetProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetProfile');

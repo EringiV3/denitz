@@ -1,0 +1,28 @@
+query GetDenimReport($id: String!) {
+  getDenimReport(id: $id) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    detailImageUrls {
+      id
+      sortKey
+      url
+    }
+    createdAt
+    updatedAt
+    denim {
+      id
+      name
+      user {
+        id
+        accountId
+      }
+      denimReports {
+        id
+        title
+      }
+    }
+  }
+}

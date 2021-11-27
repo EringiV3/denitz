@@ -1,0 +1,11 @@
+mutation DeleteDenimReport($id: String!) {
+  deleteDenimReport(id: $id) {
+    id
+    title
+    description
+    frontImageUrl
+    backImageUrl
+    createdAt
+    updatedAt
+  }
+}

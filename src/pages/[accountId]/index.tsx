@@ -24,7 +24,7 @@ const ProfilePage: React.FC<
               <Box marginTop="20px" key={denim?.id}>
                 <DenimCard
                   denim={denim}
-                  accountId={data.getUser?.accountId ?? ''}
+                  link={`/${data.getUser?.accountId}/denims/${denim.id}`}
                 />
               </Box>
             )

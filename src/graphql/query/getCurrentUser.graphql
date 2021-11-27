@@ -9,5 +9,12 @@ query GetCurrentUser {
       name
       iconImageUrl
     }
+    denims {
+      id
+      name
+      createdAt
+      imageUrl
+      description
+    }
   }
 }
