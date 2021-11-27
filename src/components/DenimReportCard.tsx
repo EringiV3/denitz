@@ -5,7 +5,7 @@ import type { DenimReport } from '../lib/graphql';
 
 type Props = {
   denimReport: DenimReport;
-  link: string;
+  link?: string;
 };
 const DenimReportCard: React.FC<Props> = ({ denimReport, link }) => {
   return (
@@ -24,11 +24,15 @@ const DenimReportCard: React.FC<Props> = ({ denimReport, link }) => {
         />
       </Box>
       <Box padding="20px" flex="1">
-        <NextLink href={link} passHref>
-          <LinkOverlay>
-            <Heading size="md">{denimReport.title}</Heading>
-          </LinkOverlay>
-        </NextLink>
+        {link ? (
+          <NextLink href={link} passHref>
+            <LinkOverlay>
+              <Heading size="md">{denimReport.title}</Heading>
+            </LinkOverlay>
+          </NextLink>
+        ) : (
+          <Heading size="md">{denimReport.title}</Heading>
+        )}
         <Box marginTop="10px">{denimReport.description}</Box>
       </Box>
     </LinkBox>
