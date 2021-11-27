@@ -25,7 +25,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
-import DenimReportCard from './DenimReportCard';
+import DenimReportList from './DenimReportList';
 
 type Props = {
   denim: Denim;
@@ -179,14 +179,14 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
             </Button>
           </Box>
         ) : (
-          denim.denimReports?.map((report) => (
-            <Box key={report.id} marginTop="20px">
-              <DenimReportCard
-                denimReport={report}
-                link={`/${denim.user?.accountId}/denims/${denim.id}/reports/${report.id}`}
-              />
-            </Box>
-          ))
+          denim.denimReports &&
+          denim.user?.accountId && (
+            <DenimReportList
+              denimReportList={denim.denimReports}
+              denimId={denim.id}
+              accountId={denim.user.accountId}
+            />
+          )
         )}
       </Box>
     </Box>

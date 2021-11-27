@@ -14,6 +14,8 @@
     "@auth0/auth0-react": "^1.8.0",
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.6.12",
+    "@dnd-kit/core": "^4.0.3",
+    "@dnd-kit/sortable": "^5.1.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "dayjs": "^1.10.7",
