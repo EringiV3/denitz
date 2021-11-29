@@ -1,4 +1,5 @@
 import { Box, Heading, useToast } from '@chakra-ui/react';
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import DenimForm from '../../components/DenimForm';
@@ -46,23 +47,26 @@ const AddNewDenimPage: React.FC = () => {
   );
 
   return (
-    <Layout>
-      <Heading size="md" margin="40px 0 20px 0">
-        デニム追加
-      </Heading>
-      <Box>
-        <DenimForm
-          executeMutation={(data) => {
-            createDenimMutation.mutate({
-              name: data.name,
-              description: data.description,
-              imageUrl: data.imageUrl,
-            });
-          }}
-          isLoadingMutationResult={createDenimMutation.isLoading}
-        />
-      </Box>
-    </Layout>
+    <>
+      <NextSeo title="デニム追加" description="デニム追加ページ" />
+      <Layout>
+        <Heading size="md" margin="40px 0 20px 0">
+          デニム追加
+        </Heading>
+        <Box>
+          <DenimForm
+            executeMutation={(data) => {
+              createDenimMutation.mutate({
+                name: data.name,
+                description: data.description,
+                imageUrl: data.imageUrl,
+              });
+            }}
+            isLoadingMutationResult={createDenimMutation.isLoading}
+          />
+        </Box>
+      </Layout>
+    </>
   );
 };
 
