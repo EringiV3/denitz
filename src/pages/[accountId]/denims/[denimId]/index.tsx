@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextSeo } from 'next-seo';
 import React from 'react';
 import DenimDetail from '../../../../components/DenimDetail';
 import Layout from '../../../../components/Layout';
@@ -10,13 +11,33 @@ const DenimDetailPage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ data }) => {
   return (
-    <Layout>
-      {data.getDenim && (
-        <Box marginTop="40px">
-          <DenimDetail denim={data.getDenim} />
-        </Box>
-      )}
-    </Layout>
+    <>
+      <NextSeo
+        title={`デニム詳細 - ${data.getDenim?.name}`}
+        description={`${data.getDenim?.description}`}
+        openGraph={{
+          type: 'website',
+          url: `https://denitz.com/${data.getDenim?.user?.accountId}/denims/${data.getDenim?.id}`,
+          title: `${data.getDenim?.name}`,
+          description: `${data.getDenim?.description}`,
+          images: [
+            {
+              url: data.getDenim?.imageUrl ?? '',
+              width: 500,
+              height: 500,
+              alt: 'denim detail',
+            },
+          ],
+        }}
+      />
+      <Layout>
+        {data.getDenim && (
+          <Box marginTop="40px">
+            <DenimDetail denim={data.getDenim} />
+          </Box>
+        )}
+      </Layout>
+    </>
   );
 };
 

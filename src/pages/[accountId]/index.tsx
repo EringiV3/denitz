@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Heading } from '@chakra-ui/react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import React from 'react';
 import DenimCard from '../../components/DenimCard';
@@ -18,32 +19,52 @@ const ProfilePage: React.FC<
   };
 
   return (
-    <Layout>
-      {data.getUser && data.getUser.profile && (
-        <Profile user={data.getUser} profile={data.getUser.profile} />
-      )}
-      <Divider marginTop="20px" />
-      <Box marginTop="20px">
-        <Heading size="md">デニム一覧</Heading>
-        {data.getUser?.denims?.length === 0 ? (
-          <Box display="flex" justifyContent="center" marginTop="40px">
-            <Button onClick={handleClickAddDenim}>デニムを追加する</Button>
-          </Box>
-        ) : (
-          data.getUser?.denims?.map(
-            (denim) =>
-              denim && (
-                <Box marginTop="20px" key={denim?.id}>
-                  <DenimCard
-                    denim={denim}
-                    link={`/${data.getUser?.accountId}/denims/${denim.id}`}
-                  />
-                </Box>
-              )
-          )
+    <>
+      <NextSeo
+        title={`${data.getUser?.profile?.name}(@${data.getUser?.accountId}) のプロフィール`}
+        description={`${data.getUser?.profile?.description}`}
+        openGraph={{
+          type: 'website',
+          url: `https://denitz.com/${data.getUser?.accountId}`,
+          title: `${data.getUser?.profile?.name}(@${data.getUser?.accountId}) のプロフィール`,
+          description: `${data.getUser?.profile?.name}(@${data.getUser?.accountId}) のプロフィールページ`,
+          images: [
+            {
+              url: data.getUser?.profile?.iconImageUrl ?? '',
+              width: 500,
+              height: 500,
+              alt: 'profile icon',
+            },
+          ],
+        }}
+      />
+      <Layout>
+        {data.getUser && data.getUser.profile && (
+          <Profile user={data.getUser} profile={data.getUser.profile} />
         )}
-      </Box>
-    </Layout>
+        <Divider marginTop="20px" />
+        <Box marginTop="20px">
+          <Heading size="md">デニム一覧</Heading>
+          {data.getUser?.denims?.length === 0 ? (
+            <Box display="flex" justifyContent="center" marginTop="40px">
+              <Button onClick={handleClickAddDenim}>デニムを追加する</Button>
+            </Box>
+          ) : (
+            data.getUser?.denims?.map(
+              (denim) =>
+                denim && (
+                  <Box marginTop="20px" key={denim?.id}>
+                    <DenimCard
+                      denim={denim}
+                      link={`/${data.getUser?.accountId}/denims/${denim.id}`}
+                    />
+                  </Box>
+                )
+            )
+          )}
+        </Box>
+      </Layout>
+    </>
   );
 };
 

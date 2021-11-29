@@ -1,5 +1,6 @@
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import { ChakraProvider } from '@chakra-ui/react';
+import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -11,6 +12,7 @@ import {
   AUTH0_DOMAIN,
   AUTH0_REDIRECT_URI,
 } from '../config/constants';
+import { seoConfig } from '../config/seo';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 
 const queryClient = new QueryClient();
@@ -60,6 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <RecoilRoot>
           <ChakraProvider>
             <AppInit />
+            <DefaultSeo {...seoConfig} />
             <Component {...pageProps} />
             <RecoilDebugObserver />
             <ReactQueryDevtools initialIsOpen={false} />
