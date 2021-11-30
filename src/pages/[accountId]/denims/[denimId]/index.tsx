@@ -1,28 +1,45 @@
 import { Box } from '@chakra-ui/react';
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next';
 import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { useQuery } from 'react-query';
 import DenimDetail from '../../../../components/DenimDetail';
 import Layout from '../../../../components/Layout';
+import { useGraphqlClient } from '../../../../hooks/useGraphqlClient';
 import { GetDenimQuery } from '../../../../lib/graphql';
 import { createGraphqlClient } from '../../../../lib/graphqlClient';
 
 const DenimDetailPage: React.FC<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ data }) => {
+  InferGetStaticPropsType<typeof getStaticProps>
+> = ({ initialData }) => {
+  const router = useRouter();
+  const { client } = useGraphqlClient();
+  const denimId = router.query.denimId as string;
+
+  const { data } = useQuery(
+    ['denims', denimId],
+    () => client.GetDenim({ id: denimId }),
+    { initialData, staleTime: Infinity }
+  );
+
   return (
     <>
       <NextSeo
-        title={`デニム詳細 - ${data.getDenim?.name}`}
-        description={`${data.getDenim?.description}`}
+        title={`デニム詳細 - ${data?.getDenim?.name}`}
+        description={`${data?.getDenim?.description}`}
         openGraph={{
           type: 'website',
-          url: `https://denitz.com/${data.getDenim?.user?.accountId}/denims/${data.getDenim?.id}`,
-          title: `${data.getDenim?.name}`,
-          description: `${data.getDenim?.description}`,
+          url: `https://denitz.com/${data?.getDenim?.user?.accountId}/denims/${data?.getDenim?.id}`,
+          title: `${data?.getDenim?.name}`,
+          description: `${data?.getDenim?.description}`,
           images: [
             {
-              url: data.getDenim?.imageUrl ?? '',
+              url: data?.getDenim?.imageUrl ?? '',
               width: 500,
               height: 500,
               alt: 'denim detail',
@@ -31,7 +48,7 @@ const DenimDetailPage: React.FC<
         }}
       />
       <Layout>
-        {data.getDenim && (
+        {data?.getDenim && (
           <Box marginTop="40px">
             <DenimDetail denim={data.getDenim} />
           </Box>
@@ -41,25 +58,33 @@ const DenimDetailPage: React.FC<
   );
 };
 
-type ServerSideProps = {
-  data: GetDenimQuery;
+type StaticProps = {
+  initialData: GetDenimQuery;
 };
-export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
-  context
-) => {
+export const getStaticProps: GetStaticProps<StaticProps> = async ({
+  params,
+}) => {
   const client = createGraphqlClient();
-  const data = await client.GetDenim({
-    id: context.query.denimId as string,
+  const initialData = await client.GetDenim({
+    id: params?.denimId as string,
   });
-  if (data === null) {
+  if (initialData === null) {
     return {
       notFound: true,
     };
   }
   return {
     props: {
-      data,
+      initialData,
     },
+    revalidate: 60,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
   };
 };
 
