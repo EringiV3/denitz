@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
+import { queryKeys } from '../../utils/queryKeyFactory';
 
 const Callback: React.FC = () => {
   const { client, hasToken } = useGraphqlClient();
@@ -11,7 +12,7 @@ const Callback: React.FC = () => {
   const toast = useToast();
 
   const { data, refetch } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     { enabled: false }
   );
@@ -20,7 +21,7 @@ const Callback: React.FC = () => {
     () => client.CreateUserAccount(),
     {
       onSuccess: (data) => {
-        reactQueryClient.setQueryData(['currentUser'], data.createUserAccount);
+        reactQueryClient.invalidateQueries(queryKeys.currentUser());
         router.push(`/${data.createUserAccount.accountId}`);
       },
       onError: () => {

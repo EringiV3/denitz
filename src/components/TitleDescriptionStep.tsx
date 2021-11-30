@@ -22,6 +22,7 @@ import {
   detailImagesState,
   frontImageState,
 } from '../states/denimReportCreator';
+import { queryKeys } from '../utils/queryKeyFactory';
 
 type Form = {
   title: string;
@@ -52,7 +53,7 @@ const TitleDescriptionStep: React.FC = () => {
   const denimId = useRecoilValue(denimIdState);
 
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,
@@ -70,7 +71,7 @@ const TitleDescriptionStep: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(['denims', input.denimId]);
+        reactQueryClient.invalidateQueries(queryKeys.denim(input.denimId));
         router.push(
           `/${currentUserData?.getCurrentUser?.accountId}/denims/${input.denimId}`
         );

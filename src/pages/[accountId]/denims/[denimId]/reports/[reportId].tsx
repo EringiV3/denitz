@@ -15,6 +15,7 @@ import Layout from '../../../../../components/Layout';
 import { useGraphqlClient } from '../../../../../hooks/useGraphqlClient';
 import { GetDenimReportQuery } from '../../../../../lib/graphql';
 import { createGraphqlClient } from '../../../../../lib/graphqlClient';
+import { queryKeys } from '../../../../../utils/queryKeyFactory';
 
 const DenimReportPage: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -25,7 +26,7 @@ const DenimReportPage: React.FC<
   const denimId = router.query.denimId as string;
 
   const { data } = useQuery(
-    ['denims', denimId, 'reports', reportId],
+    queryKeys.denimReport(denimId, reportId),
     () => client.GetDenimReport({ id: reportId }),
     { initialData, staleTime: Infinity }
   );

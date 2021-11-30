@@ -14,6 +14,7 @@ import Profile from '../../components/Profile';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 import { GetUserQuery } from '../../lib/graphql';
 import { createGraphqlClient } from '../../lib/graphqlClient';
+import { queryKeys } from '../../utils/queryKeyFactory';
 
 const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   initialData,
@@ -28,7 +29,7 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const accountId = router.query.accountId as string;
 
   const { data } = useQuery(
-    ['users', accountId],
+    queryKeys.user(accountId),
     () => client.GetUser({ accountId }),
     { initialData, staleTime: Infinity }
   );

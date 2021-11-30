@@ -5,6 +5,7 @@ import DenimCard from '../components/DenimCard';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { denimIdState } from '../states/denimReportCreator';
+import { queryKeys } from '../utils/queryKeyFactory';
 
 const SelectDenimStep: React.FC = () => {
   const [denimId, setDenimId] = useRecoilState(denimIdState);
@@ -13,7 +14,7 @@ const SelectDenimStep: React.FC = () => {
   const toast = useToast();
 
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,

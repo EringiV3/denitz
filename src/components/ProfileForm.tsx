@@ -19,6 +19,7 @@ import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { ProfileInput } from '../lib/graphql';
 import { readFile } from '../utils/image';
+import { queryKeys } from '../utils/queryKeyFactory';
 
 type Form = {
   name: string;
@@ -43,12 +44,16 @@ const ProfileForm: React.FC = () => {
 
   const toast = useToast();
 
-  const { data } = useQuery(['currentUser'], () => client.GetCurrentUser(), {
-    enabled: hasToken,
-  });
+  const { data } = useQuery(
+    queryKeys.currentUser(),
+    () => client.GetCurrentUser(),
+    {
+      enabled: hasToken,
+    }
+  );
 
   const { data: profileData } = useQuery(
-    ['profile', data?.getCurrentUser?.accountId],
+    queryKeys.profile(data?.getCurrentUser?.accountId ?? ''),
     () =>
       client.GetProfile({ accountId: data?.getCurrentUser?.accountId ?? '' }),
     { enabled: !!data?.getCurrentUser?.accountId }
@@ -71,10 +76,9 @@ const ProfileForm: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries([
-          'profile',
-          data?.getCurrentUser?.accountId,
-        ]);
+        reactQueryClient.invalidateQueries(
+          queryKeys.profile(data?.getCurrentUser?.accountId ?? '')
+        );
       },
       onError: () => {
         toast({
