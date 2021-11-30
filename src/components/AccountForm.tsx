@@ -12,6 +12,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { UserInput } from '../lib/graphql';
+import { queryKeys } from '../utils/queryKeyFactory';
 
 type Form = {
   accountId: string;
@@ -21,7 +22,6 @@ const AccountForm: React.FC = () => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<Form>({ mode: 'onBlur', reValidateMode: 'onChange' });
 
@@ -32,17 +32,17 @@ const AccountForm: React.FC = () => {
   const toast = useToast();
 
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,
     }
   );
 
-  const { refetch } = useQuery(
-    ['isAvailableAccountId'],
-    () => client.IsAvailableAccountId({ value: getValues('accountId') }),
-    { enabled: false }
+  const { data: unavailableAccountIds } = useQuery(
+    ['unavailableAccountIds'],
+    () => fetch('/unavailableAccountIds.json').then((res) => res.json()),
+    { staleTime: Infinity }
   );
 
   const updateUserMutation = useMutation(
@@ -57,7 +57,7 @@ const AccountForm: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(['currentUser']);
+        reactQueryClient.invalidateQueries(queryKeys.currentUser());
       },
       onError: () => {
         toast({
@@ -111,12 +111,12 @@ const AccountForm: React.FC = () => {
                 if (value === currentUserData?.getCurrentUser?.accountId) {
                   return true;
                 }
-                const res = await fetch('/unavailableAccountIds.json');
-                const unavailableAccountIds: string[] = await res.json();
-                const { data } = await refetch();
+                const data = await client.IsAvailableAccountId({
+                  value,
+                });
                 const isValid =
                   !unavailableAccountIds.includes(value) &&
-                  data?.isAvailableAccountId;
+                  data.isAvailableAccountId;
                 return isValid || 'このIDは使用できません';
               },
             },

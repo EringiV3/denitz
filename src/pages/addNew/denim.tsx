@@ -6,6 +6,7 @@ import DenimForm from '../../components/DenimForm';
 import Layout from '../../components/Layout';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 import { DenimInput } from '../../lib/graphql';
+import { queryKeys } from '../../utils/queryKeyFactory';
 
 const AddNewDenimPage: React.FC = () => {
   const { client, hasToken } = useGraphqlClient();
@@ -14,9 +15,13 @@ const AddNewDenimPage: React.FC = () => {
 
   const toast = useToast();
 
-  const { data } = useQuery(['currentUser'], () => client.GetCurrentUser(), {
-    enabled: hasToken,
-  });
+  const { data } = useQuery(
+    queryKeys.currentUser(),
+    () => client.GetCurrentUser(),
+    {
+      enabled: hasToken,
+    }
+  );
 
   const router = useRouter();
 
@@ -31,7 +36,7 @@ const AddNewDenimPage: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(['denims']);
+        reactQueryClient.invalidateQueries(queryKeys.denims());
         router.push(`/${data?.getCurrentUser?.accountId}`);
       },
       onError: () => {

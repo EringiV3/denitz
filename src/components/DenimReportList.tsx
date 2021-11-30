@@ -23,6 +23,7 @@ import type {
   DenimReport,
   UpdateDenimReportSortOrderInput,
 } from '../lib/graphql';
+import { queryKeys } from '../utils/queryKeyFactory';
 import DenimReportCard from './DenimReportCard';
 import Item from './Item';
 import SortableItem from './SortableItem';
@@ -40,7 +41,7 @@ const DenimReportList: React.FC<Props> = ({
   const toast = useToast();
   const { client, hasToken } = useGraphqlClient();
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,

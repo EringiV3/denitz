@@ -6,6 +6,7 @@ import DenimForm from '../../../../components/DenimForm';
 import Layout from '../../../../components/Layout';
 import { useGraphqlClient } from '../../../../hooks/useGraphqlClient';
 import { DenimInput } from '../../../../lib/graphql';
+import { queryKeys } from '../../../../utils/queryKeyFactory';
 
 const DenimEditPage: React.FC = () => {
   const { client, hasToken } = useGraphqlClient();
@@ -19,7 +20,7 @@ const DenimEditPage: React.FC = () => {
   const denimId = router.query.denimId as string;
 
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,
@@ -27,7 +28,7 @@ const DenimEditPage: React.FC = () => {
   );
 
   const { data: denimData } = useQuery(
-    ['denims', denimId],
+    queryKeys.denim(denimId),
     () => client.GetDenim({ id: denimId }),
     {
       enabled: !!denimId,
@@ -45,7 +46,7 @@ const DenimEditPage: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(['denims', denimId]);
+        reactQueryClient.invalidateQueries(queryKeys.denim(denimId));
         router.push(
           `/${currentUserData?.getCurrentUser?.accountId}/denims/${denimId}`
         );

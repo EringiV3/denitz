@@ -22,6 +22,7 @@ import { FaAngleDown, FaCopy, FaTrashAlt } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { DenimReport, DenimReportInput } from '../lib/graphql';
+import { queryKeys } from '../utils/queryKeyFactory';
 import EditableControls from './EditableControls';
 
 type Props = {
@@ -52,12 +53,9 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries([
-          'denims',
-          denimReport.denim?.id,
-          'reports',
-          denimReport.id,
-        ]);
+        reactQueryClient.invalidateQueries(
+          queryKeys.denimReport(denimReport.denim?.id ?? '', denimReport.id)
+        );
       },
       onError: () => {
         toast({
@@ -82,7 +80,9 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(['denims', denimReport.denim?.id]);
+        reactQueryClient.invalidateQueries(
+          queryKeys.denim(denimReport.denim?.id ?? '')
+        );
         router.push(`/${denimReport.denim?.user?.accountId}`);
       },
       onError: () => {
@@ -98,7 +98,7 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
   );
 
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,

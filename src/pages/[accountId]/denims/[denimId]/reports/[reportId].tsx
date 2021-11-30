@@ -1,42 +1,62 @@
 import { Box, Link } from '@chakra-ui/react';
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next';
 import { NextSeo } from 'next-seo';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { useQuery } from 'react-query';
 import DenimReport from '../../../../../components/DenimReport';
 import Layout from '../../../../../components/Layout';
+import { useGraphqlClient } from '../../../../../hooks/useGraphqlClient';
 import { GetDenimReportQuery } from '../../../../../lib/graphql';
 import { createGraphqlClient } from '../../../../../lib/graphqlClient';
+import { queryKeys } from '../../../../../utils/queryKeyFactory';
 
 const DenimReportPage: React.FC<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ data }) => {
-  const currentReportIndex = data.getDenimReport.denim?.denimReports?.findIndex(
-    (report) => report.id === data.getDenimReport.id
+  InferGetStaticPropsType<typeof getStaticProps>
+> = ({ initialData }) => {
+  const router = useRouter();
+  const { client } = useGraphqlClient();
+  const reportId = router.query.reportId as string;
+  const denimId = router.query.denimId as string;
+
+  const { data } = useQuery(
+    queryKeys.denimReport(denimId, reportId),
+    () => client.GetDenimReport({ id: reportId }),
+    { initialData, staleTime: Infinity }
   );
+
+  const currentReportIndex =
+    data?.getDenimReport.denim?.denimReports?.findIndex(
+      (report) => report.id === data.getDenimReport.id
+    );
   const previousReport =
-    currentReportIndex !== undefined && data.getDenimReport.denim?.denimReports
+    currentReportIndex !== undefined && data?.getDenimReport.denim?.denimReports
       ? data.getDenimReport.denim.denimReports[currentReportIndex - 1]
       : null;
   const nextReport =
-    currentReportIndex !== undefined && data.getDenimReport.denim?.denimReports
+    currentReportIndex !== undefined && data?.getDenimReport.denim?.denimReports
       ? data.getDenimReport.denim.denimReports[currentReportIndex + 1]
       : null;
 
   return (
     <>
       <NextSeo
-        title={`${data.getDenimReport.denim?.name} - ${data.getDenimReport.title}`}
-        description={`${data.getDenimReport.description}`}
+        title={`${data?.getDenimReport.denim?.name} - ${data?.getDenimReport.title}`}
+        description={`${data?.getDenimReport.description}`}
         openGraph={{
           type: 'website',
-          url: `https://denitz.com/${data.getDenimReport.denim?.id}/denims/${data.getDenimReport.denim?.id}/reports/${data.getDenimReport.id}`,
-          title: `${data.getDenimReport.denim?.name} - ${data.getDenimReport.title}`,
-          description: `${data.getDenimReport.description}`,
+          url: `https://denitz.com/${data?.getDenimReport.denim?.id}/denims/${data?.getDenimReport.denim?.id}/reports/${data?.getDenimReport.id}`,
+          title: `${data?.getDenimReport.denim?.name} - ${data?.getDenimReport.title}`,
+          description: `${data?.getDenimReport.description}`,
           images: [
             {
-              url: data.getDenimReport.frontImageUrl ?? '',
+              url: data?.getDenimReport.frontImageUrl ?? '',
               width: 500,
               height: 500,
               alt: 'denim report',
@@ -46,7 +66,7 @@ const DenimReportPage: React.FC<
       />
       <Layout>
         <Box marginTop="40px">
-          <DenimReport denimReport={data.getDenimReport} />
+          {data && <DenimReport denimReport={data.getDenimReport} />}
         </Box>
         <Box
           display="flex"
@@ -64,7 +84,7 @@ const DenimReportPage: React.FC<
         >
           {previousReport && (
             <NextLink
-              href={`/${data.getDenimReport.denim?.user?.accountId}/denims/${data.getDenimReport.denim?.id}/reports/${previousReport.id}`}
+              href={`/${data?.getDenimReport.denim?.user?.accountId}/denims/${data?.getDenimReport.denim?.id}/reports/${previousReport.id}`}
               passHref
             >
               <Link color="blue.500" display="flex" alignItems="center">
@@ -74,7 +94,7 @@ const DenimReportPage: React.FC<
           )}
           {nextReport && (
             <NextLink
-              href={`/${data.getDenimReport.denim?.user?.accountId}/denims/${data.getDenimReport.denim?.id}/reports/${nextReport.id}`}
+              href={`/${data?.getDenimReport.denim?.user?.accountId}/denims/${data?.getDenimReport.denim?.id}/reports/${nextReport.id}`}
               passHref
             >
               <Link color="blue.500" display="flex" alignItems="center">
@@ -88,25 +108,33 @@ const DenimReportPage: React.FC<
   );
 };
 
-type ServerSideProps = {
-  data: GetDenimReportQuery;
+type StaticProps = {
+  initialData: GetDenimReportQuery;
 };
-export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
-  context
-) => {
+export const getStaticProps: GetStaticProps<StaticProps> = async ({
+  params,
+}) => {
   const client = createGraphqlClient();
-  const data = await client.GetDenimReport({
-    id: context.query.reportId as string,
+  const initialData = await client.GetDenimReport({
+    id: params?.reportId as string,
   });
-  if (data === null) {
+  if (initialData === null) {
     return {
       notFound: true,
     };
   }
   return {
     props: {
-      data,
+      initialData,
     },
+    revalidate: 60,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
   };
 };
 

@@ -21,13 +21,18 @@ import {
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
+import { queryKeys } from '../utils/queryKeyFactory';
 import LoginButton from './LoginButton';
 
 const Header: React.FC = () => {
   const { client, hasToken } = useGraphqlClient();
-  const { data } = useQuery(['currentUser'], () => client.GetCurrentUser(), {
-    enabled: hasToken,
-  });
+  const { data } = useQuery(
+    queryKeys.currentUser(),
+    () => client.GetCurrentUser(),
+    {
+      enabled: hasToken,
+    }
+  );
   const { isAuthenticated, logout, isLoading } = useAuth0();
   const router = useRouter();
 

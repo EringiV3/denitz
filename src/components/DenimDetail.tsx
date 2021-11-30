@@ -25,6 +25,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
+import { queryKeys } from '../utils/queryKeyFactory';
 import DenimReportList from './DenimReportList';
 
 type Props = {
@@ -44,7 +45,7 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
   const { onCopy } = useClipboard(link);
 
   const { data: currentUserData } = useQuery(
-    ['currentUser'],
+    queryKeys.currentUser(),
     () => client.GetCurrentUser(),
     {
       enabled: hasToken,
@@ -62,7 +63,7 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(['denims']);
+        reactQueryClient.invalidateQueries(queryKeys.denims());
         router.push(`/${currentUserData?.getCurrentUser?.accountId}`);
       },
       onError: () => {
