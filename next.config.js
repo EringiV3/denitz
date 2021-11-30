@@ -8,6 +8,7 @@ module.exports = {
     AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
     GRAPHQL_END_POINT: process.env.GRAPHQL_END_POINT,
     MEDIA_HOST: process.env.MEDIA_HOST,
+    GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
   },
   images: {
     domains: process.env.NEXT_IMAGE_DOMAINS.split(','),

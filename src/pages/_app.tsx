@@ -2,10 +2,12 @@ import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { RecoilRoot, useRecoilSnapshot } from 'recoil';
+import GoogleAnalytics from '../components/GoogleAnalytics';
 import {
   AUTH0_AUDIENCE,
   AUTH0_CLIENT_ID,
@@ -14,6 +16,7 @@ import {
 } from '../config/constants';
 import { seoConfig } from '../config/seo';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
+import { existsGaId, pageview } from '../lib/gtag';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +34,21 @@ const AppInit = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!existsGaId) {
+      return;
+    }
+    const handleRouteChange = (path: string) => {
+      pageview(path);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   return null;
 };
@@ -62,6 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <RecoilRoot>
           <ChakraProvider>
             <AppInit />
+            <GoogleAnalytics />
             <DefaultSeo {...seoConfig} />
             <Component {...pageProps} />
             <RecoilDebugObserver />
