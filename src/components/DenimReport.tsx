@@ -92,7 +92,9 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         reactQueryClient.invalidateQueries(
           queryKeys.denim(denimReport.denim.id)
         );
-        router.push(`/${denimReport.denim.user.accountId}`);
+        router.push(
+          `/${denimReport.denim.user.accountId}/denims/${denimReport.denim.id}`
+        );
       },
       onError: () => {
         toast({

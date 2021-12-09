@@ -71,7 +71,7 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <Layout>
         <Profile accountId={accountId} profile={profile} />
         <Divider marginTop="20px" />
-        <Box marginTop="20px">
+        <Box margin="20px 0">
           <Heading size="md">デニム一覧</Heading>
           {denims.length === 0 ? (
             <Box display="flex" justifyContent="center" marginTop="40px">

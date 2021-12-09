@@ -11,6 +11,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -30,6 +31,8 @@ type Form = {
 };
 const ProfileForm: React.FC = () => {
   const { upload, isUploading } = useUploadImage();
+
+  const router = useRouter();
 
   const {
     register,
@@ -82,6 +85,7 @@ const ProfileForm: React.FC = () => {
         reactQueryClient.invalidateQueries(
           queryKeys.profile(data.getCurrentUser.accountId)
         );
+        router.push(`/${data.getCurrentUser.accountId}`);
       },
       onError: () => {
         toast({

@@ -42,6 +42,7 @@ const DenimEditPage: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
+        reactQueryClient.invalidateQueries(queryKeys.denims(accountId));
         reactQueryClient.invalidateQueries(queryKeys.denim(denimId));
         router.push(`/${accountId}/denims/${denimId}`);
       },

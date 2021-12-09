@@ -188,22 +188,24 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
         <Heading size="lg" marginTop="40px">
           色落ち記録
         </Heading>
-        {denim.denimReports?.length === 0 ? (
-          <Box display="flex" justifyContent="center" marginTop="40px">
-            <Button onClick={handleClickCreateDenimReport}>
-              色落ち記録を作成する
-            </Button>
-          </Box>
-        ) : (
-          denim.denimReports &&
-          denim.user?.accountId && (
-            <DenimReportList
-              denimReportList={denim.denimReports}
-              denimId={denim.id}
-              accountId={denim.user.accountId}
-            />
-          )
-        )}
+        <Box marginBottom="40px">
+          {denim.denimReports?.length === 0 ? (
+            <Box display="flex" justifyContent="center" marginTop="40px">
+              <Button onClick={handleClickCreateDenimReport}>
+                色落ち記録を作成する
+              </Button>
+            </Box>
+          ) : (
+            denim.denimReports &&
+            denim.user?.accountId && (
+              <DenimReportList
+                denimReportList={denim.denimReports}
+                denimId={denim.id}
+                accountId={denim.user.accountId}
+              />
+            )
+          )}
+        </Box>
       </Box>
     </Box>
   );

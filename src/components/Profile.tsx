@@ -27,12 +27,7 @@ const Profile: React.FC<Props> = ({ accountId, profile }) => {
         <Box color="gray.600">@{accountId}</Box>
       </Box>
       <Box marginTop="10px">{profile.description}</Box>
-      <Box
-        display="flex"
-        width="30%"
-        justifyContent="space-around"
-        marginTop="20px"
-      >
+      <Box display="flex" width="30%" marginTop="20px">
         {profile.twitterUserName && profile.twitterUserName !== '' && (
           <Link isExternal href={`${TWITTER_URL}/${profile.twitterUserName}`}>
             <FaTwitter size="25px" />
@@ -42,12 +37,13 @@ const Profile: React.FC<Props> = ({ accountId, profile }) => {
           <Link
             isExternal
             href={`${INSTAGRAM_URL}/${profile.instagramUserName}`}
+            marginLeft="20px"
           >
             <FaInstagram size="25px" />
           </Link>
         )}
         {profile.websiteUrl && profile.websiteUrl !== '' && (
-          <Link isExternal href={profile.websiteUrl}>
+          <Link isExternal href={profile.websiteUrl} marginLeft="20px">
             <FaLink size="25px" />
           </Link>
         )}

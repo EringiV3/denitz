@@ -6,7 +6,7 @@ const Layout: React.FC = ({ children }) => {
   return (
     <Box>
       <Header />
-      <Container minHeight="80vh" maxW="container.md">
+      <Container minHeight="80vh" maxW="container.md" marginBottom="80px">
         {children}
       </Container>
       <Footer />

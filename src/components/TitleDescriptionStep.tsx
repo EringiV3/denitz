@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -9,10 +10,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { DenimReportInput } from '../lib/graphql';
@@ -37,7 +39,9 @@ const TitleDescriptionStep: React.FC = () => {
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
-  const { upload, isUploading } = useUploadImage();
+  const { upload } = useUploadImage();
+
+  const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
 
@@ -46,6 +50,8 @@ const TitleDescriptionStep: React.FC = () => {
   const reactQueryClient = useQueryClient();
 
   const toast = useToast();
+
+  const { backToPreviousStep } = useDenimReportCreator();
 
   const frontImage = useRecoilValue(frontImageState);
   const backImage = useRecoilValue(backImageState);
@@ -95,6 +101,7 @@ const TitleDescriptionStep: React.FC = () => {
     if (frontImage === null || backImage === null) {
       return;
     }
+    setIsUploading(true);
     const [frontImageUrl, backImageUrl] = await Promise.all(
       [frontImage, backImage].map(async (image) => {
         const imageUrl = await upload(image.blob);
@@ -117,6 +124,11 @@ const TitleDescriptionStep: React.FC = () => {
       title: data.title,
       description: data.description,
     });
+    setIsUploading(false);
+  };
+
+  const handleClickBack = () => {
+    backToPreviousStep();
   };
 
   return (
@@ -139,12 +151,15 @@ const TitleDescriptionStep: React.FC = () => {
         </FormHelperText>
       </FormControl>
       <Box display="flex" justifyContent="center" marginTop="40px">
-        <Button
-          type="submit"
-          isLoading={createDenimReportMutation.isLoading || isUploading}
-        >
-          送信する
-        </Button>
+        <ButtonGroup>
+          <Button onClick={handleClickBack}>戻る</Button>
+          <Button
+            type="submit"
+            isLoading={createDenimReportMutation.isLoading || isUploading}
+          >
+            送信
+          </Button>
+        </ButtonGroup>
       </Box>
     </form>
   );
