@@ -21,46 +21,21 @@ const Footer: React.FC = () => {
       >
         <Box>ロゴ</Box>
         <Box display="flex" flexDirection="column">
-          <Link
-            href={HOW_TO_USE_URL}
-            target="_blank"
-            rel="noopener"
-            marginTop="10px"
-          >
+          <Link href={HOW_TO_USE_URL} isExternal marginTop="10px">
             使い方
           </Link>
-          <Link
-            href={DEVELOP_LOAD_MAP_URL}
-            target="_blank"
-            rel="noopener"
-            marginTop="10px"
-          >
+          <Link href={DEVELOP_LOAD_MAP_URL} isExternal marginTop="10px">
             開発ロードマップ
           </Link>
-          <Link
-            href={CONTACT_URL}
-            target="_blank"
-            rel="noopener"
-            marginTop="10px"
-          >
+          <Link href={CONTACT_URL} isExternal marginTop="10px">
             お問い合わせ
           </Link>
         </Box>
         <Box display="flex" flexDirection="column">
-          <Link
-            href={TERMS_OF_SERVICE_URL}
-            target="_blank"
-            rel="noopener"
-            marginTop="10px"
-          >
+          <Link href={TERMS_OF_SERVICE_URL} isExternal marginTop="10px">
             利用規約
           </Link>
-          <Link
-            href={PRIVACY_POLICY_URL}
-            target="_blank"
-            rel="noopener"
-            marginTop="10px"
-          >
+          <Link href={PRIVACY_POLICY_URL} isExternal marginTop="10px">
             プライバシーポリシー
           </Link>
         </Box>
