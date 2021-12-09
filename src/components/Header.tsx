@@ -1,6 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import {
-  Avatar,
   Box,
   Heading,
   Menu,
@@ -22,6 +21,7 @@ import {
 import { useQuery } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { queryKeys } from '../utils/queryKeyFactory';
+import Avatar from './Avatar';
 import LoginButton from './LoginButton';
 
 const Header: React.FC = () => {
@@ -52,13 +52,14 @@ const Header: React.FC = () => {
             {isLoading ? null : isAuthenticated ? (
               <Menu>
                 <MenuButton>
-                  <Avatar
-                    src={
-                      data?.getCurrentUser?.profile?.iconImageUrl ?? undefined
-                    }
-                    size="sm"
-                    margin="10px"
-                  />
+                  <Box margin="10px">
+                    <Avatar
+                      src={
+                        data?.getCurrentUser?.profile?.iconImageUrl ?? undefined
+                      }
+                      size={30}
+                    />
+                  </Box>
                 </MenuButton>
                 <MenuList>
                   <MenuItem

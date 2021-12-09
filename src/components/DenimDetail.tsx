@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Heading,
@@ -26,6 +25,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
 import { queryKeys } from '../utils/queryKeyFactory';
+import Avatar from './Avatar';
 import DenimReportList from './DenimReportList';
 
 type Props = {
@@ -166,7 +166,7 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
                 <Link>
                   <Avatar
                     src={denim.user.profile.iconImageUrl ?? ''}
-                    size="sm"
+                    size={30}
                   />
                 </Link>
               </NextLink>

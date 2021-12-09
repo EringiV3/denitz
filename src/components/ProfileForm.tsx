@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   FormControl,
@@ -21,6 +20,7 @@ import { useUploadImage } from '../hooks/useUploadImage';
 import { ProfileInput } from '../lib/graphql';
 import { readFile } from '../utils/image';
 import { queryKeys } from '../utils/queryKeyFactory';
+import Avatar from './Avatar';
 
 type Form = {
   name: string;
@@ -189,7 +189,7 @@ const ProfileForm: React.FC = () => {
                   ? croppedImagePreviewUrl
                   : profileData?.getProfile.iconImageUrl ?? ''
               }
-              size="2xl"
+              size={100}
             />
           </Box>
           <Box display="flex" justifyContent="center" marginTop="10px">

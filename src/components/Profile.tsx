@@ -1,9 +1,10 @@
-import { Avatar, Box, Button, Heading, Link } from '@chakra-ui/react';
+import { Box, Button, Heading, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaInstagram, FaLink, FaTwitter } from 'react-icons/fa';
 import { INSTAGRAM_URL, TWITTER_URL } from '../config/constants';
 import { Profile } from '../lib/graphql';
+import Avatar from './Avatar';
 
 type Props = {
   accountId: string;
@@ -19,7 +20,7 @@ const Profile: React.FC<Props> = ({ accountId, profile }) => {
   return (
     <>
       <Box marginTop="40px" display="flex" justifyContent="space-between">
-        <Avatar src={profile.iconImageUrl ?? undefined} size="xl" />
+        <Avatar src={profile.iconImageUrl ?? undefined} size={100} />
         <Button onClick={handleClickEdit}>編集する</Button>
       </Box>
       <Box marginTop="10px">
