@@ -1,4 +1,4 @@
-import { Box, Link } from '@chakra-ui/react';
+import { Box, Link, Spinner } from '@chakra-ui/react';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -31,6 +31,10 @@ const DenimReportPage: React.FC<
     { initialData, staleTime: Infinity }
   );
 
+  const denimReport = data?.getDenimReport;
+
+  const accountId = router.query.accountId as string;
+
   const currentReportIndex =
     data?.getDenimReport.denim?.denimReports?.findIndex(
       (report) => report.id === data.getDenimReport.id
@@ -44,19 +48,23 @@ const DenimReportPage: React.FC<
       ? data.getDenimReport.denim.denimReports[currentReportIndex + 1]
       : null;
 
+  if (!denimReport) {
+    return <Spinner position="fixed" inset="0" margin="auto" />;
+  }
+
   return (
     <>
       <NextSeo
-        title={`${data?.getDenimReport.denim?.name} - ${data?.getDenimReport.title}`}
-        description={`${data?.getDenimReport.description}`}
+        title={`${denimReport.denim?.name} - ${denimReport.title}`}
+        description={`${denimReport.description}`}
         openGraph={{
           type: 'website',
-          url: `https://denitz.com/${data?.getDenimReport.denim?.id}/denims/${data?.getDenimReport.denim?.id}/reports/${data?.getDenimReport.id}`,
-          title: `${data?.getDenimReport.denim?.name} - ${data?.getDenimReport.title}`,
-          description: `${data?.getDenimReport.description}`,
+          url: `https://denitz.com/${denimReport.denim?.id}/denims/${denimReport.denim?.id}/reports/${denimReport.id}`,
+          title: `${denimReport.denim?.name} - ${denimReport.title}`,
+          description: `${denimReport.description}`,
           images: [
             {
-              url: data?.getDenimReport.frontImageUrl ?? '',
+              url: denimReport.frontImageUrl ?? '',
               width: 500,
               height: 500,
               alt: 'denim report',
@@ -66,7 +74,7 @@ const DenimReportPage: React.FC<
       />
       <Layout>
         <Box marginTop="40px">
-          {data && <DenimReport denimReport={data.getDenimReport} />}
+          <DenimReport denimReport={denimReport} />
         </Box>
         <Box
           display="flex"
@@ -84,7 +92,7 @@ const DenimReportPage: React.FC<
         >
           {previousReport && (
             <NextLink
-              href={`/${data?.getDenimReport.denim?.user?.accountId}/denims/${data?.getDenimReport.denim?.id}/reports/${previousReport.id}`}
+              href={`/${accountId}/denims/${denimId}/reports/${previousReport.id}`}
               passHref
             >
               <Link color="blue.500" display="flex" alignItems="center">
@@ -94,7 +102,7 @@ const DenimReportPage: React.FC<
           )}
           {nextReport && (
             <NextLink
-              href={`/${data?.getDenimReport.denim?.user?.accountId}/denims/${data?.getDenimReport.denim?.id}/reports/${nextReport.id}`}
+              href={`/${accountId}/denims/${denimId}/reports/${nextReport.id}`}
               passHref
             >
               <Link color="blue.500" display="flex" alignItems="center">

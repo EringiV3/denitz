@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { FaInstagram, FaLink, FaTwitter } from 'react-icons/fa';
 import { INSTAGRAM_URL, TWITTER_URL } from '../config/constants';
-import { Profile, User } from '../lib/graphql';
+import { Profile } from '../lib/graphql';
 
 type Props = {
-  user: User;
+  accountId: string;
   profile: Profile;
 };
-const Profile: React.FC<Props> = ({ user, profile }) => {
+const Profile: React.FC<Props> = ({ accountId, profile }) => {
   const router = useRouter();
 
   const handleClickEdit = () => {
@@ -24,7 +24,7 @@ const Profile: React.FC<Props> = ({ user, profile }) => {
       </Box>
       <Box marginTop="10px">
         <Heading size="lg">{profile.name}</Heading>
-        <Box color="gray.600">@{user.accountId}</Box>
+        <Box color="gray.600">@{accountId}</Box>
       </Box>
       <Box marginTop="10px">{profile.description}</Box>
       <Box

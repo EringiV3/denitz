@@ -69,6 +69,9 @@ const ProfileForm: React.FC = () => {
     }) => client.UpdateProfile({ updateProfileId: updateProfileId, input }),
     {
       onSuccess: () => {
+        if (!data?.getCurrentUser?.accountId) {
+          return;
+        }
         toast({
           title: 'プロフィールを更新しました',
           status: 'success',
@@ -77,7 +80,7 @@ const ProfileForm: React.FC = () => {
           position: 'top',
         });
         reactQueryClient.invalidateQueries(
-          queryKeys.profile(data?.getCurrentUser?.accountId ?? '')
+          queryKeys.profile(data.getCurrentUser.accountId)
         );
       },
       onError: () => {

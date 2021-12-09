@@ -49,9 +49,7 @@ const Header: React.FC = () => {
             Denitz
           </Heading>
           <Box>
-            {isLoading ? (
-              <Avatar size="sm" margin="10px" />
-            ) : isAuthenticated ? (
+            {isLoading ? null : isAuthenticated ? (
               <Menu>
                 <MenuButton>
                   <Avatar

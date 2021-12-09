@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Heading } from '@chakra-ui/react';
+import { Box, Button, Divider, Heading, Spinner } from '@chakra-ui/react';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -12,7 +12,7 @@ import DenimCard from '../../components/DenimCard';
 import Layout from '../../components/Layout';
 import Profile from '../../components/Profile';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
-import { GetUserQuery } from '../../lib/graphql';
+import { GetProfileQuery } from '../../lib/graphql';
 import { createGraphqlClient } from '../../lib/graphqlClient';
 import { queryKeys } from '../../utils/queryKeyFactory';
 
@@ -29,24 +29,38 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const accountId = router.query.accountId as string;
 
   const { data } = useQuery(
-    queryKeys.user(accountId),
-    () => client.GetUser({ accountId }),
+    queryKeys.profile(accountId),
+    () => client.GetProfile({ accountId }),
     { initialData, staleTime: Infinity }
   );
+
+  const { data: denimsData } = useQuery(
+    queryKeys.denims(accountId),
+    () => client.GetDenims({ accountId }),
+    { staleTime: Infinity }
+  );
+
+  const profile = data?.getProfile;
+
+  const denims = denimsData?.getDenims ?? [];
+
+  if (!profile) {
+    return <Spinner position="fixed" inset="0" margin="auto" />;
+  }
 
   return (
     <>
       <NextSeo
-        title={`${data?.getUser?.profile?.name}(@${data?.getUser?.accountId}) のプロフィール`}
-        description={`${data?.getUser?.profile?.description}`}
+        title={`${profile.name}(@${accountId}) のプロフィール`}
+        description={`${profile.description}`}
         openGraph={{
           type: 'website',
-          url: `https://denitz.com/${data?.getUser?.accountId}`,
-          title: `${data?.getUser?.profile?.name}(@${data?.getUser?.accountId}) のプロフィール`,
-          description: `${data?.getUser?.profile?.name}(@${data?.getUser?.accountId}) のプロフィールページ`,
+          url: `https://denitz.com/${accountId}`,
+          title: `${profile.name}(@${accountId}) のプロフィール`,
+          description: `${profile.name}(@${accountId}) のプロフィールページ`,
           images: [
             {
-              url: data?.getUser?.profile?.iconImageUrl ?? '',
+              url: profile.iconImageUrl ?? '',
               width: 500,
               height: 500,
               alt: 'profile icon',
@@ -55,24 +69,22 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         }}
       />
       <Layout>
-        {data?.getUser && data?.getUser.profile && (
-          <Profile user={data?.getUser} profile={data?.getUser.profile} />
-        )}
+        <Profile accountId={accountId} profile={profile} />
         <Divider marginTop="20px" />
         <Box marginTop="20px">
           <Heading size="md">デニム一覧</Heading>
-          {data?.getUser?.denims?.length === 0 ? (
+          {denims.length === 0 ? (
             <Box display="flex" justifyContent="center" marginTop="40px">
               <Button onClick={handleClickAddDenim}>デニムを追加する</Button>
             </Box>
           ) : (
-            data?.getUser?.denims?.map(
+            denims.map(
               (denim) =>
                 denim && (
-                  <Box marginTop="20px" key={denim?.id}>
+                  <Box marginTop="20px" key={denim.id}>
                     <DenimCard
                       denim={denim}
-                      link={`/${data?.getUser?.accountId}/denims/${denim.id}`}
+                      link={`/${accountId}/denims/${denim.id}`}
                     />
                   </Box>
                 )
@@ -85,13 +97,13 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 };
 
 type StaticProps = {
-  initialData: GetUserQuery;
+  initialData: GetProfileQuery;
 };
 export const getStaticProps: GetStaticProps<StaticProps> = async ({
   params,
 }) => {
   const client = createGraphqlClient();
-  const initialData = await client.GetUser({
+  const initialData = await client.GetProfile({
     accountId: params?.accountId as string,
   });
   if (initialData === null) {
