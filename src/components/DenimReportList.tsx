@@ -16,7 +16,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type {
@@ -77,7 +77,11 @@ const DenimReportList: React.FC<Props> = ({
   const isEditable = currentUserData?.getCurrentUser?.accountId === accountId;
 
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [items, setItems] = useState(denimReportList);
+  const [items, setItems] = useState<DenimReport[]>([]);
+
+  useEffect(() => {
+    setItems(denimReportList);
+  }, [denimReportList]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),

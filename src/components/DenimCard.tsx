@@ -2,6 +2,7 @@ import { Box, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import NextImage from 'next/image';
 import NextLink from 'next/link';
 import type { Denim } from '../lib/graphql';
+import { formatText } from '../utils/stringHelpers';
 
 type Props = {
   denim: Denim;
@@ -15,7 +16,7 @@ const DenimCard: React.FC<Props> = ({ denim, link, showBorder }) => {
       backgroundColor="gray.200"
       borderRadius="15px"
       overflow="hidden"
-      border={showBorder ? '3px solid blue' : undefined}
+      border={showBorder ? '3px solid #2c5282' : undefined}
     >
       <Box width="30%" display="flex">
         <NextImage
@@ -35,7 +36,9 @@ const DenimCard: React.FC<Props> = ({ denim, link, showBorder }) => {
         ) : (
           <Heading size="md">{denim.name}</Heading>
         )}
-        <Box marginTop="10px">{denim.description}</Box>
+        <Box marginTop="10px" display={['none', 'block']}>
+          {formatText(denim.description ?? '', 100)}
+        </Box>
       </Box>
     </LinkBox>
   );

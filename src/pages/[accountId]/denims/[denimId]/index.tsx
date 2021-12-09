@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -21,12 +21,19 @@ const DenimDetailPage: React.FC<
   const router = useRouter();
   const { client } = useGraphqlClient();
   const denimId = router.query.denimId as string;
+  const accountId = router.query.accountId as string;
 
   const { data } = useQuery(
     queryKeys.denim(denimId),
     () => client.GetDenim({ id: denimId }),
     { initialData, staleTime: Infinity }
   );
+
+  const denim = data?.getDenim;
+
+  if (!denim) {
+    return <Spinner position="fixed" inset="0" margin="auto" />;
+  }
 
   return (
     <>
@@ -35,12 +42,12 @@ const DenimDetailPage: React.FC<
         description={`${data?.getDenim?.description}`}
         openGraph={{
           type: 'website',
-          url: `https://denitz.com/${data?.getDenim?.user?.accountId}/denims/${data?.getDenim?.id}`,
-          title: `${data?.getDenim?.name}`,
-          description: `${data?.getDenim?.description}`,
+          url: `https://denitz.com/${accountId}/denims/${denim.id}`,
+          title: `${denim.name}`,
+          description: `${denim.description}`,
           images: [
             {
-              url: data?.getDenim?.imageUrl ?? '',
+              url: denim.imageUrl ?? '',
               width: 500,
               height: 500,
               alt: 'denim detail',
@@ -49,11 +56,9 @@ const DenimDetailPage: React.FC<
         }}
       />
       <Layout>
-        {data?.getDenim && (
-          <Box marginTop="40px">
-            <DenimDetail denim={data.getDenim} />
-          </Box>
-        )}
+        <Box marginTop="40px">
+          <DenimDetail denim={denim} />
+        </Box>
       </Layout>
     </>
   );

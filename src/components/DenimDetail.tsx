@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Heading,
@@ -26,6 +25,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
 import { queryKeys } from '../utils/queryKeyFactory';
+import Avatar from './Avatar';
 import DenimReportList from './DenimReportList';
 
 type Props = {
@@ -56,6 +56,9 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
     (id: string) => client.DeleteDenim({ id }),
     {
       onSuccess: () => {
+        if (!currentUserData?.getCurrentUser?.accountId) {
+          return;
+        }
         toast({
           title: 'デニムを削除しました',
           status: 'success',
@@ -63,8 +66,10 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(queryKeys.denims());
-        router.push(`/${currentUserData?.getCurrentUser?.accountId}`);
+        reactQueryClient.invalidateQueries(
+          queryKeys.denims(currentUserData.getCurrentUser.accountId)
+        );
+        router.push(`/${currentUserData.getCurrentUser.accountId}`);
       },
       onError: () => {
         toast({
@@ -100,8 +105,11 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
   };
 
   const handleClickEdit = () => {
+    if (!currentUserData?.getCurrentUser?.accountId) {
+      return;
+    }
     router.push(
-      `/${currentUserData?.getCurrentUser?.accountId}/denims/${denim.id}/edit`
+      `/${currentUserData.getCurrentUser.accountId}/denims/${denim.id}/edit`
     );
   };
 
@@ -152,14 +160,21 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
       <Box>
         <Heading size="2xl">{denim.name}</Heading>
         <Box display="flex" marginTop="10px" alignItems="center">
-          <NextLink href={`/${denim.user?.accountId}`} passHref>
-            <Link>
-              <Avatar src={denim.user?.profile?.iconImageUrl ?? ''} size="sm" />
-            </Link>
-          </NextLink>
-          <NextLink href={`/${denim.user?.accountId}`} passHref>
-            <Link marginLeft="10px">{denim.user?.profile?.name ?? ''} </Link>
-          </NextLink>
+          {denim.user && denim.user.profile && (
+            <>
+              <NextLink href={`/${denim.user.accountId}`} passHref>
+                <Link>
+                  <Avatar
+                    src={denim.user.profile.iconImageUrl ?? ''}
+                    size={30}
+                  />
+                </Link>
+              </NextLink>
+              <NextLink href={`/${denim.user.accountId}`} passHref>
+                <Link marginLeft="10px">{denim.user.profile.name ?? ''} </Link>
+              </NextLink>
+            </>
+          )}
         </Box>
         <Box display="flex" justifyContent="center" marginTop="40px">
           <NextImage
@@ -173,22 +188,24 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
         <Heading size="lg" marginTop="40px">
           色落ち記録
         </Heading>
-        {denim.denimReports?.length === 0 ? (
-          <Box display="flex" justifyContent="center" marginTop="40px">
-            <Button onClick={handleClickCreateDenimReport}>
-              色落ち記録を作成する
-            </Button>
-          </Box>
-        ) : (
-          denim.denimReports &&
-          denim.user?.accountId && (
-            <DenimReportList
-              denimReportList={denim.denimReports}
-              denimId={denim.id}
-              accountId={denim.user.accountId}
-            />
-          )
-        )}
+        <Box marginBottom="40px">
+          {denim.denimReports?.length === 0 ? (
+            <Box display="flex" justifyContent="center" marginTop="40px">
+              <Button onClick={handleClickCreateDenimReport}>
+                色落ち記録を作成する
+              </Button>
+            </Box>
+          ) : (
+            denim.denimReports &&
+            denim.user?.accountId && (
+              <DenimReportList
+                denimReportList={denim.denimReports}
+                denimId={denim.id}
+                accountId={denim.user.accountId}
+              />
+            )
+          )}
+        </Box>
       </Box>
     </Box>
   );

@@ -1,0 +1,10 @@
+query GetDenims($accountId: String!) {
+  getDenims(accountId: $accountId) {
+    id
+    name
+    description
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
