@@ -46,6 +46,9 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
       client.UpdateDenimReport({ id, input }),
     {
       onSuccess: () => {
+        if (!denimReport.denim?.id) {
+          return;
+        }
         toast({
           title: '色落ち記録を更新しました',
           status: 'success',
@@ -54,7 +57,7 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
           position: 'top',
         });
         reactQueryClient.invalidateQueries(
-          queryKeys.denimReport(denimReport.denim?.id ?? '', denimReport.id)
+          queryKeys.denimReport(denimReport.denim.id, denimReport.id)
         );
       },
       onError: () => {
@@ -73,6 +76,12 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
     (id: string) => client.DeleteDenimReport({ id }),
     {
       onSuccess: () => {
+        if (!denimReport.denim?.id) {
+          return;
+        }
+        if (!denimReport.denim?.user?.accountId) {
+          return;
+        }
         toast({
           title: '色落ち記録を削除しました',
           status: 'success',
@@ -81,9 +90,11 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
           position: 'top',
         });
         reactQueryClient.invalidateQueries(
-          queryKeys.denim(denimReport.denim?.id ?? '')
+          queryKeys.denim(denimReport.denim.id)
         );
-        router.push(`/${denimReport.denim?.user?.accountId}`);
+        router.push(
+          `/${denimReport.denim.user.accountId}/denims/${denimReport.denim.id}`
+        );
       },
       onError: () => {
         toast({
@@ -213,11 +224,13 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         )}
         <Box>
           デニム:{' '}
-          <NextLink
-            href={`/${denimReport.denim?.user?.accountId}/denims/${denimReport.denim?.id}`}
-          >
-            <Link color="blue.600">{denimReport.denim?.name}</Link>
-          </NextLink>
+          {denimReport.denim?.user?.accountId && denimReport.denim?.id && (
+            <NextLink
+              href={`/${denimReport.denim.user.accountId}/denims/${denimReport.denim.id}`}
+            >
+              <Link color="blue.600">{denimReport.denim.name}</Link>
+            </NextLink>
+          )}
         </Box>
         <Box>作成日: {dayjs(denimReport.createdAt).format('YYYY/MM/DD')}</Box>
         <Box>更新日: {dayjs(denimReport.updatedAt).format('YYYY/MM/DD')}</Box>

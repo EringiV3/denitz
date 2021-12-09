@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   FormControl,
@@ -11,6 +10,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -20,6 +20,7 @@ import { useUploadImage } from '../hooks/useUploadImage';
 import { ProfileInput } from '../lib/graphql';
 import { readFile } from '../utils/image';
 import { queryKeys } from '../utils/queryKeyFactory';
+import Avatar from './Avatar';
 
 type Form = {
   name: string;
@@ -30,6 +31,8 @@ type Form = {
 };
 const ProfileForm: React.FC = () => {
   const { upload, isUploading } = useUploadImage();
+
+  const router = useRouter();
 
   const {
     register,
@@ -69,6 +72,9 @@ const ProfileForm: React.FC = () => {
     }) => client.UpdateProfile({ updateProfileId: updateProfileId, input }),
     {
       onSuccess: () => {
+        if (!data?.getCurrentUser?.accountId) {
+          return;
+        }
         toast({
           title: 'プロフィールを更新しました',
           status: 'success',
@@ -77,8 +83,9 @@ const ProfileForm: React.FC = () => {
           position: 'top',
         });
         reactQueryClient.invalidateQueries(
-          queryKeys.profile(data?.getCurrentUser?.accountId ?? '')
+          queryKeys.profile(data.getCurrentUser.accountId)
         );
+        router.push(`/${data.getCurrentUser.accountId}`);
       },
       onError: () => {
         toast({
@@ -182,7 +189,7 @@ const ProfileForm: React.FC = () => {
                   ? croppedImagePreviewUrl
                   : profileData?.getProfile.iconImageUrl ?? ''
               }
-              size="2xl"
+              size={100}
             />
           </Box>
           <Box display="flex" justifyContent="center" marginTop="10px">

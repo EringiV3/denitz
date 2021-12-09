@@ -29,6 +29,9 @@ const AddNewDenimPage: React.FC = () => {
     (input: DenimInput) => client.CreateDenim({ input }),
     {
       onSuccess: () => {
+        if (!data?.getCurrentUser?.accountId) {
+          return;
+        }
         toast({
           title: 'デニムを追加しました',
           status: 'success',
@@ -36,8 +39,10 @@ const AddNewDenimPage: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
-        reactQueryClient.invalidateQueries(queryKeys.denims());
-        router.push(`/${data?.getCurrentUser?.accountId}`);
+        reactQueryClient.invalidateQueries(
+          queryKeys.denims(data.getCurrentUser.accountId)
+        );
+        router.push(`/${data.getCurrentUser.accountId}`);
       },
       onError: () => {
         toast({

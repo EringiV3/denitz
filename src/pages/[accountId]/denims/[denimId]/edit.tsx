@@ -19,21 +19,17 @@ const DenimEditPage: React.FC = () => {
 
   const denimId = router.query.denimId as string;
 
-  const { data: currentUserData } = useQuery(
-    queryKeys.currentUser(),
-    () => client.GetCurrentUser(),
-    {
-      enabled: hasToken,
-    }
-  );
+  const accountId = router.query.accountId as string;
 
-  const { data: denimData } = useQuery(
+  const { data } = useQuery(
     queryKeys.denim(denimId),
     () => client.GetDenim({ id: denimId }),
     {
       enabled: !!denimId,
     }
   );
+
+  const denim = data?.getDenim;
 
   const updateDenimMutation = useMutation(
     (input: DenimInput) => client.UpdateDenim({ id: denimId, input }),
@@ -46,10 +42,9 @@ const DenimEditPage: React.FC = () => {
           isClosable: true,
           position: 'top',
         });
+        reactQueryClient.invalidateQueries(queryKeys.denims(accountId));
         reactQueryClient.invalidateQueries(queryKeys.denim(denimId));
-        router.push(
-          `/${currentUserData?.getCurrentUser?.accountId}/denims/${denimId}`
-        );
+        router.push(`/${accountId}/denims/${denimId}`);
       },
       onError: () => {
         toast({
@@ -71,12 +66,12 @@ const DenimEditPage: React.FC = () => {
           デニム編集
         </Heading>
         <Box>
-          {denimData && denimData.getDenim && (
+          {denim && (
             <DenimForm
               initialValues={{
-                name: denimData.getDenim.name ?? '',
-                description: denimData.getDenim.description ?? '',
-                imageUrl: denimData.getDenim.imageUrl ?? '',
+                name: denim.name ?? '',
+                description: denim.description ?? '',
+                imageUrl: denim.imageUrl ?? '',
               }}
               executeMutation={(data) => {
                 updateDenimMutation.mutate({
