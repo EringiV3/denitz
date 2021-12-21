@@ -74,7 +74,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async ({
   const initialData = await client.GetDenim({
     id: params?.denimId as string,
   });
-  if (initialData === null) {
+  if (initialData.getDenim === null) {
     return {
       notFound: true,
     };

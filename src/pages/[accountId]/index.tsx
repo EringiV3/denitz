@@ -106,7 +106,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async ({
   const initialData = await client.GetProfile({
     accountId: params?.accountId as string,
   });
-  if (initialData === null) {
+  if (initialData.getProfile === null) {
     return {
       notFound: true,
     };
