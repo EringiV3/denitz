@@ -1,8 +1,10 @@
-import { Box, Button, Heading, Link } from '@chakra-ui/react';
+import { Box, Heading, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaInstagram, FaLink, FaTwitter } from 'react-icons/fa';
+import Button from '../components/Button';
 import { INSTAGRAM_URL, TWITTER_URL } from '../config/constants';
+import { COLOR_CODE_GRAY, COLOR_CODE_INDIGO_BLUE } from '../config/css';
 import { Profile } from '../lib/graphql';
 import Avatar from './Avatar';
 
@@ -25,14 +27,18 @@ const Profile: React.FC<Props> = ({ accountId, profile, isEditable }) => {
         {isEditable && <Button onClick={handleClickEdit}>編集する</Button>}
       </Box>
       <Box marginTop="10px">
-        <Heading size="lg">{profile.name}</Heading>
-        <Box color="gray.600">@{accountId}</Box>
+        <Heading size="lg" color={COLOR_CODE_INDIGO_BLUE}>
+          {profile.name}
+        </Heading>
+        <Box color={COLOR_CODE_GRAY}>@{accountId}</Box>
       </Box>
-      <Box marginTop="10px">{profile.description}</Box>
+      <Box marginTop="10px" color={COLOR_CODE_GRAY}>
+        {profile.description}
+      </Box>
       <Box display="flex" width="30%" marginTop="20px">
         {profile.twitterUserName && profile.twitterUserName !== '' && (
           <Link isExternal href={`${TWITTER_URL}/${profile.twitterUserName}`}>
-            <FaTwitter size="25px" />
+            <FaTwitter size="25px" color={COLOR_CODE_INDIGO_BLUE} />
           </Link>
         )}
         {profile.instagramUserName && profile.instagramUserName !== '' && (
@@ -41,12 +47,12 @@ const Profile: React.FC<Props> = ({ accountId, profile, isEditable }) => {
             href={`${INSTAGRAM_URL}/${profile.instagramUserName}`}
             marginLeft="20px"
           >
-            <FaInstagram size="25px" />
+            <FaInstagram size="25px" color={COLOR_CODE_INDIGO_BLUE} />
           </Link>
         )}
         {profile.websiteUrl && profile.websiteUrl !== '' && (
           <Link isExternal href={profile.websiteUrl} marginLeft="20px">
-            <FaLink size="25px" />
+            <FaLink size="25px" color={COLOR_CODE_INDIGO_BLUE} />
           </Link>
         )}
       </Box>

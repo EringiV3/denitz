@@ -2,6 +2,7 @@ import { Spinner, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Layout from '../../components/Layout';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 import { queryKeys } from '../../utils/queryKeyFactory';
 
@@ -53,7 +54,11 @@ const Callback: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  return <Spinner position="fixed" inset="0" margin="auto" />;
+  return (
+    <Layout>
+      <Spinner position="fixed" inset="0" margin="auto" />
+    </Layout>
+  );
 };
 
 export default Callback;

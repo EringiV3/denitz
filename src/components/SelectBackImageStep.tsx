@@ -1,7 +1,9 @@
-import { Box, Button, ButtonGroup, Link, useToast } from '@chakra-ui/react';
+import { Box, ButtonGroup, Link, useToast } from '@chakra-ui/react';
 import NextImage from 'next/image';
 import React from 'react';
 import { useRecoilState } from 'recoil';
+import Button from '../components/Button';
+import { COLOR_CODE_PINK } from '../config/css';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { backImageState } from '../states/denimReportCreator';
 import { readFile } from '../utils/image';
@@ -63,7 +65,14 @@ const SelectBackImageStep: React.FC = () => {
         )}
         <Box display="flex" justifyContent="center" marginTop="40px">
           <label>
-            <Link color="blue.400">画像を選択する</Link>
+            <Link
+              f
+              fontWeight="bold"
+              textDecoration="underline"
+              color={COLOR_CODE_PINK}
+            >
+              画像を選択する
+            </Link>
             <input
               type="file"
               accept="image/*"

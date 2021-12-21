@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import Stepper from '../components/Stepper';
+import { COLOR_CODE_INDIGO_BLUE } from '../config/css';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { denimIdState } from '../states/denimReportCreator';
 import SelectBackImageStep from './SelectBackImageStep';
@@ -62,7 +63,7 @@ const DenimReportForm: React.FC = () => {
       <Box width="100%" marginTop="20px">
         <Stepper stepCount={steps.length} activeStep={currentStep} />
       </Box>
-      <Heading size="md" marginTop="40px">
+      <Heading size="md" marginTop="40px" color={COLOR_CODE_INDIGO_BLUE}>
         {steps[currentStep - 1].title}
       </Heading>
       <Box>{steps[currentStep - 1].component}</Box>

@@ -4,6 +4,7 @@ import { NextSeo } from 'next-seo';
 import { useEffect } from 'react';
 import DenimReportForm from '../../components/DenimReportForm';
 import Layout from '../../components/Layout';
+import { COLOR_CODE_INDIGO_BLUE } from '../../config/css';
 
 const AddNewDenimReportPage: React.FC = () => {
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -19,7 +20,7 @@ const AddNewDenimReportPage: React.FC = () => {
     <>
       <NextSeo title="色落ち記録作成" description="色落ち記録作成ページ" />
       <Layout>
-        <Heading size="lg" marginTop="40px">
+        <Heading size="lg" marginTop="40px" color={COLOR_CODE_INDIGO_BLUE}>
           色落ち記録作成
         </Heading>
         <DenimReportForm />

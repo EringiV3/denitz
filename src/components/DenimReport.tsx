@@ -20,6 +20,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FaAngleDown, FaCopy, FaTrashAlt } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  COLOR_CODE_GRAY,
+  COLOR_CODE_INDIGO_BLUE,
+  COLOR_CODE_PINK,
+  COLOR_CODE_WHITE,
+} from '../config/css';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { DenimReport, DenimReportInput } from '../lib/graphql';
 import { queryKeys } from '../utils/queryKeyFactory';
@@ -183,7 +189,15 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
       {isEditable && (
         <Box display="flex" justifyContent="flex-end">
           <Menu>
-            <MenuButton as={Button} rightIcon={<FaAngleDown />}>
+            <MenuButton
+              as={Button}
+              rightIcon={<FaAngleDown />}
+              backgroundColor={COLOR_CODE_PINK}
+              color={COLOR_CODE_WHITE}
+              _hover={{ backgroundColor: COLOR_CODE_PINK }}
+              _focus={{ backgroundColor: COLOR_CODE_PINK }}
+              _active={{ backgroundColor: COLOR_CODE_PINK }}
+            >
               Actions
             </MenuButton>
             <MenuList>
@@ -212,6 +226,7 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
             fontSize="2xl"
             fontWeight="bold"
             fontFamily="heading"
+            color={COLOR_CODE_INDIGO_BLUE}
             isPreviewFocusable={false}
             onSubmit={handleSubmitTitle}
           >
@@ -220,23 +235,33 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
             <EditableControls />
           </Editable>
         ) : (
-          <Heading size="lg">{denimReport.title}</Heading>
+          <Heading size="lg" color={COLOR_CODE_INDIGO_BLUE}>
+            {denimReport.title}
+          </Heading>
         )}
-        <Box>
+        <Box color={COLOR_CODE_GRAY}>
           デニム:{' '}
           {denimReport.denim?.user?.accountId && denimReport.denim?.id && (
             <NextLink
               href={`/${denimReport.denim.user.accountId}/denims/${denimReport.denim.id}`}
             >
-              <Link color="blue.600">{denimReport.denim.name}</Link>
+              <Link color={COLOR_CODE_PINK} fontWeight="bold">
+                {denimReport.denim.name}
+              </Link>
             </NextLink>
           )}
         </Box>
-        <Box>作成日: {dayjs(denimReport.createdAt).format('YYYY/MM/DD')}</Box>
-        <Box>更新日: {dayjs(denimReport.updatedAt).format('YYYY/MM/DD')}</Box>
+        <Box color={COLOR_CODE_GRAY}>
+          作成日: {dayjs(denimReport.createdAt).format('YYYY/MM/DD')}
+        </Box>
+        <Box color={COLOR_CODE_GRAY}>
+          更新日: {dayjs(denimReport.updatedAt).format('YYYY/MM/DD')}
+        </Box>
       </Box>
       <Box marginTop="40px">
-        <Heading size="md">フロント</Heading>
+        <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+          フロント
+        </Heading>
         <Box display="flex" justifyContent="center">
           {denimReport.frontImageUrl && (
             <NextImage
@@ -249,7 +274,9 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         </Box>
       </Box>
       <Box marginTop="40px">
-        <Heading size="md">バック</Heading>
+        <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+          バック
+        </Heading>
         <Box display="flex" justifyContent="center">
           {denimReport.backImageUrl && (
             <NextImage
@@ -262,7 +289,9 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         </Box>
       </Box>
       <Box marginTop="40px">
-        <Heading size="md">詳細画像</Heading>
+        <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+          詳細画像
+        </Heading>
         <Box>
           {denimReport.detailImageUrls &&
             denimReport.detailImageUrls.map((image) => (
@@ -289,6 +318,7 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
             defaultValue={denimReport.description ?? ''}
             fontSize="inherit"
             fontFamily="body"
+            color={COLOR_CODE_GRAY}
             isPreviewFocusable={false}
             onSubmit={handleSubmitDescription}
           >
@@ -299,7 +329,7 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
             </Box>
           </Editable>
         ) : (
-          <Box>{denimReport.description}</Box>
+          <Box color={COLOR_CODE_GRAY}>{denimReport.description}</Box>
         )}
       </Box>
     </Box>

@@ -11,6 +11,7 @@ import { useQuery } from 'react-query';
 import DenimCard from '../../components/DenimCard';
 import Layout from '../../components/Layout';
 import Profile from '../../components/Profile';
+import { COLOR_CODE_INDIGO_BLUE } from '../../config/css';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 import { GetProfileQuery } from '../../lib/graphql';
 import { createGraphqlClient } from '../../lib/graphqlClient';
@@ -84,7 +85,9 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         />
         <Divider marginTop="20px" />
         <Box margin="20px 0">
-          <Heading size="md">デニム一覧</Heading>
+          <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+            デニム一覧
+          </Heading>
           {denims.length === 0 ? (
             <Box display="flex" justifyContent="center" marginTop="40px">
               <Button onClick={handleClickAddDenim}>デニムを追加する</Button>

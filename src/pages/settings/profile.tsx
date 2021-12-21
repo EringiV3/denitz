@@ -4,6 +4,7 @@ import { NextSeo } from 'next-seo';
 import { useEffect } from 'react';
 import Layout from '../../components/Layout';
 import ProfileForm from '../../components/ProfileForm';
+import { COLOR_CODE_INDIGO_BLUE } from '../../config/css';
 
 const ProfileSetting: React.FC = () => {
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -19,7 +20,11 @@ const ProfileSetting: React.FC = () => {
     <>
       <NextSeo title="プロフィール編集" description="プロフィール編集ページ" />
       <Layout>
-        <Heading size="md" margin="40px 0 20px 0">
+        <Heading
+          size="md"
+          margin="40px 0 20px 0"
+          color={COLOR_CODE_INDIGO_BLUE}
+        >
           プロフィール設定
         </Heading>
         <Box marginBottom="40px">
