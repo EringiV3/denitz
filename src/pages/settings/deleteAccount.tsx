@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   Box,
   Button,
@@ -7,6 +8,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
+import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import Layout from '../../components/Layout';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
@@ -51,6 +53,15 @@ const DeleteAccountPage: React.FC = () => {
 
     deleteUserAccountMutation.mutate();
   };
+
+  const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      loginWithRedirect();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isAuthenticated]);
 
   return (
     <>

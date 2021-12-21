@@ -20,13 +20,19 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   initialData,
 }) => {
   const router = useRouter();
-  const { client } = useGraphqlClient();
+  const { client, hasToken } = useGraphqlClient();
 
   const handleClickAddDenim = () => {
     router.push('/addNew/denim');
   };
 
   const accountId = router.query.accountId as string;
+
+  const { data: currentUserData } = useQuery(
+    queryKeys.currentUser(),
+    () => client.GetCurrentUser(),
+    { staleTime: Infinity, enabled: hasToken }
+  );
 
   const { data } = useQuery(
     queryKeys.profile(accountId),
@@ -43,6 +49,8 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const profile = data?.getProfile;
 
   const denims = denimsData?.getDenims ?? [];
+
+  const isEditable = currentUserData?.getCurrentUser?.accountId === accountId;
 
   if (!profile) {
     return <Spinner position="fixed" inset="0" margin="auto" />;
@@ -69,7 +77,11 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         }}
       />
       <Layout>
-        <Profile accountId={accountId} profile={profile} />
+        <Profile
+          accountId={accountId}
+          profile={profile}
+          isEditable={isEditable}
+        />
         <Divider marginTop="20px" />
         <Box margin="20px 0">
           <Heading size="md">デニム一覧</Heading>
