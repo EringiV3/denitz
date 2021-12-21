@@ -5,6 +5,8 @@ export const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE ?? '';
 export const GRAPHQL_END_POINT = process.env.GRAPHQL_END_POINT ?? '';
 export const MEDIA_HOST = process.env.MEDIA_HOST ?? '';
 export const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID ?? '';
+export const NEXT_IMAGE_DOMAINS =
+  process.env.NEXT_IMAGE_DOMAINS?.split(',') ?? [];
 
 export const TWITTER_URL = 'https://twitter.com';
 export const INSTAGRAM_URL = 'https://www.instagram.com';
