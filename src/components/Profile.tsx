@@ -9,8 +9,9 @@ import Avatar from './Avatar';
 type Props = {
   accountId: string;
   profile: Profile;
+  isEditable: boolean;
 };
-const Profile: React.FC<Props> = ({ accountId, profile }) => {
+const Profile: React.FC<Props> = ({ accountId, profile, isEditable }) => {
   const router = useRouter();
 
   const handleClickEdit = () => {
@@ -21,7 +22,7 @@ const Profile: React.FC<Props> = ({ accountId, profile }) => {
     <>
       <Box marginTop="40px" display="flex" justifyContent="space-between">
         <Avatar src={profile.iconImageUrl ?? undefined} size={100} />
-        <Button onClick={handleClickEdit}>編集する</Button>
+        {isEditable && <Button onClick={handleClickEdit}>編集する</Button>}
       </Box>
       <Box marginTop="10px">
         <Heading size="lg">{profile.name}</Heading>

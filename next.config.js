@@ -9,6 +9,7 @@ module.exports = {
     GRAPHQL_END_POINT: process.env.GRAPHQL_END_POINT,
     MEDIA_HOST: process.env.MEDIA_HOST,
     GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
+    NEXT_IMAGE_DOMAINS: process.env.NEXT_IMAGE_DOMAINS,
   },
   images: {
     domains: process.env.NEXT_IMAGE_DOMAINS.split(','),
