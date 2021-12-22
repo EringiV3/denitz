@@ -10,13 +10,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { useQuery } from 'react-query';
-import DenimReport from '../../../../../components/DenimReport';
-import Layout from '../../../../../components/Layout';
-import { COLOR_CODE_PINK } from '../../../../../config/css';
-import { useGraphqlClient } from '../../../../../hooks/useGraphqlClient';
-import { GetDenimReportQuery } from '../../../../../lib/graphql';
-import { createGraphqlClient } from '../../../../../lib/graphqlClient';
-import { queryKeys } from '../../../../../utils/queryKeyFactory';
+import DenimReport from '../../../../../../components/DenimReport';
+import Layout from '../../../../../../components/Layout';
+import { COLOR_CODE_PINK } from '../../../../../../config/css';
+import { useGraphqlClient } from '../../../../../../hooks/useGraphqlClient';
+import { GetDenimReportQuery } from '../../../../../../lib/graphql';
+import { createGraphqlClient } from '../../../../../../lib/graphqlClient';
+import { queryKeys } from '../../../../../../utils/queryKeyFactory';
 
 const DenimReportPage: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>

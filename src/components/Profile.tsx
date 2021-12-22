@@ -20,6 +20,8 @@ const Profile: React.FC<Props> = ({ accountId, profile, isEditable }) => {
     router.push('/settings/profile');
   };
 
+  console.log({ profile });
+
   return (
     <>
       <Box marginTop="40px" display="flex" justifyContent="space-between">
@@ -33,7 +35,12 @@ const Profile: React.FC<Props> = ({ accountId, profile, isEditable }) => {
         <Box color={COLOR_CODE_GRAY}>@{accountId}</Box>
       </Box>
       <Box marginTop="10px" color={COLOR_CODE_GRAY}>
-        {profile.description}
+        {profile.description?.split('\n').map((v, i) => (
+          <React.Fragment key={i}>
+            {v}
+            <br />
+          </React.Fragment>
+        ))}
       </Box>
       <Box display="flex" width="30%" marginTop="20px">
         {profile.twitterUserName && profile.twitterUserName !== '' && (

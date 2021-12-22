@@ -204,7 +204,12 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
           />
         </Box>
         <Box marginTop="40px" color={COLOR_CODE_GRAY}>
-          {denim.description}
+          {denim.description?.split('\n').map((v, i) => (
+            <React.Fragment key={i}>
+              {v}
+              <br />
+            </React.Fragment>
+          ))}
         </Box>
         <Heading size="lg" marginTop="40px" color={COLOR_CODE_INDIGO_BLUE}>
           色落ち記録
