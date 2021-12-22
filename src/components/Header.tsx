@@ -1,6 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import {
   Box,
+  Container,
   Heading,
   Menu,
   MenuButton,
@@ -9,6 +10,7 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
   FaCog,
@@ -19,6 +21,7 @@ import {
   FaUserEdit,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
+import { COLOR_CODE_INDIGO_BLUE, COLOR_CODE_WHITE } from '../config/css';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { queryKeys } from '../utils/queryKeyFactory';
 import Avatar from './Avatar';
@@ -40,78 +43,97 @@ const Header: React.FC = () => {
     <>
       <header>
         <Box
-          backgroundColor="blue.700"
+          backgroundColor={COLOR_CODE_WHITE}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
+          minHeight="50px"
         >
-          <Heading color="white" size="lg" padding="10px">
-            Denitz
-          </Heading>
-          <Box>
-            {isLoading ? null : isAuthenticated ? (
-              <Menu>
-                <MenuButton>
-                  <Box margin="10px">
-                    <Avatar
-                      src={
-                        data?.getCurrentUser?.profile?.iconImageUrl ?? undefined
+          <Container
+            maxW="container.lg"
+            display="flex"
+            justifyContent="space-between"
+          >
+            <NextLink href={`/`} passHref>
+              <Box as="a" display="flex" alignItems="center">
+                <Heading
+                  color={COLOR_CODE_INDIGO_BLUE}
+                  size="lg"
+                  display="flex"
+                  alignItems="center"
+                >
+                  Denitz
+                </Heading>
+              </Box>
+            </NextLink>
+            <Box>
+              {isLoading ? null : isAuthenticated ? (
+                <Menu>
+                  <MenuButton>
+                    <Box margin="10px">
+                      <Avatar
+                        src={
+                          data?.getCurrentUser?.profile?.iconImageUrl ??
+                          undefined
+                        }
+                        size={30}
+                      />
+                    </Box>
+                  </MenuButton>
+                  <MenuList color={COLOR_CODE_INDIGO_BLUE}>
+                    <MenuItem
+                      icon={<FaUserCircle size="15px" />}
+                      onClick={() =>
+                        router.push(`/${data?.getCurrentUser?.accountId}`)
                       }
-                      size={30}
-                    />
-                  </Box>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem
-                    icon={<FaUserCircle size="15px" />}
-                    onClick={() =>
-                      router.push(`/${data?.getCurrentUser?.accountId}`)
-                    }
-                  >
-                    プロフィール
-                  </MenuItem>
-                  <MenuGroup title="AddNew">
-                    <MenuItem
-                      icon={<FaPlus size="15px" />}
-                      onClick={() => router.push('/addNew/denim')}
                     >
-                      デニム追加
+                      プロフィール
                     </MenuItem>
+                    <MenuGroup title="AddNew">
+                      <MenuItem
+                        icon={<FaPlus size="15px" />}
+                        onClick={() => router.push('/addNew/denim')}
+                      >
+                        デニム追加
+                      </MenuItem>
+                      <MenuItem
+                        icon={<FaRegFileImage size="15px" />}
+                        onClick={() => router.push('/addNew/denimReport')}
+                      >
+                        色落ち記録作成
+                      </MenuItem>
+                    </MenuGroup>
+                    <MenuDivider />
+                    <MenuGroup title="設定">
+                      <MenuItem
+                        icon={<FaUserEdit size="15px" />}
+                        onClick={() => router.push('/settings/profile')}
+                      >
+                        プロフィール設定
+                      </MenuItem>
+                      <MenuItem
+                        icon={<FaCog size="15px" />}
+                        onClick={() => router.push('/settings/account')}
+                      >
+                        アカウント設定
+                      </MenuItem>
+                    </MenuGroup>
+                    <MenuDivider />
                     <MenuItem
-                      icon={<FaRegFileImage size="15px" />}
-                      onClick={() => router.push('/addNew/denimReport')}
+                      icon={<FaSignOutAlt size="15px" />}
+                      onClick={() =>
+                        logout({ returnTo: window.location.origin })
+                      }
                     >
-                      色落ち記録作成
+                      ログアウト
                     </MenuItem>
-                  </MenuGroup>
-                  <MenuDivider />
-                  <MenuGroup title="設定">
-                    <MenuItem
-                      icon={<FaUserEdit size="15px" />}
-                      onClick={() => router.push('/settings/profile')}
-                    >
-                      プロフィール設定
-                    </MenuItem>
-                    <MenuItem
-                      icon={<FaCog size="15px" />}
-                      onClick={() => router.push('/settings/account')}
-                    >
-                      アカウント設定
-                    </MenuItem>
-                  </MenuGroup>
-                  <MenuDivider />
-                  <MenuItem
-                    icon={<FaSignOutAlt size="15px" />}
-                    onClick={() => logout({ returnTo: window.location.origin })}
-                  >
-                    ログアウト
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            ) : (
-              <LoginButton />
-            )}
-          </Box>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <LoginButton />
+              )}
+            </Box>
+          </Container>
         </Box>
       </header>
     </>

@@ -1,6 +1,7 @@
-import { Box, Button, ButtonGroup, useToast } from '@chakra-ui/react';
+import { Box, ButtonGroup, useToast } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
+import Button from '../components/Button';
 import DenimCard from '../components/DenimCard';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';

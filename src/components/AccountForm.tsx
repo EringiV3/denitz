@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -10,6 +9,12 @@ import {
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Button from '../components/Button';
+import {
+  COLOR_CODE_GRAY,
+  COLOR_CODE_INDIGO_BLUE,
+  COLOR_CODE_WHITE,
+} from '../config/css';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { UserInput } from '../lib/graphql';
 import { queryKeys } from '../utils/queryKeyFactory';
@@ -94,8 +99,13 @@ const AccountForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl id="accountId" isRequired>
-        <FormLabel>ID</FormLabel>
+        <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+          ID
+        </FormLabel>
         <Input
+          color={COLOR_CODE_INDIGO_BLUE}
+          backgroundColor={COLOR_CODE_WHITE}
+          borderColor={COLOR_CODE_WHITE}
           {...register('accountId', {
             required: 'この項目は必須です',
             maxLength: {
@@ -122,7 +132,7 @@ const AccountForm: React.FC = () => {
             },
           })}
         />
-        <FormHelperText>
+        <FormHelperText color={COLOR_CODE_GRAY}>
           IDには半角英数字、ハイフン、アンダースコアのみ使用可能です。
         </FormHelperText>
         <FormHelperText color="red">{errors.accountId?.message}</FormHelperText>

@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   ButtonGroup,
   FormControl,
   FormHelperText,
@@ -14,6 +13,8 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import Button from '../components/Button';
+import { COLOR_CODE_INDIGO_BLUE, COLOR_CODE_WHITE } from '../config/css';
 import { useDenimReportCreator } from '../hooks/useDenimReportCreator';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { useUploadImage } from '../hooks/useUploadImage';
@@ -134,8 +135,13 @@ const TitleDescriptionStep: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl id="title" isRequired marginTop="20px">
-        <FormLabel>タイトル</FormLabel>
+        <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+          タイトル
+        </FormLabel>
         <Input
+          backgroundColor={COLOR_CODE_WHITE}
+          borderColor={COLOR_CODE_WHITE}
+          color={COLOR_CODE_INDIGO_BLUE}
           {...register('title', {
             required: 'この項目は必須です',
             maxLength: { value: 30, message: '30文字以内で入力してください' },
@@ -144,8 +150,13 @@ const TitleDescriptionStep: React.FC = () => {
         <FormHelperText color="red">{errors.title?.message}</FormHelperText>
       </FormControl>
       <FormControl id="description" marginTop="20px">
-        <FormLabel>説明文</FormLabel>
-        <Textarea {...register('description')} />
+        <FormLabel color={COLOR_CODE_INDIGO_BLUE}>説明文</FormLabel>
+        <Textarea
+          backgroundColor={COLOR_CODE_WHITE}
+          borderColor={COLOR_CODE_WHITE}
+          color={COLOR_CODE_INDIGO_BLUE}
+          {...register('description')}
+        />
         <FormHelperText color="red">
           {errors.description?.message}
         </FormHelperText>

@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import React, { useEffect } from 'react';
 import AccountForm from '../../components/AccountForm';
 import Layout from '../../components/Layout';
+import { COLOR_CODE_INDIGO_BLUE } from '../../config/css';
 
 const AccountSettingPage: React.FC = () => {
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -21,7 +22,11 @@ const AccountSettingPage: React.FC = () => {
       <NextSeo title="アカウント設定" description="アカウント設定ページ" />
       <Layout>
         <Box>
-          <Heading size="md" margin="40px 0 20px 0">
+          <Heading
+            size="md"
+            margin="40px 0 20px 0"
+            color={COLOR_CODE_INDIGO_BLUE}
+          >
             アカウント設定
           </Heading>
           <Box>
@@ -29,7 +34,11 @@ const AccountSettingPage: React.FC = () => {
           </Box>
         </Box>
         <Box marginTop="40px">
-          <Heading size="md" margin="40px 0 20px 0">
+          <Heading
+            size="md"
+            margin="40px 0 20px 0"
+            color={COLOR_CODE_INDIGO_BLUE}
+          >
             アカウント削除
           </Heading>
           <Box display="flex" justifyContent="center">

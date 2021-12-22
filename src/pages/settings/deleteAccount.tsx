@@ -11,6 +11,7 @@ import { NextSeo } from 'next-seo';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import Layout from '../../components/Layout';
+import { COLOR_CODE_INDIGO_BLUE, COLOR_CODE_WHITE } from '../../config/css';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 
 const DeleteAccountPage: React.FC = () => {
@@ -72,13 +73,20 @@ const DeleteAccountPage: React.FC = () => {
           size="lg"
           display="flex"
           justifyContent="center"
+          color={COLOR_CODE_INDIGO_BLUE}
         >
           アカウントを削除しますか？
         </Heading>
         <Box marginTop="40px">
-          <Heading size="md">以下のデータは完全に削除されます</Heading>
-          <Box backgroundColor="gray.100" borderRadius="10px" marginTop="20px">
-            <UnorderedList padding="10px">
+          <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+            以下のデータは完全に削除されます
+          </Heading>
+          <Box
+            backgroundColor={COLOR_CODE_WHITE}
+            borderRadius="10px"
+            marginTop="20px"
+          >
+            <UnorderedList padding="10px" color={COLOR_CODE_INDIGO_BLUE}>
               <ListItem>ユーザーの情報</ListItem>
               <ListItem>デニムの情報</ListItem>
               <ListItem>色落ち記録の情報</ListItem>

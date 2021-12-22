@@ -10,12 +10,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { useQuery } from 'react-query';
-import DenimReport from '../../../../../components/DenimReport';
-import Layout from '../../../../../components/Layout';
-import { useGraphqlClient } from '../../../../../hooks/useGraphqlClient';
-import { GetDenimReportQuery } from '../../../../../lib/graphql';
-import { createGraphqlClient } from '../../../../../lib/graphqlClient';
-import { queryKeys } from '../../../../../utils/queryKeyFactory';
+import DenimReport from '../../../../../../components/DenimReport';
+import Layout from '../../../../../../components/Layout';
+import { COLOR_CODE_PINK } from '../../../../../../config/css';
+import { useGraphqlClient } from '../../../../../../hooks/useGraphqlClient';
+import { GetDenimReportQuery } from '../../../../../../lib/graphql';
+import { createGraphqlClient } from '../../../../../../lib/graphqlClient';
+import { queryKeys } from '../../../../../../utils/queryKeyFactory';
 
 const DenimReportPage: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -95,7 +96,12 @@ const DenimReportPage: React.FC<
               href={`/${accountId}/denims/${denimId}/reports/${previousReport.id}`}
               passHref
             >
-              <Link color="blue.500" display="flex" alignItems="center">
+              <Link
+                color={COLOR_CODE_PINK}
+                fontWeight="bold"
+                display="flex"
+                alignItems="center"
+              >
                 <FaAngleLeft size="20px" /> {previousReport.title}
               </Link>
             </NextLink>
@@ -105,7 +111,12 @@ const DenimReportPage: React.FC<
               href={`/${accountId}/denims/${denimId}/reports/${nextReport.id}`}
               passHref
             >
-              <Link color="blue.500" display="flex" alignItems="center">
+              <Link
+                color={COLOR_CODE_PINK}
+                fontWeight="bold"
+                display="flex"
+                alignItems="center"
+              >
                 {nextReport.title} <FaAngleRight size="20px" />
               </Link>
             </NextLink>

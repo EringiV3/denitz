@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -14,7 +13,13 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Button from '../components/Button';
 import ImageCropModal from '../components/ImageCropModal';
+import {
+  COLOR_CODE_INDIGO_BLUE,
+  COLOR_CODE_PINK,
+  COLOR_CODE_WHITE,
+} from '../config/css';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { ProfileInput } from '../lib/graphql';
@@ -194,7 +199,13 @@ const ProfileForm: React.FC = () => {
           </Box>
           <Box display="flex" justifyContent="center" marginTop="10px">
             <label>
-              <Link color="blue.400">変更する</Link>
+              <Link
+                fontWeight="bold"
+                textDecoration="underline"
+                color={COLOR_CODE_PINK}
+              >
+                画像を選択する
+              </Link>
               <input
                 type="file"
                 accept="image/*"
@@ -205,8 +216,13 @@ const ProfileForm: React.FC = () => {
           </Box>
         </Box>
         <FormControl id="name" isRequired>
-          <FormLabel>表示名</FormLabel>
+          <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+            表示名
+          </FormLabel>
           <Input
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
             {...register('name', {
               required: 'この項目は必須です',
               maxLength: {
@@ -218,8 +234,13 @@ const ProfileForm: React.FC = () => {
           <FormHelperText color="red">{errors.name?.message}</FormHelperText>
         </FormControl>
         <FormControl id="description" marginTop="20px">
-          <FormLabel>自己紹介</FormLabel>
+          <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+            自己紹介
+          </FormLabel>
           <Textarea
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
             {...register('description', {
               maxLength: {
                 value: 250,
@@ -232,8 +253,13 @@ const ProfileForm: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <FormControl id="twitter-url" marginTop="20px">
-          <FormLabel>Twitterユーザー名</FormLabel>
+          <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+            Twitterユーザー名
+          </FormLabel>
           <Input
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
             {...register('twitterUserName', {
               maxLength: {
                 value: 15,
@@ -246,8 +272,13 @@ const ProfileForm: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <FormControl id="instagram-url" marginTop="20px">
-          <FormLabel>Instagramユーザー名</FormLabel>
+          <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+            Instagramユーザー名
+          </FormLabel>
           <Input
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
             {...register('instagramUserName', {
               maxLength: {
                 value: 30,
@@ -260,8 +291,13 @@ const ProfileForm: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <FormControl id="website-url" marginTop="20px">
-          <FormLabel>WebサイトURL</FormLabel>
+          <FormLabel color={COLOR_CODE_INDIGO_BLUE} fontWeight="bold">
+            WebサイトURL
+          </FormLabel>
           <Input
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
             {...register('websiteUrl', {
               maxLength: {
                 value: 100,
