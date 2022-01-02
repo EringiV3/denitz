@@ -1,3 +1,5 @@
+import { DenimReportsQueryInput } from '../lib/graphql';
+
 export const queryKeys = {
   currentUser: () => ['currentUser'] as const,
   profile: (accountId: string) => ['profiles', accountId] as const,
@@ -6,4 +8,8 @@ export const queryKeys = {
   denimReports: (denimId: string) => ['denims', denimId, 'reports'] as const,
   denimReport: (denimId: string, reportId: string) =>
     ['denims', denimId, 'reports', reportId] as const,
+  allDenimReports: (options: DenimReportsQueryInput) => [
+    'allDenimReports',
+    options,
+  ],
 };

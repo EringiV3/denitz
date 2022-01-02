@@ -1,16 +1,28 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box } from '@chakra-ui/react';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import NextImage from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 import Button from '../components/Button';
+import DenimReportCard from '../components/DenimReportCard';
 import Layout from '../components/Layout';
 import { COLOR_CODE_INDIGO_BLUE } from '../config/css';
+import { GetDenimReportsQuery } from '../lib/graphql';
+import { createGraphqlClient } from '../lib/graphqlClient';
 
-const IndexPage = () => {
+const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  initialData,
+}) => {
+  const router = useRouter();
   const { loginWithRedirect } = useAuth0();
 
   const handleClickButton = () => {
     loginWithRedirect();
+  };
+
+  const handleClickViewMore = () => {
+    router.push('/reports');
   };
 
   return (
@@ -44,29 +56,23 @@ const IndexPage = () => {
             fontWeight="bold"
             marginTop="40px"
           >
-            使い方
-          </Box>
-          <Box>
-            <Box size="lg" marginTop="20px">
-              1. 自分の持っているデニムを追加します
-            </Box>
-          </Box>
-          <Box>
-            <Box size="lg" marginTop="20px">
-              2. デニムの色落ちを定期的に記録して投稿！
-            </Box>
-          </Box>
-        </Box>
-        <Box>
-          <Box
-            textAlign="center"
-            fontSize="xl"
-            fontWeight="bold"
-            marginTop="40px"
-          >
             最新色落ち記録投稿
           </Box>
-          <Box>色落ち記録新着５件</Box>
+          <Box marginTop="20px">
+            {initialData.getDenimReports.map((report) => (
+              <Box key={report.id} marginTop="20px">
+                {report.denim && report.denim.user && (
+                  <DenimReportCard
+                    denimReport={report}
+                    link={`/${report.denim.user.accountId}/denims/${report.denim.id}/reports/${report.id}`}
+                  />
+                )}
+              </Box>
+            ))}
+            <Box display="flex" justifyContent="center" marginTop="40px">
+              <Button onClick={handleClickViewMore}>もっと見る</Button>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Layout>
@@ -74,3 +80,22 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
+
+type StaticProps = {
+  initialData: GetDenimReportsQuery;
+};
+export const getStaticProps: GetStaticProps<StaticProps> = async () => {
+  const client = createGraphqlClient();
+  const initialData = await client.GetDenimReports({
+    input: {
+      offset: 0,
+      perPage: 5,
+    },
+  });
+  return {
+    props: {
+      initialData,
+    },
+    revalidate: 60,
+  };
+};

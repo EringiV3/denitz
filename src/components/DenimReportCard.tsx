@@ -7,6 +7,7 @@ import {
   COLOR_CODE_WHITE,
 } from '../config/css';
 import type { DenimReport } from '../lib/graphql';
+import { formatText } from '../utils/stringHelpers';
 
 type Props = {
   denimReport: DenimReport;
@@ -42,8 +43,13 @@ const DenimReportCard: React.FC<Props> = ({ denimReport, link }) => {
             {denimReport.title}
           </Heading>
         )}
-        <Box marginTop="10px" color={COLOR_CODE_GRAY}>
-          {denimReport.description}
+        {denimReport.denim && <Box>デニム: {denimReport.denim.name}</Box>}
+        <Box
+          marginTop="10px"
+          display={['none', 'block']}
+          color={COLOR_CODE_GRAY}
+        >
+          {formatText(denimReport.description ?? '', 100)}
         </Box>
       </Box>
     </LinkBox>
