@@ -105,7 +105,7 @@ const ProfileForm: React.FC = () => {
   );
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    if (profileData?.getProfile.id === undefined) {
+    if (profileData?.getProfile?.id === undefined) {
       return;
     }
 
@@ -170,7 +170,7 @@ const ProfileForm: React.FC = () => {
   }, [croppedImageBlob]);
 
   useEffect(() => {
-    if (profileData) {
+    if (profileData && profileData.getProfile) {
       setValue('name', profileData.getProfile.name ?? '');
       setValue('description', profileData.getProfile.description ?? '');
       setValue(
@@ -192,7 +192,7 @@ const ProfileForm: React.FC = () => {
               src={
                 croppedImagePreviewUrl
                   ? croppedImagePreviewUrl
-                  : profileData?.getProfile.iconImageUrl ?? ''
+                  : profileData?.getProfile?.iconImageUrl ?? ''
               }
               size={100}
             />

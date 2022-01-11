@@ -42,6 +42,16 @@ const Footer: React.FC = () => {
             プライバシーポリシー
           </Link>
         </Box>
+        <Box marginTop="20px">
+          <Box fontWeight="bold">開発・運営</Box>
+          <Link
+            href="https://twitter.com/Eringi_V3"
+            isExternal
+            marginTop="10px"
+          >
+            eringiv3
+          </Link>
+        </Box>
       </Box>
     </footer>
   );

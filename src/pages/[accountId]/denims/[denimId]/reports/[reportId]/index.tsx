@@ -37,15 +37,17 @@ const DenimReportPage: React.FC<
   const accountId = router.query.accountId as string;
 
   const currentReportIndex =
-    data?.getDenimReport.denim?.denimReports?.findIndex(
-      (report) => report.id === data.getDenimReport.id
+    data?.getDenimReport?.denim?.denimReports?.findIndex(
+      (report) => report.id === data?.getDenimReport?.id
     );
   const previousReport =
-    currentReportIndex !== undefined && data?.getDenimReport.denim?.denimReports
+    currentReportIndex !== undefined &&
+    data?.getDenimReport?.denim?.denimReports
       ? data.getDenimReport.denim.denimReports[currentReportIndex - 1]
       : null;
   const nextReport =
-    currentReportIndex !== undefined && data?.getDenimReport.denim?.denimReports
+    currentReportIndex !== undefined &&
+    data?.getDenimReport?.denim?.denimReports
       ? data.getDenimReport.denim.denimReports[currentReportIndex + 1]
       : null;
 
