@@ -59,10 +59,11 @@ const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             最新色落ち記録投稿
           </Box>
           <Box marginTop="20px">
-            {initialData.getDenimReports.map((report) => (
+            {initialData.getDenimReports.denimReports.map((report) => (
               <Box key={report.id} marginTop="20px">
                 {report.denim && report.denim.user && (
                   <DenimReportCard
+                    showUserInfo={true}
                     denimReport={report}
                     link={`/${report.denim.user.accountId}/denims/${report.denim.id}/reports/${report.id}`}
                   />

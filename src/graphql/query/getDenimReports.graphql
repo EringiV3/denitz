@@ -1,24 +1,34 @@
 query GetDenimReports($input: DenimReportsQueryInput!) {
   getDenimReports(input: $input) {
-    id
-    title
-    description
-    frontImageUrl
-    backImageUrl
-    createdAt
-    updatedAt
-    denim {
+    totalCount
+    denimReports {
       id
-      name
+      title
       description
-      imageUrl
+      frontImageUrl
+      backImageUrl
       createdAt
       updatedAt
-      user {
+      denim {
         id
-        accountId
+        name
+        description
+        imageUrl
         createdAt
         updatedAt
+        user {
+          id
+          accountId
+          createdAt
+          updatedAt
+          profile {
+            id
+            name
+            iconImageUrl
+            createdAt
+            updatedAt
+          }
+        }
       }
     }
   }
