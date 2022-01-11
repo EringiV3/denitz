@@ -53,7 +53,7 @@ const EditDenimReportPage: React.FC = () => {
           色落ち記録編集
         </Heading>
         <Box>
-          {denimReportData && (
+          {denimReportData && denimReportData.getDenimReport && (
             <EditDenimReportForm
               initialValues={denimReportData.getDenimReport}
               denimId={denimId}
