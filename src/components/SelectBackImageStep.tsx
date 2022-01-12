@@ -44,9 +44,22 @@ const SelectBackImageStep: React.FC = () => {
     backToPreviousStep();
   };
 
+  const handleClickSkip = () => {
+    setBackImage(null);
+    goToNextStep();
+  };
+
   return (
     <>
       <Box>
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          position="relative"
+          top="-30px"
+        >
+          <Button onClick={handleClickSkip}>スキップ</Button>
+        </Box>
         {backImage && (
           <Box
             display="flex"

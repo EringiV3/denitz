@@ -18,6 +18,11 @@ query GetDenimReport($id: String!) {
       user {
         id
         accountId
+        profile {
+          id
+          name
+          iconImageUrl
+        }
       }
       denimReports {
         id
