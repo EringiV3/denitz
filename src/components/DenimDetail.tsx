@@ -138,7 +138,7 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
   return (
     <Box>
       {isEditable && (
-        <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-end" marginBottom="20px">
           <Menu>
             <MenuButton
               as={ChakraButton}

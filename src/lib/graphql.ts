@@ -344,7 +344,7 @@ export type GetDenimReportQueryVariables = Exact<{
 }>;
 
 
-export type GetDenimReportQuery = { __typename?: 'Query', getDenimReport?: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, user?: { __typename?: 'User', id: string, accountId: string } | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined }> | null | undefined } | null | undefined } | null | undefined };
+export type GetDenimReportQuery = { __typename?: 'Query', getDenimReport?: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined } | null | undefined } | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined }> | null | undefined } | null | undefined } | null | undefined };
 
 export type GetDenimReportsQueryVariables = Exact<{
   input: DenimReportsQueryInput;
@@ -622,6 +622,11 @@ export const GetDenimReportDocument = gql`
       user {
         id
         accountId
+        profile {
+          id
+          name
+          iconImageUrl
+        }
       }
       denimReports {
         id

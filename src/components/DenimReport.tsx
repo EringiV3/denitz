@@ -26,6 +26,7 @@ import {
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import { DenimReport } from '../lib/graphql';
 import { queryKeys } from '../utils/queryKeyFactory';
+import Avatar from './Avatar';
 
 type Props = {
   denimReport: DenimReport;
@@ -122,10 +123,12 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
     setLink(window.location.href);
   }, [denimReport]);
 
+  console.log({ denimReport });
+
   return (
     <Box>
       {isEditable && (
-        <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-end" marginBottom="20px">
           <Menu>
             <MenuButton
               as={Button}
@@ -160,6 +163,26 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         <Heading size="lg" color={COLOR_CODE_INDIGO_BLUE}>
           {denimReport.title}
         </Heading>
+        {denimReport.denim?.user?.profile && (
+          <Box color={COLOR_CODE_GRAY} display="flex" alignItems="center">
+            投稿者:{' '}
+            <Box display="flex" marginLeft="10px" alignItems="center">
+              <NextLink href={`/${denimReport.denim.user.accountId}`} passHref>
+                <Link>
+                  <Avatar
+                    src={denimReport.denim.user.profile.iconImageUrl ?? ''}
+                    size={30}
+                  />
+                </Link>
+              </NextLink>
+              <NextLink href={`/${denimReport.denim.user.accountId}`} passHref>
+                <Link marginLeft="10px" color={COLOR_CODE_GRAY}>
+                  {denimReport.denim.user.profile.name ?? ''}{' '}
+                </Link>
+              </NextLink>
+            </Box>
+          </Box>
+        )}
         <Box color={COLOR_CODE_GRAY}>
           デニム:{' '}
           {denimReport.denim?.user?.accountId && denimReport.denim?.id && (
@@ -195,9 +218,11 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         </Box>
       </Box>
       <Box marginTop="40px">
-        <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
-          バック
-        </Heading>
+        {denimReport.backImageUrl && (
+          <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+            バック
+          </Heading>
+        )}
         <Box display="flex" justifyContent="center">
           {denimReport.backImageUrl && (
             <NextImage
@@ -210,9 +235,12 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
         </Box>
       </Box>
       <Box marginTop="40px">
-        <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
-          詳細画像
-        </Heading>
+        {denimReport.detailImageUrls &&
+          denimReport.detailImageUrls.length !== 0 && (
+            <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+              詳細画像
+            </Heading>
+          )}
         <Box>
           {denimReport.detailImageUrls &&
             denimReport.detailImageUrls.map((image) => (

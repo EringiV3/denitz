@@ -99,14 +99,16 @@ const TitleDescriptionStep: React.FC = () => {
     if (denimId === null) {
       return;
     }
-    if (frontImage === null || backImage === null) {
+    if (frontImage === null) {
       return;
     }
     setIsUploading(true);
     const [frontImageUrl, backImageUrl] = await Promise.all(
       [frontImage, backImage].map(async (image) => {
-        const imageUrl = await upload(image.blob);
-        return imageUrl;
+        if (image) {
+          const imageUrl = await upload(image.blob);
+          return imageUrl;
+        }
       })
     );
 
