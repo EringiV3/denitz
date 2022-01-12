@@ -20,7 +20,6 @@ const Footer: React.FC = () => {
         color={COLOR_CODE_INDIGO_BLUE}
         flexDirection={['column', 'row']}
       >
-        <Box>ロゴ</Box>
         <Box display="flex" flexDirection="column" marginTop="20px">
           <Box fontWeight="bold">About</Box>
           <Link href={HOW_TO_USE_URL} isExternal marginTop="10px">

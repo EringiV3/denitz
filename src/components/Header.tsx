@@ -10,6 +10,7 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
+import NextImage from 'next/image';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -56,11 +57,13 @@ const Header: React.FC = () => {
           >
             <NextLink href={`/`} passHref>
               <Box as="a" display="flex" alignItems="center">
+                <NextImage width={30} height={30} src="/assets/logo.svg" />
                 <Heading
-                  color={COLOR_CODE_INDIGO_BLUE}
+                  color="black"
                   size="lg"
                   display="flex"
                   alignItems="center"
+                  paddingLeft="3px"
                 >
                   Denitz
                 </Heading>

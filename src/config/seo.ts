@@ -5,12 +5,12 @@ export const seoConfig: NextSeoProps = {
   defaultTitle: 'denitz',
   openGraph: {
     type: 'website',
-    locale: 'js_jp',
+    locale: 'ja_jp',
     url: 'https://www.denitz.com',
     site_name: 'denitz',
     images: [
       {
-        url: 'https://placehold.jp/32/3d4070/ffffff/500x500.png?text=denitz.com',
+        url: 'https://i.gyazo.com/109d89a435df342b1877a0b5b6fb2d25.png',
         width: 1200,
         height: 630,
         alt: 'denitz.com',
