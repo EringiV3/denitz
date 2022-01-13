@@ -3,11 +3,15 @@ import type { NextSeoProps } from 'next-seo';
 export const seoConfig: NextSeoProps = {
   titleTemplate: '%s | denitz',
   defaultTitle: 'denitz',
+  title: 'denitz',
+  description: 'denitzはジーンズの色落ちを記録・共有できるサービスです。',
   openGraph: {
     type: 'website',
     locale: 'ja_jp',
     url: 'https://www.denitz.com',
     site_name: 'denitz',
+    title: 'denitz',
+    description: 'denitzはジーンズの色落ちを記録・共有できるサービスです。',
     images: [
       {
         url: 'https://i.gyazo.com/109d89a435df342b1877a0b5b6fb2d25.png',
