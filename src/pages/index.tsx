@@ -1,7 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box } from '@chakra-ui/react';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
-import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Button from '../components/Button';
@@ -33,20 +32,12 @@ const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             ジーンズの色落ちを記録・共有できる
           </Box>
           <Box textAlign="center" fontSize="6xl" fontWeight="bold">
-            Denitz
+            denitz
           </Box>
           <Box display="flex" justifyContent="center" marginTop="40px">
             <Button onClick={handleClickButton} width="50%">
               新規登録
             </Button>
-          </Box>
-          <Box display="flex" justifyContent="center" marginTop="40px">
-            <NextImage
-              src="/assets/lp_top.jpg"
-              width="500"
-              height="800"
-              objectFit="contain"
-            />
           </Box>
         </Box>
         <Box>

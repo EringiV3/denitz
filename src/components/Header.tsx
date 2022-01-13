@@ -65,7 +65,7 @@ const Header: React.FC = () => {
                   alignItems="center"
                   paddingLeft="3px"
                 >
-                  Denitz
+                  denitz
                 </Heading>
               </Box>
             </NextLink>

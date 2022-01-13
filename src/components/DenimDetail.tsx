@@ -198,8 +198,8 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
         <Box display="flex" justifyContent="center" marginTop="40px">
           <NextImage
             src={denim.imageUrl ?? ''}
-            width="500"
-            height="500"
+            width="300"
+            height="300"
             objectFit="contain"
           />
         </Box>
