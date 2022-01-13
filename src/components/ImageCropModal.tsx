@@ -120,19 +120,23 @@ const ImageCropModal: React.FC<Props> = ({
             />
           </Box>
           <Box marginTop="20px">
-            <Box fontWeight="bold">アスペクト比</Box>
             {aspects.length >= 2 && (
-              <ButtonGroup variant="outline" spacing="6" marginTop="10px">
-                {aspects.map((_aspect) => (
-                  <Button
-                    key={_aspect.value}
-                    onClick={() => setAspect(_aspect.value)}
-                    colorScheme={_aspect.value === aspect ? 'blue' : undefined}
-                  >
-                    {_aspect.name}
-                  </Button>
-                ))}
-              </ButtonGroup>
+              <>
+                <Box fontWeight="bold">アスペクト比</Box>
+                <ButtonGroup variant="outline" spacing="6" marginTop="10px">
+                  {aspects.map((_aspect) => (
+                    <Button
+                      key={_aspect.value}
+                      onClick={() => setAspect(_aspect.value)}
+                      colorScheme={
+                        _aspect.value === aspect ? 'blue' : undefined
+                      }
+                    >
+                      {_aspect.name}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              </>
             )}
           </Box>
           <Box marginTop="20px">
