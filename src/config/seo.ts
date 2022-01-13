@@ -17,4 +17,9 @@ export const seoConfig: NextSeoProps = {
       },
     ],
   },
+  twitter: {
+    handle: '@eringi_v3',
+    site: '@eringi_v3',
+    cardType: 'summary_large_image',
+  },
 };

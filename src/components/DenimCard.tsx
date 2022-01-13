@@ -24,12 +24,14 @@ const DenimCard: React.FC<Props> = ({ denim, link, showBorder }) => {
       border={showBorder ? `3px solid ${COLOR_CODE_INDIGO_BLUE}` : undefined}
     >
       <Box width="30%" display="flex">
-        <NextImage
-          src={denim.imageUrl ?? ''}
-          width="500"
-          height="500"
-          objectFit="contain"
-        />
+        {denim.imageUrl && (
+          <NextImage
+            src={denim.imageUrl}
+            width="250"
+            height="250"
+            objectFit="contain"
+          />
+        )}
       </Box>
       <Box padding="20px" flex="1">
         {link ? (

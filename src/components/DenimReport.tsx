@@ -210,8 +210,8 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
           {denimReport.frontImageUrl && (
             <NextImage
               src={denimReport.frontImageUrl}
-              width="500"
-              height="500"
+              width="300"
+              height="300"
               objectFit="contain"
             />
           )}
@@ -227,8 +227,8 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
           {denimReport.backImageUrl && (
             <NextImage
               src={denimReport.backImageUrl}
-              width="500"
-              height="500"
+              width="300"
+              height="300"
               objectFit="contain"
             />
           )}
@@ -252,8 +252,8 @@ const DenimReport: React.FC<Props> = ({ denimReport }) => {
               >
                 <NextImage
                   src={image.url}
-                  width="500"
-                  height="500"
+                  width="300"
+                  height="300"
                   objectFit="contain"
                 />
               </Box>
