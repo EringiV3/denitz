@@ -1,4 +1,4 @@
-import { Box, Button, useToast } from '@chakra-ui/react';
+import { Box, useToast } from '@chakra-ui/react';
 import {
   closestCenter,
   DndContext,
@@ -18,6 +18,8 @@ import {
 } from '@dnd-kit/sortable';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
+import Button from '../components/Button';
+import { COLOR_CODE_GRAY } from '../config/css';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type {
   DenimReport,
@@ -138,7 +140,9 @@ const DenimReportList: React.FC<Props> = ({
               alignItems="center"
               width="100%"
             >
-              <Box>ドラッグ・アンド・ドロップで並び順を変更できます。</Box>
+              <Box color={COLOR_CODE_GRAY}>
+                ドラッグ・アンド・ドロップで並び順を変更できます。
+              </Box>
               <Button onClick={handleClickUpdateSortOrder}>
                 並び順を確定する
               </Button>

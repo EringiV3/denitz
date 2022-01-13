@@ -6,6 +6,7 @@ import {
   PRIVACY_POLICY_URL,
   TERMS_OF_SERVICE_URL,
 } from '../config/constants';
+import { COLOR_CODE_INDIGO_BLUE, COLOR_CODE_WHITE } from '../config/css';
 
 const Footer: React.FC = () => {
   return (
@@ -15,12 +16,12 @@ const Footer: React.FC = () => {
         justifyContent="space-around"
         width="100%"
         padding="40px 20px"
-        backgroundColor="blue.700"
-        color="white"
+        backgroundColor={COLOR_CODE_WHITE}
+        color={COLOR_CODE_INDIGO_BLUE}
         flexDirection={['column', 'row']}
       >
-        <Box>ロゴ</Box>
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" marginTop="20px">
+          <Box fontWeight="bold">About</Box>
           <Link href={HOW_TO_USE_URL} isExternal marginTop="10px">
             使い方
           </Link>
@@ -31,12 +32,23 @@ const Footer: React.FC = () => {
             お問い合わせ
           </Link>
         </Box>
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" marginTop="20px">
+          <Box fontWeight="bold">Legal</Box>
           <Link href={TERMS_OF_SERVICE_URL} isExternal marginTop="10px">
             利用規約
           </Link>
           <Link href={PRIVACY_POLICY_URL} isExternal marginTop="10px">
             プライバシーポリシー
+          </Link>
+        </Box>
+        <Box marginTop="20px">
+          <Box fontWeight="bold">開発・運営</Box>
+          <Link
+            href="https://twitter.com/Eringi_V3"
+            isExternal
+            marginTop="10px"
+          >
+            eringiv3
           </Link>
         </Box>
       </Box>

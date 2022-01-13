@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { COLOR_CODE_INDIGO_BLUE } from '../config/css';
 
 type Props = {
   stepCount: number;
@@ -14,7 +15,9 @@ const Stepper: React.FC<Props> = ({ stepCount, activeStep }) => {
           height="30px"
           color="white"
           fontWeight="bold"
-          backgroundColor={i + 1 === activeStep ? 'blue.700' : 'gray.300'}
+          backgroundColor={
+            i + 1 === activeStep ? COLOR_CODE_INDIGO_BLUE : 'gray.300'
+          }
           borderRadius="50%"
           display="flex"
           justifyContent="center"

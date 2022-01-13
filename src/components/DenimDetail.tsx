@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  Button as ChakraButton,
   Heading,
   Link,
   Menu,
@@ -22,6 +22,13 @@ import {
   FaTrashAlt,
 } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Button from '../components/Button';
+import {
+  COLOR_CODE_GRAY,
+  COLOR_CODE_INDIGO_BLUE,
+  COLOR_CODE_PINK,
+  COLOR_CODE_WHITE,
+} from '../config/css';
 import { useGraphqlClient } from '../hooks/useGraphqlClient';
 import type { Denim } from '../lib/graphql';
 import { queryKeys } from '../utils/queryKeyFactory';
@@ -131,9 +138,17 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
   return (
     <Box>
       {isEditable && (
-        <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-end" marginBottom="20px">
           <Menu>
-            <MenuButton as={Button} rightIcon={<FaAngleDown />}>
+            <MenuButton
+              as={ChakraButton}
+              rightIcon={<FaAngleDown />}
+              backgroundColor={COLOR_CODE_PINK}
+              color={COLOR_CODE_WHITE}
+              _hover={{ backgroundColor: COLOR_CODE_PINK }}
+              _focus={{ backgroundColor: COLOR_CODE_PINK }}
+              _active={{ backgroundColor: COLOR_CODE_PINK }}
+            >
               Actions
             </MenuButton>
             <MenuList>
@@ -158,7 +173,9 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
         </Box>
       )}
       <Box>
-        <Heading size="2xl">{denim.name}</Heading>
+        <Heading size="2xl" color={COLOR_CODE_INDIGO_BLUE}>
+          {denim.name}
+        </Heading>
         <Box display="flex" marginTop="10px" alignItems="center">
           {denim.user && denim.user.profile && (
             <>
@@ -171,7 +188,9 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
                 </Link>
               </NextLink>
               <NextLink href={`/${denim.user.accountId}`} passHref>
-                <Link marginLeft="10px">{denim.user.profile.name ?? ''} </Link>
+                <Link marginLeft="10px" color={COLOR_CODE_GRAY}>
+                  {denim.user.profile.name ?? ''}{' '}
+                </Link>
               </NextLink>
             </>
           )}
@@ -184,8 +203,15 @@ const DenimDetail: React.FC<Props> = ({ denim }) => {
             objectFit="contain"
           />
         </Box>
-        <Box marginTop="40px">{denim.description}</Box>
-        <Heading size="lg" marginTop="40px">
+        <Box marginTop="40px" color={COLOR_CODE_GRAY}>
+          {denim.description?.split('\n').map((v, i) => (
+            <React.Fragment key={i}>
+              {v}
+              <br />
+            </React.Fragment>
+          ))}
+        </Box>
+        <Heading size="lg" marginTop="40px" color={COLOR_CODE_INDIGO_BLUE}>
           色落ち記録
         </Heading>
         <Box marginBottom="40px">

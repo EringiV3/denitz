@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -13,7 +12,13 @@ import {
 import NextImage from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Button from '../components/Button';
 import ImageCropModal from '../components/ImageCropModal';
+import {
+  COLOR_CODE_INDIGO_BLUE,
+  COLOR_CODE_PINK,
+  COLOR_CODE_WHITE,
+} from '../config/css';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { readFile } from '../utils/image';
 
@@ -144,7 +149,13 @@ const DenimForm: React.FC<Props> = ({
           )}
           <Box display="flex" justifyContent="center" marginTop="10px">
             <label>
-              <Link color="blue.400">画像を選択する</Link>
+              <Link
+                fontWeight="bold"
+                textDecoration="underline"
+                color={COLOR_CODE_PINK}
+              >
+                画像を選択する
+              </Link>
               <input
                 type="file"
                 accept="image/*"
@@ -155,8 +166,13 @@ const DenimForm: React.FC<Props> = ({
           </Box>
         </Box>
         <FormControl id="name" isRequired marginTop="20px">
-          <FormLabel>名前</FormLabel>
+          <FormLabel fontWeight="bold" color={COLOR_CODE_INDIGO_BLUE}>
+            名前
+          </FormLabel>
           <Input
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
             {...register('name', {
               required: 'この項目は必須です',
               maxLength: {
@@ -168,8 +184,15 @@ const DenimForm: React.FC<Props> = ({
           <FormHelperText color="red">{errors.name?.message}</FormHelperText>
         </FormControl>
         <FormControl id="description" marginTop="20px">
-          <FormLabel>説明文</FormLabel>
-          <Textarea {...register('description')} />
+          <FormLabel fontWeight="bold" color={COLOR_CODE_INDIGO_BLUE}>
+            説明文
+          </FormLabel>
+          <Textarea
+            backgroundColor={COLOR_CODE_WHITE}
+            borderColor={COLOR_CODE_WHITE}
+            color={COLOR_CODE_INDIGO_BLUE}
+            {...register('description')}
+          />
           <FormHelperText color="red">
             {errors.description?.message}
           </FormHelperText>

@@ -11,6 +11,7 @@ import { useQuery } from 'react-query';
 import DenimCard from '../../components/DenimCard';
 import Layout from '../../components/Layout';
 import Profile from '../../components/Profile';
+import { COLOR_CODE_INDIGO_BLUE } from '../../config/css';
 import { useGraphqlClient } from '../../hooks/useGraphqlClient';
 import { GetProfileQuery } from '../../lib/graphql';
 import { createGraphqlClient } from '../../lib/graphqlClient';
@@ -20,13 +21,19 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   initialData,
 }) => {
   const router = useRouter();
-  const { client } = useGraphqlClient();
+  const { client, hasToken } = useGraphqlClient();
 
   const handleClickAddDenim = () => {
     router.push('/addNew/denim');
   };
 
   const accountId = router.query.accountId as string;
+
+  const { data: currentUserData } = useQuery(
+    queryKeys.currentUser(),
+    () => client.GetCurrentUser(),
+    { staleTime: Infinity, enabled: hasToken }
+  );
 
   const { data } = useQuery(
     queryKeys.profile(accountId),
@@ -43,6 +50,8 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const profile = data?.getProfile;
 
   const denims = denimsData?.getDenims ?? [];
+
+  const isEditable = currentUserData?.getCurrentUser?.accountId === accountId;
 
   if (!profile) {
     return <Spinner position="fixed" inset="0" margin="auto" />;
@@ -69,10 +78,16 @@ const ProfilePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
         }}
       />
       <Layout>
-        <Profile accountId={accountId} profile={profile} />
+        <Profile
+          accountId={accountId}
+          profile={profile}
+          isEditable={isEditable}
+        />
         <Divider marginTop="20px" />
         <Box margin="20px 0">
-          <Heading size="md">デニム一覧</Heading>
+          <Heading size="md" color={COLOR_CODE_INDIGO_BLUE}>
+            デニム一覧
+          </Heading>
           {denims.length === 0 ? (
             <Box display="flex" justifyContent="center" marginTop="40px">
               <Button onClick={handleClickAddDenim}>デニムを追加する</Button>
@@ -106,7 +121,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async ({
   const initialData = await client.GetProfile({
     accountId: params?.accountId as string,
   });
-  if (initialData === null) {
+  if (initialData.getProfile === null) {
     return {
       notFound: true,
     };

@@ -63,6 +63,17 @@ export type DenimReportInput = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type DenimReportsQueryInput = {
+  offset: Scalars['Int'];
+  perPage: Scalars['Int'];
+};
+
+export type GetDenimReportsResponse = {
+  __typename?: 'GetDenimReportsResponse';
+  denimReports: Array<DenimReport>;
+  totalCount: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createDenim: Denim;
@@ -160,9 +171,10 @@ export type Query = {
   __typename?: 'Query';
   getCurrentUser?: Maybe<User>;
   getDenim?: Maybe<Denim>;
-  getDenimReport: DenimReport;
+  getDenimReport?: Maybe<DenimReport>;
+  getDenimReports: GetDenimReportsResponse;
   getDenims: Array<Denim>;
-  getProfile: Profile;
+  getProfile?: Maybe<Profile>;
   getUser?: Maybe<User>;
   isAvailableAccountId?: Maybe<Scalars['Boolean']>;
 };
@@ -175,6 +187,11 @@ export type QueryGetDenimArgs = {
 
 export type QueryGetDenimReportArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetDenimReportsArgs = {
+  input: DenimReportsQueryInput;
 };
 
 
@@ -327,7 +344,14 @@ export type GetDenimReportQueryVariables = Exact<{
 }>;
 
 
-export type GetDenimReportQuery = { __typename?: 'Query', getDenimReport: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, user?: { __typename?: 'User', id: string, accountId: string } | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined }> | null | undefined } | null | undefined } };
+export type GetDenimReportQuery = { __typename?: 'Query', getDenimReport?: { __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, detailImageUrls?: Array<{ __typename?: 'DenimReportDetailImageUrl', id: string, sortKey: number, url: string }> | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined } | null | undefined } | null | undefined, denimReports?: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined }> | null | undefined } | null | undefined } | null | undefined };
+
+export type GetDenimReportsQueryVariables = Exact<{
+  input: DenimReportsQueryInput;
+}>;
+
+
+export type GetDenimReportsQuery = { __typename?: 'Query', getDenimReports: { __typename?: 'GetDenimReportsResponse', totalCount: number, denimReports: Array<{ __typename?: 'DenimReport', id: string, title?: string | null | undefined, description?: string | null | undefined, frontImageUrl?: string | null | undefined, backImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, denim?: { __typename?: 'Denim', id: string, name?: string | null | undefined, description?: string | null | undefined, imageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, profile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } };
 
 export type GetDenimsQueryVariables = Exact<{
   accountId: Scalars['String'];
@@ -341,7 +365,7 @@ export type GetProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetProfileQuery = { __typename?: 'Query', getProfile: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUserName?: string | null | undefined, description?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } };
+export type GetProfileQuery = { __typename?: 'Query', getProfile?: { __typename?: 'Profile', id: string, name?: string | null | undefined, iconImageUrl?: string | null | undefined, twitterUserName?: string | null | undefined, description?: string | null | undefined, instagramUserName?: string | null | undefined, websiteUrl?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined, user?: { __typename?: 'User', id: string, accountId: string, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined } | null | undefined };
 
 export type GetUserQueryVariables = Exact<{
   accountId: Scalars['String'];
@@ -598,10 +622,52 @@ export const GetDenimReportDocument = gql`
       user {
         id
         accountId
+        profile {
+          id
+          name
+          iconImageUrl
+        }
       }
       denimReports {
         id
         title
+      }
+    }
+  }
+}
+    `;
+export const GetDenimReportsDocument = gql`
+    query GetDenimReports($input: DenimReportsQueryInput!) {
+  getDenimReports(input: $input) {
+    totalCount
+    denimReports {
+      id
+      title
+      description
+      frontImageUrl
+      backImageUrl
+      createdAt
+      updatedAt
+      denim {
+        id
+        name
+        description
+        imageUrl
+        createdAt
+        updatedAt
+        user {
+          id
+          accountId
+          createdAt
+          updatedAt
+          profile {
+            id
+            name
+            iconImageUrl
+            createdAt
+            updatedAt
+          }
+        }
       }
     }
   }
@@ -726,6 +792,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetDenimReport(variables: GetDenimReportQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDenimReportQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDenimReportQuery>(GetDenimReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetDenimReport');
+    },
+    GetDenimReports(variables: GetDenimReportsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDenimReportsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetDenimReportsQuery>(GetDenimReportsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetDenimReports');
     },
     GetDenims(variables: GetDenimsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDenimsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDenimsQuery>(GetDenimsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetDenims');
