@@ -28,12 +28,14 @@ const DenimReportCard: React.FC<Props> = ({
       overflow="hidden"
     >
       <Box width="30%" display="flex">
-        <NextImage
-          src={denimReport.frontImageUrl ?? ''}
-          width="500"
-          height="500"
-          objectFit="contain"
-        />
+        {denimReport.frontImageUrl && (
+          <NextImage
+            src={denimReport.frontImageUrl}
+            width="300"
+            height="300"
+            objectFit="contain"
+          />
+        )}
       </Box>
       <Box padding="20px" flex="1">
         {link ? (
