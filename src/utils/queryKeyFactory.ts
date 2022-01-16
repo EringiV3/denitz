@@ -8,8 +8,6 @@ export const queryKeys = {
   denimReports: (denimId: string) => ['denims', denimId, 'reports'] as const,
   denimReport: (denimId: string, reportId: string) =>
     ['denims', denimId, 'reports', reportId] as const,
-  allDenimReports: (options: DenimReportsQueryInput) => [
-    'allDenimReports',
-    options,
-  ],
+  allDenimReports: (options: DenimReportsQueryInput) =>
+    ['allDenimReports', options] as const,
 };
