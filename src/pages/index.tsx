@@ -27,7 +27,7 @@ const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <>
-      <NextSeo title="トップページ" description="トップページ" />
+      <NextSeo title="トップページ" />
       <Layout>
         <Box color={COLOR_CODE_INDIGO_BLUE} marginTop="40px">
           <Box>
