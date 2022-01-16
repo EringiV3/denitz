@@ -5,7 +5,7 @@ import Button from '../components/Button';
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
-  return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
+  return <Button onClick={() => loginWithRedirect()}>ログイン</Button>;
 };
 
 export default LoginButton;

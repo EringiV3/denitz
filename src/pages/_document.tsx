@@ -10,26 +10,14 @@ export default class Document extends NextDocument {
       <Html lang="ja">
         <Head>
           <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 style=%22dominant-baseline:central;text-anchor:middle;font-size:90px;%22>👖</text></svg>"
           />
           <link
-            rel="icon"
+            rel="icon alternate"
             type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
+            href="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f456.png"
           />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-          />
-          <link rel="manifest" href="/site.webmanifest" />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-          <meta name="msapplication-TileColor" content="#da532c" />
-          <meta name="theme-color" content="#ffffff" />
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

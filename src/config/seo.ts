@@ -8,16 +8,16 @@ export const seoConfig: NextSeoProps = {
   openGraph: {
     type: 'website',
     locale: 'ja_jp',
-    url: 'https://www.denitz.com',
+    url: 'https://www.denitz.net',
     site_name: 'denitz',
     title: 'denitz',
     description: 'denitzはジーンズの色落ちを記録・共有できるサービスです。',
     images: [
       {
-        url: 'https://i.gyazo.com/109d89a435df342b1877a0b5b6fb2d25.png',
+        url: 'https://i.gyazo.com/6a7d97449068a9802ec0926e4ee709af.png',
         width: 1200,
         height: 630,
-        alt: 'denitz.com',
+        alt: 'denitz.net',
       },
     ],
   },
