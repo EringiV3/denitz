@@ -1,6 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box } from '@chakra-ui/react';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Button from '../components/Button';
@@ -25,49 +26,54 @@ const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   };
 
   return (
-    <Layout>
-      <Box color={COLOR_CODE_INDIGO_BLUE} marginTop="40px">
-        <Box>
-          <Box textAlign="center" fontSize="4xl" fontWeight="bold">
-            ジーンズの色落ちを記録・共有できる
-          </Box>
-          <Box textAlign="center" fontSize="6xl" fontWeight="bold">
-            denitz
-          </Box>
-          <Box display="flex" justifyContent="center" marginTop="40px">
-            <Button onClick={handleClickButton} width="50%">
-              新規登録
-            </Button>
-          </Box>
-        </Box>
-        <Box>
-          <Box
-            textAlign="center"
-            fontSize="xl"
-            fontWeight="bold"
-            marginTop="40px"
-          >
-            最新色落ち記録投稿
-          </Box>
-          <Box marginTop="20px">
-            {initialData.getDenimReports.denimReports.map((report) => (
-              <Box key={report.id} marginTop="20px">
-                {report.denim && report.denim.user && (
-                  <DenimReportCard
-                    showUserInfo={true}
-                    denimReport={report}
-                    link={`/${report.denim.user.accountId}/denims/${report.denim.id}/reports/${report.id}`}
-                  />
-                )}
-              </Box>
-            ))}
+    <>
+      <NextSeo title="トップページ" />
+      <Layout>
+        <Box color={COLOR_CODE_INDIGO_BLUE} marginTop="40px">
+          <Box>
+            <Box textAlign="center" fontSize="4xl" fontWeight="bold">
+              ジーンズの色落ちを
+              <br />
+              記録・共有できる
+            </Box>
+            <Box textAlign="center" fontSize="6xl" fontWeight="bold">
+              denitz👖
+            </Box>
             <Box display="flex" justifyContent="center" marginTop="40px">
-              <Button onClick={handleClickViewMore}>もっと見る</Button>
+              <Button onClick={handleClickButton} width="50%">
+                新規登録
+              </Button>
+            </Box>
+          </Box>
+          <Box>
+            <Box
+              textAlign="center"
+              fontSize="xl"
+              fontWeight="bold"
+              marginTop="40px"
+            >
+              最新色落ち記録投稿
+            </Box>
+            <Box marginTop="20px">
+              {initialData.getDenimReports.denimReports.map((report) => (
+                <Box key={report.id} marginTop="20px">
+                  {report.denim && report.denim.user && (
+                    <DenimReportCard
+                      showUserInfo={true}
+                      denimReport={report}
+                      link={`/${report.denim.user.accountId}/denims/${report.denim.id}/reports/${report.id}`}
+                    />
+                  )}
+                </Box>
+              ))}
+              <Box display="flex" justifyContent="center" marginTop="40px">
+                <Button onClick={handleClickViewMore}>もっと見る</Button>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 

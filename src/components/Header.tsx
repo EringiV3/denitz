@@ -70,7 +70,7 @@ const Header: React.FC = () => {
               </Box>
             </NextLink>
             <Box>
-              {isLoading ? null : isAuthenticated ? (
+              {isAuthenticated ? (
                 <Menu>
                   <MenuButton>
                     <Box margin="10px">
@@ -83,7 +83,7 @@ const Header: React.FC = () => {
                       />
                     </Box>
                   </MenuButton>
-                  <MenuList color={COLOR_CODE_INDIGO_BLUE}>
+                  <MenuList color={COLOR_CODE_INDIGO_BLUE} zIndex="999">
                     <MenuItem
                       icon={<FaUserCircle size="15px" />}
                       onClick={() =>

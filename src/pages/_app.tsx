@@ -75,6 +75,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       clientId={AUTH0_CLIENT_ID}
       redirectUri={AUTH0_REDIRECT_URI}
       audience={AUTH0_AUDIENCE}
+      cacheLocation="localstorage"
     >
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
